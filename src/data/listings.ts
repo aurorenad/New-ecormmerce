@@ -1,0 +1,68 @@
+import type { Listing } from '../features/marketplace/types';
+
+export const baseListings: Listing[] = [
+  {
+    id: 1,
+    title: 'iPhone 15 Pro',
+    current_price: 840, 
+    original_price: 999,
+    img: 'https://images.unsplash.com/photo-1730036900477-09391e7a5414?q=80&w=580&auto=format&fit=crop',
+    category: 'Excellent',
+  },
+  {
+    id: 2,
+    title: 'Samsung Galaxy S24 Ultra',
+    current_price: 950,
+    original_price: 1299,
+    img: 'https://images.unsplash.com/photo-1738830246146-599b67d009db?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    category: 'Excellent',
+  },
+  {
+    id: 3,
+    title: 'MacBook Air M2 (13-inch)',
+    current_price: 799,
+    original_price: 1099,
+    img: 'https://images.unsplash.com/photo-1650750018363-ff7ffe460f4b?q=80&w=709&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    category: 'Good',
+  },
+  {
+    id: 4,
+    title: 'iPad Air 5th Gen (Wi-Fi)',
+    current_price: 420,
+    original_price: 599,
+    img: 'https://images.unsplash.com/photo-1703756847845-0fbe0be766ee?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    category: 'Fair',
+  },
+  {
+    id: 5,
+    title: 'Google Pixel 8 Pro',
+    current_price: 610,
+    original_price: 999,
+    img: 'https://images.unsplash.com/photo-1665566893353-ee90a3ee0a8a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D',
+    category: 'Excellent',
+  },
+  {
+    id: 6,
+    title: 'Apple Watch Series 6',
+    current_price: 290,
+    original_price: 399,
+    img: 'https://images.unsplash.com/photo-1649141401319-c3c986d74e90?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    category: 'countryside',
+  },
+  {
+    id: 7,
+    title: 'Sony ILCE-6400',
+    current_price: 245,
+    original_price: 349,
+    img: 'https://images.unsplash.com/photo-1612858250434-b5358e2b3625?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    category: 'Good',
+  },
+  {
+    id: 8,
+    title: 'Nintendo Switch OLED',
+    current_price: 260,
+    original_price: 349,
+    img: 'https://images.unsplash.com/photo-1665041982909-8a86864a1e49?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    category: 'Fair',
+  },
+];

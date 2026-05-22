@@ -1,20 +1,37 @@
 import { baseListings } from "../../data/listings";
+import { ArrowRight } from "lucide-react"; 
+import { Link } from "react-router-dom"; // 1. Import Link from React Router
 
 export default function DeviceCard() {
+  // Take only the first 4 items from your listings data array
+  const trendingListings = baseListings.slice(0, 4);
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-8">
-        <h3 className="text-3xl font-bold bg-gradient-to-r from-[#6E9F94] to-[#127058] bg-clip-text text-black">
-          Trending Devices
-        </h3>
-        <p className="text-gray-600 mt-1 font-medium">
-          Certified by our expert technicians
-        </p>
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
+        <div>
+          <h3 className="text-3xl font-bold bg-gradient-to-r from-[#6E9F94] to-[#127058] bg-clip-text text-black">
+            Trending Devices
+          </h3>
+          <p className="text-gray-600 mt-1 font-medium">
+            Certified by our expert technicians
+          </p>
+        </div>
+
+        {/* 2. Swapped HTML <a> with <Link to="..."> for instant page changes */}
+        <Link 
+          to="/marketplace" 
+          className="inline-flex items-center gap-1.5 text-sm font-bold text-[#127058] hover:text-[#0e5845] transition-colors group"
+        >
+          <span>View All Marketplace</span>
+          <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+        </Link>
       </div>
 
-
+      {/* Grid displays only the limited 4 items */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {baseListings.map((device) => (
+        {trendingListings.map((device) => (
           <div 
             key={device.id} 
             className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow bg-white flex flex-col"
@@ -52,10 +69,13 @@ export default function DeviceCard() {
                 </span>
               </div>
 
-              {/* View Details CTA using your primary branding color */}
-              <button className="w-full bg-[#127058] hover:bg-[#0e5845] text-white font-semibold py-2.5 px-4 rounded-xl transition-colors text-sm shadow-sm">
+              {/* 3. Converted <button> into a dynamic <Link> targeting the item's precise URL route */}
+              <Link 
+                to={`/marketplace/${device.id}`}
+                className="w-full bg-[#127058] hover:bg-[#0e5845] text-white font-semibold py-2.5 px-4 rounded-xl transition-colors text-sm shadow-sm text-center block"
+              >
                 View Details
-              </button>
+              </Link>
             </div>
           </div>
         ))}

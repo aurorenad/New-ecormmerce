@@ -1,0 +1,133 @@
+import { useState } from 'react'
+import { NAV_ITEMS, SECTION_COPY } from './mockData'
+import {
+  FinancingSection,
+  InventorySection,
+  LogsSection,
+  PricingSection,
+  ProfileSection,
+  SalesSection,
+  UsersSection,
+} from './sections/AdminSections'
+import OverviewSection from './sections/OverviewSection'
+import TechnicianWorkbench from './sections/TechnicianWorkbench'
+import FinanceOfficerDashboard from './sections/FinanceOfficerDashboard'
+import './App.css'
+
+function App() {
+  const [activeTab, setActiveTab] = useState('overview')
+  const [viewMode, setViewMode] = useState('admin')
+
+  if (viewMode === 'technician') {
+    return <TechnicianWorkbench onBack={() => setViewMode('admin')} />
+  }
+
+  if (viewMode === 'finance') {
+    return <FinanceOfficerDashboard onBack={() => setViewMode('admin')} />
+  }
+
+  const copy = SECTION_COPY[activeTab] ?? SECTION_COPY.overview
+
+  const renderSection = () => {
+    switch (activeTab) {
+      case 'overview':
+        return <OverviewSection />
+      case 'users':
+        return <UsersSection />
+      case 'inventory':
+        return <InventorySection />
+      case 'pricing':
+        return <PricingSection />
+      case 'financing':
+        return <FinancingSection />
+      case 'sales':
+        return <SalesSection />
+      case 'logs':
+        return <LogsSection />
+      case 'profile':
+        return <ProfileSection />
+      default:
+        return <OverviewSection />
+    }
+  }
+
+  return (
+    <div className="dashboard">
+      <aside className="sidebar">
+        <div className="brand">
+          <span className="brand-mark">VT</span>
+          <div>
+            <strong>reviveTech</strong>
+            <p>Management Portal</p>
+          </div>
+        </div>
+        <p className="sidebar-caption">Platform operations &amp; analytics</p>
+        <nav className="menu">
+          {NAV_ITEMS.map((item) => (
+            <button
+              type="button"
+              key={item.id}
+              className={item.id === activeTab ? 'active' : ''}
+              onClick={() => setActiveTab(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </nav>
+        <div className="sidebar-bottom">
+          <p className="sidebar-bottom-label">Operations</p>
+          <button
+            type="button"
+            className="tech-cta-btn"
+            onClick={() => setViewMode('technician')}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+            </svg>
+            <span>Technician Dashboard</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            className="finance-cta-btn"
+            onClick={() => setViewMode('finance')}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+            <span>Finance Dashboard</span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+      </aside>
+      <main className="content">
+        <header className="portal-header">
+          <div className="portal-brand">
+            <span className="portal-logo" aria-hidden>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+              </svg>
+            </span>
+            <strong>reviveTech</strong>
+          </div>
+          <span className="portal-tagline">MANAGEMENT PORTAL</span>
+        </header>
+
+        <header className="topbar">
+          <div>
+            <h1>{copy.title}</h1>
+            <p>{copy.subtitle}</p>
+          </div>
+        </header>
+
+        <div className="section-content">{renderSection()}</div>
+      </main>
+    </div>
+  )
+}
+
+export default App

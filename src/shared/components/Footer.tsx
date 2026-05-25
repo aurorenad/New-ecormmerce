@@ -11,7 +11,7 @@ export default function Footer() {
             </span>
             <span className='text-xl font-bold tracking-tight'>Jaribu.</span>
           </div>
-          <p className='text-sm text-[#6E9F94] max-w-sm leading-relaxed'>
+          <p className='text-sm text-white max-w-sm leading-relaxed'>
             Your trusted marketplace for high-quality, affordable secondhand
             electronics. Transparent inspection grades, easy device financing,
             and reliable warrantee support.
@@ -23,26 +23,32 @@ export default function Footer() {
           <h4 className='text-sm font-semibold uppercase tracking-wider text-[#ef9f27] mb-4'>
             Marketplace
           </h4>
-          <ul className='space-y-2 text-sm text-[#6E9F94]'>
+          <ul className='space-y-2 text-sm text-white'>
             <li>
-              <a href='#phones' className='hover:text-white transition-colors'>
+              <a href='#phones' className='hover:underline '>
                 Smartphones
               </a>
             </li>
             <li>
-              <a href='#laptops' className='hover:text-white transition-colors'>
+              <a
+                href='#laptops'
+                className='hover:underline'
+              >
                 Laptops
               </a>
             </li>
             <li>
-              <a href='#tablets' className='hover:text-white transition-colors'>
+              <a
+                href='#tablets'
+                className='hover:underline'
+              >
                 Tablets & iPads
               </a>
             </li>
             <li>
               <a
                 href='#financing'
-                className='hover:text-white transition-colors'
+                className='hover:underline'
               >
                 Financing Plans
               </a>
@@ -55,27 +61,30 @@ export default function Footer() {
           <h4 className='text-sm font-semibold uppercase tracking-wider text-[#ef9f27] mb-4'>
             Our Process
           </h4>
-          <ul className='space-y-2 text-sm text-[#6E9F94]'>
+          <ul className='space-y-2 text-sm text-white'>
             <li>
               <a
                 href='#refurbish'
-                className='hover:text-white transition-colors'
+                className='hover:underline'
               >
                 How We Refurbish
               </a>
             </li>
             <li>
-              <a href='#grading' className='hover:text-white transition-colors'>
+              <a
+                href='#grading'
+                className='hover:underline'
+              >
                 Grading Guide
               </a>
             </li>
             <li>
-              <a href='#sell' className='hover:text-white transition-colors'>
+              <a href='#sell' className='hover:underline'>
                 Trade-In Your Device
               </a>
             </li>
             <li>
-              <a href='#support' className='hover:text-white transition-colors'>
+              <a href='#support' className='hover:underline'>
                 Support & Repairs
               </a>
             </li>
@@ -87,7 +96,7 @@ export default function Footer() {
           <h4 className='text-sm font-semibold uppercase tracking-wider text-[#ef9f27] mb-4'>
             Stay Updated
           </h4>
-          <p className='text-xs text-[#6E9F94] mb-3'>
+          <p className='text-xs text-white mb-3'>
             Get notified when fresh inventory or limited flash sales drop.
           </p>
           <form
@@ -108,7 +117,7 @@ export default function Footer() {
 
       {/* Bottom Legal Copyright Bar */}
       <div className='border-t border-[#6E9F94]/20 bg-black/20'>
-        <div className='max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6E9F94]'>
+        <div className='max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white'>
           <p>
             &copy; {new Date().getFullYear()} Jaribu Platform. All rights
             reserved.

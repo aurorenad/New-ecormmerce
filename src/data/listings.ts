@@ -1,126 +1,156 @@
 import type { Listing } from '../features/marketplace/types';
 
-// Extend your internal type slightly if your TypeScript file gives an error, 
-// or ensure your Listing interface supports description and specs properties.
-export const baseListings: (Listing & { description: string; specs: { label: string; value: string }[] })[] = [
+export const baseListings: Listing[] = [
   {
     id: 1,
     title: 'iPhone 15 Pro',
-    current_price: 840, 
+    current_price: 840,
     original_price: 999,
     img: 'https://images.unsplash.com/photo-1730036900477-09391e7a5414?q=80&w=580&auto=format&fit=crop',
-    category: 'Excellent',
-    description: 'Featuring a strong and lightweight aerospace-grade titanium design with contoured edges. Powered by the groundbreaking A17 Pro chip and an advanced pro camera system for breathtaking detailing.',
+    category: 'Smartphone',
+    condition: 'Excellent',
+    rating: 5,
+    reviewCount: 38,
+    description:
+      'Featuring a strong and lightweight aerospace-grade titanium design with contoured edges. Powered by the groundbreaking A17 Pro chip and an advanced pro camera system for breathtaking detailing.',
     specs: [
       { label: 'Storage', value: '128 GB' },
       { label: 'Battery Health', value: '92%' },
       { label: 'Color', value: 'Natural Titanium' },
-      { label: 'Condition', value: 'Excellent (Grade A)' }
-    ]
+      { label: 'Condition', value: 'Excellent (Grade A)' },
+    ],
   },
   {
     id: 2,
     title: 'Samsung Galaxy S24 Ultra',
     current_price: 950,
     original_price: 1299,
-    img: 'https://images.unsplash.com/photo-1738830246146-599b67d009db?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    category: 'Excellent',
-    description: 'The ultimate Galaxy smartphone experience equipped with a built-in S Pen, embedded Galaxy AI tools, a durable titanium exterior armor, and an ultra-sharp 200MP main camera lens framework.',
+    img: 'https://images.unsplash.com/photo-1738830246146-599b67d009db?q=80&w=1032&auto=format&fit=crop',
+    category: 'Smartphone',
+    condition: 'Excellent',
+    rating: 5,
+    reviewCount: 51,
+    description:
+      'The ultimate Galaxy smartphone experience equipped with a built-in S Pen, embedded Galaxy AI tools, a durable titanium exterior armor, and an ultra-sharp 200MP main camera lens framework.',
     specs: [
       { label: 'Storage', value: '256 GB' },
       { label: 'Battery Health', value: '95%' },
       { label: 'Color', value: 'Titanium Black' },
-      { label: 'Condition', value: 'Excellent (Grade A)' }
-    ]
+      { label: 'Condition', value: 'Excellent (Grade A)' },
+    ],
   },
   {
     id: 3,
     title: 'MacBook Air M2 (13-inch)',
     current_price: 799,
     original_price: 1099,
-    img: 'https://images.unsplash.com/photo-1650750018363-ff7ffe460f4b?q=80&w=709&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    category: 'Good',
-    description: 'Redesigned around the next-generation M2 silicon architecture. Strikingly thin, light, and hyper-efficient with an all-aluminum enclosure that boasts up to 18 hours of continuous mobile battery execution.',
+    img: 'https://images.unsplash.com/photo-1650750018363-ff7ffe460f4b?q=80&w=709&auto=format&fit=crop',
+    category: 'Laptop',
+    condition: 'Good',
+    rating: 4,
+    reviewCount: 29,
+    description:
+      'Redesigned around the next-generation M2 silicon architecture. Strikingly thin, light, and hyper-efficient with an all-aluminum enclosure that boasts up to 18 hours of continuous mobile battery execution.',
     specs: [
       { label: 'Memory', value: '8GB Unified RAM' },
       { label: 'Storage', value: '256GB SSD' },
       { label: 'Battery Cycles', value: '42 Cycles' },
-      { label: 'Condition', value: 'Good (Grade B)' }
-    ]
+      { label: 'Condition', value: 'Good (Grade B)' },
+    ],
   },
   {
     id: 4,
     title: 'iPad Air 5th Gen (Wi-Fi)',
     current_price: 420,
     original_price: 599,
-    img: 'https://images.unsplash.com/photo-1703756847845-0fbe0be766ee?q=80&w=1032&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    category: 'Fair',
-    description: 'Supercharged by the revolutionary Apple M1 computer chip. Blends raw artistic creative power with a lightweight body profile, featuring a gorgeous 10.9-inch Liquid Retina canvas and Center Stage camera syncing.',
+    img: 'https://images.unsplash.com/photo-1703756847845-0fbe0be766ee?q=80&w=1032&auto=format&fit=crop',
+    category: 'Tablet',
+    condition: 'Fair',
+    rating: 3,
+    reviewCount: 17,
+    description:
+      'Supercharged by the revolutionary Apple M1 computer chip. Blends raw artistic creative power with a lightweight body profile, featuring a gorgeous 10.9-inch Liquid Retina canvas and Center Stage camera syncing.',
     specs: [
       { label: 'Storage', value: '64 GB' },
       { label: 'Battery Health', value: '84%' },
       { label: 'Color', value: 'Space Gray' },
-      { label: 'Condition', value: 'Fair (Grade C)' }
-    ]
+      { label: 'Condition', value: 'Fair (Grade C)' },
+    ],
   },
   {
     id: 5,
     title: 'Google Pixel 8 Pro',
     current_price: 610,
     original_price: 999,
-    img: 'https://images.unsplash.com/photo-1665566893353-ee90a3ee0a8a?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D',
-    category: 'Excellent',
-    description: 'The all-pro phone engineered by Google. Runs on Google Tensor G3 with custom AI capabilities for advanced photo fixing tools, sleek video edits, and a fully polished pure Android navigation layer.',
+    img: 'https://images.unsplash.com/photo-1665566893353-ee90a3ee0a8a?w=500&auto=format&fit=crop&q=60',
+    category: 'Smartphone',
+    condition: 'Excellent',
+    rating: 4,
+    reviewCount: 43,
+    description:
+      'The all-pro phone engineered by Google. Runs on Google Tensor G3 with custom AI capabilities for advanced photo fixing tools, sleek video edits, and a fully polished pure Android navigation layer.',
     specs: [
       { label: 'Storage', value: '128 GB' },
       { label: 'Battery Health', value: '90%' },
       { label: 'Color', value: 'Bay Blue' },
-      { label: 'Condition', value: 'Excellent (Grade A)' }
-    ]
+      { label: 'Condition', value: 'Excellent (Grade A)' },
+    ],
   },
   {
     id: 6,
     title: 'Apple Watch Series 6',
     current_price: 290,
     original_price: 399,
-    img: 'https://images.unsplash.com/photo-1649141401319-c3c986d74e90?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    category: 'Excellent',
-    description: 'Measure your blood oxygen level with a revolutionary sensor and dedicated companion app. Keep an active eye on your workout paces on the enhanced Always-On Retina screen layout.',
+    img: 'https://images.unsplash.com/photo-1649141401319-c3c986d74e90?q=80&w=870&auto=format&fit=crop',
+    category: 'Smartwatch',
+    condition: 'Excellent',
+    rating: 4,
+    reviewCount: 22,
+    description:
+      'Measure your blood oxygen level with a revolutionary sensor and dedicated companion app. Keep an active eye on your workout paces on the enhanced Always-On Retina screen layout.',
     specs: [
       { label: 'Case Size', value: '44mm' },
       { label: 'Connectivity', value: 'GPS Only' },
       { label: 'Battery Health', value: '88%' },
-      { label: 'Condition', value: 'Excellent (Grade A)' }
-    ]
+      { label: 'Condition', value: 'Excellent (Grade A)' },
+    ],
   },
   {
     id: 7,
     title: 'Sony ILCE-6400',
     current_price: 245,
     original_price: 349,
-    img: 'https://images.unsplash.com/photo-1612858250434-b5358e2b3625?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    category: 'Good',
-    description: 'A stable, lightweight, and lightning-fast mirrorless camera system. Includes ultra-fast 0.02-second autofocus capture locks, real-time subject tracing tracking software, and a 180-degree flip monitor for easy vlogging control.',
+    img: 'https://images.unsplash.com/photo-1612858250434-b5358e2b3625?q=80&w=870&auto=format&fit=crop',
+    category: 'Camera',
+    condition: 'Good',
+    rating: 4,
+    reviewCount: 14,
+    description:
+      'A stable, lightweight, and lightning-fast mirrorless camera system. Includes ultra-fast 0.02-second autofocus capture locks, real-time subject tracing tracking software, and a 180-degree flip monitor for easy vlogging control.',
     specs: [
       { label: 'Sensor', value: '24.2MP APS-C' },
       { label: 'Video Resolution', value: '4K HDR' },
       { label: 'Lens Mount', value: 'Sony E-Mount' },
-      { label: 'Condition', value: 'Good (Grade B)' }
-    ]
+      { label: 'Condition', value: 'Good (Grade B)' },
+    ],
   },
   {
     id: 8,
     title: 'Nintendo Switch OLED',
     current_price: 260,
     original_price: 349,
-    img: 'https://images.unsplash.com/photo-1665041982909-8a86864a1e49?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    category: 'Fair',
-    description: 'Enjoy vivid colors and crisp contrast on a bright 7-inch OLED monitor surface. Features a wide adjustable console stand, an integrated wired LAN dock socket port, and 64GB of internal memory hardware.',
+    img: 'https://images.unsplash.com/photo-1665041982909-8a86864a1e49?q=80&w=870&auto=format&fit=crop',
+    category: 'Gaming',
+    condition: 'Fair',
+    rating: 3,
+    reviewCount: 31,
+    description:
+      'Enjoy vivid colors and crisp contrast on a bright 7-inch OLED monitor surface. Features a wide adjustable console stand, an integrated wired LAN dock socket port, and 64GB of internal memory hardware.',
     specs: [
       { label: 'Display Size', value: '7.0-inch OLED' },
       { label: 'Storage', value: '64 GB' },
       { label: 'Battery Status', value: 'Tested 100%' },
-      { label: 'Condition', value: 'Fair (Grade C)' }
-    ]
-  }
+      { label: 'Condition', value: 'Fair (Grade C)' },
+    ],
+  },
 ];

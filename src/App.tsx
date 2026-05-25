@@ -9,6 +9,8 @@ import ResetPasswordForm from './features/auth/components/ResetPassword';
 import Marketplace from './features/marketplace/MarketPlace';
 import DeviceDetailsPage from './features/marketplace/pages/device-details-page';
 import ToastNotification from './features/marketplace/ToastNotification'
+import CheckoutPage from './features/marketplace/pages/CheckoutPage';
+import SellDevice from './features/marketplace/SellDevices'
 
 function App() {
   return (
@@ -23,7 +25,8 @@ function App() {
         <Route path='/ResetPassword' element={<ResetPasswordForm />}></Route>
         <Route path='/marketplace' element={<Marketplace />}></Route>
         <Route path='/marketplace/:id' element={<DeviceDetailsPage />} />
-
+        <Route path='/Sell-Your-Device' element={<SellDevice />} />
+        <Route path='/checkout' element={<CheckoutPage />} />
         
       </Routes>
     </CartProvider>

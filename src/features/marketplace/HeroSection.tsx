@@ -21,7 +21,7 @@ export default function HeroSection() {
     return (
       <>
         <Navbar />
-        <LoadingSpinner  />
+        <LoadingSpinner />
         <Footer />
       </>
     );
@@ -31,11 +31,10 @@ export default function HeroSection() {
   return (
     <>
       <Navbar />
-      
+
       <main className='max-w-7xl mx-auto px-6 py-8'>
         {/* Parent Card Container with Relative Positioning */}
         <div className='relative overflow-hidden p-8 md:p-16 text-white rounded-3xl min-h-[480px] flex items-center shadow-xl'>
-          
           {/* Background Image Layer */}
           <div className='absolute inset-0 z-0'>
             <img
@@ -54,28 +53,27 @@ export default function HeroSection() {
           {/* Foreground Content Layer */}
           <div className='relative z-20 flex flex-col items-start space-y-5 max-w-2xl'>
             <span className='inline-block bg-[#EF9F27] text-gray-950 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full shadow-md'>
-              New Arrival
+              Quality Devices. Flexible Payments.
             </span>
 
             <h1 className='text-4xl md:text-5xl font-black tracking-tight leading-tight drop-shadow-sm'>
-              Renewed Tech, <br />
-              <span className='text-[#EF9F27]'>Financed for you.</span>
+              Affordable Tech, <br />
+              <span className='text-[#EF9F27]'>Pay in Installments.</span>
             </h1>
 
             <p className='text-[#D5E4E1] text-base md:text-lg leading-relaxed max-w-lg drop-shadow-sm'>
-              Get certified pre-owned devices with transparent trust scores and
-              instant financing approvals.
+              Browse professionally refurbished phones, laptops, and tablets —
+              and pay for them in small monthly installments that fit your
+              budget. No need to pay everything upfront.
             </p>
-            
-            {/* Updated to use React Router Link instead of an HTML <a> tag */}
-            <Link 
-              to="/marketplace" 
+
+            <Link
+              to='/marketplace'
               className='group flex items-center gap-3 bg-[#EF9F27] text-gray-950 font-bold px-6 py-3.5 rounded-full hover:scale-101 transition-all duration-300 shadow-lg shadow-black/20'
             >
-              <span>Browse Marketplace</span>
+              <span>Shop Devices</span>
               <ArrowRight className='w-5 h-5 group-hover:translate-x-1 transition-transform' />
             </Link>
-
           </div>
         </div>
       </main>

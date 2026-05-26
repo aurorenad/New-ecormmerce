@@ -11,6 +11,7 @@ import DeviceDetailsPage from './features/marketplace/pages/device-details-page'
 import ToastNotification from './features/marketplace/ToastNotification'
 import CheckoutPage from './features/marketplace/pages/CheckoutPage';
 import SellDevice from './features/marketplace/SellDevices'
+import AboutPage from './features/marketplace/AboutPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path='/marketplace/:id' element={<DeviceDetailsPage />} />
         <Route path='/Sell-Your-Device' element={<SellDevice />} />
         <Route path='/checkout' element={<CheckoutPage />} />
+        <Route path="/about"  element={<AboutPage />}  />
         
       </Routes>
     </CartProvider>

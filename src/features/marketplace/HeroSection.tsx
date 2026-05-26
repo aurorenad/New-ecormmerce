@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 import Navbar from '../../shared/components/nav';
 import DeviceCard from './DeviceCard';
 import Footer from '../../shared/components/Footer';
 import LoadingSpinner from '../../shared/components/loading-spinner';
-import { Link } from 'react-router-dom'; // Imported Link for React Router compatibility
+import { Link } from 'react-router-dom'; 
+import AboutPage from './AboutPage';
 
 export default function HeroSection() {
   // 1. Move state and lifecycle hooks to the top of the function
@@ -56,29 +57,41 @@ export default function HeroSection() {
               Quality Devices. Flexible Payments.
             </span>
 
-            <h1 className='text-4xl md:text-5xl font-black tracking-tight leading-tight drop-shadow-sm'>
-              Affordable Tech, <br />
-              <span className='text-[#EF9F27]'>Pay in Installments.</span>
+            <h1 className='text-4xl md:text-6xl font-black text-white tracking-tight leading-tight mt-2'>
+              Affordable tech,{' '}
+              <span className='text-[#EF9F27]'>fairly priced.</span>
+              <br />
+              No compromise.
             </h1>
 
             <p className='text-[#D5E4E1] text-base md:text-lg leading-relaxed max-w-lg drop-shadow-sm'>
-              Browse professionally refurbished phones, laptops, and tablets —
-              and pay for them in small monthly installments that fit your
-              budget. No need to pay everything upfront.
+              Jaribu is a platform for buying and selling professionally
+              refurbished electronics with transparent condition grading,
+              AI-powered pricing, and flexible monthly payment plans — making
+              quality devices accessible to everyone.
             </p>
 
-            <Link
-              to='/marketplace'
-              className='group flex items-center gap-3 bg-[#EF9F27] text-gray-950 font-bold px-6 py-3.5 rounded-full hover:scale-101 transition-all duration-300 shadow-lg shadow-black/20'
-            >
-              <span>Shop Devices</span>
-              <ArrowRight className='w-5 h-5 group-hover:translate-x-1 transition-transform' />
-            </Link>
+            <div className='flex flex-wrap gap-3 mt-8'>
+              <Link
+                to='/marketplace'
+                className='inline-flex items-center gap-2 bg-[#EF9F27] hover:bg-[#d98f20] text-gray-950 font-bold px-6 py-3 rounded-full transition-all shadow-lg shadow-[#EF9F27]/20 active:scale-[0.97]'
+              >
+                Shop Devices <ArrowRight className='w-4 h-4' />
+              </Link>
+              <Link
+                to='/Sell-Your-Device'
+                className='inline-flex items-center gap-2 border border-white/30 hover:border-white/60 text-white font-semibold px-6 py-3 rounded-full transition-all'
+              >
+                Sell Your Device <ChevronRight className='w-4 h-4' />
+              </Link>
+            </div>
           </div>
         </div>
       </main>
 
       <DeviceCard />
+
+      <AboutPage />
 
       <Footer />
     </>

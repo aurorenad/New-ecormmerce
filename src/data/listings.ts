@@ -117,10 +117,10 @@ export const baseListings: Listing[] = [
   },
   {
     id: 7,
-    title: 'Sony ILCE-6400',
+    title: 'Sony Alpha 6700',
     current_price: 245,
     original_price: 349,
-    img: 'https://images.unsplash.com/photo-1612858250434-b5358e2b3625?q=80&w=870&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1606986628470-26a67fa4730c?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     category: 'Camera',
     condition: 'Good',
     rating: 4,

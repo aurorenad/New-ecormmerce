@@ -38,11 +38,7 @@ const CATEGORY_LINKS = [
 ];
 
 // ─── Nav Links ────────────────────────────────────────────────────────────────
-const NAV_LINKS = [
-  { label: 'Marketplace', path: '/marketplace' },
-  { label: 'How it Works', path: '/how-it-works' },
-  { label: 'Sell Your Device', path: '/Sell-Your-Device' },
-];
+const NAV_LINKS = [{ label: 'Sell Your Device', path: '/Sell-Your-Device' }];
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -114,19 +110,6 @@ export default function Navbar() {
             >
               Jaribu
             </Link>
-
-            {/* ── Desktop Nav Links ───────────────────────────────────────── */}
-            <div className='hidden md:flex items-center gap-1 ml-2'>
-              {NAV_LINKS.map((link) => (
-                <Link
-                  key={link.label}
-                  to={link.path}
-                  className='text-sm font-semibold text-gray-500 hover:text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-xl transition-all'
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
 
             {/* ── Search Bar ─────────────────────────────────────────────── */}
             <div
@@ -260,6 +243,19 @@ export default function Navbar() {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* ── Desktop Nav Links ───────────────────────────────────────── */}
+            <div className='hidden md:flex items-center gap-1 ml-2'>
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.label}
+                  to={link.path}
+                  className='text-sm font-semibold text-gray-900  hover:bg-gray-200 px-3 py-2 rounded-xl transition-all'
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
 
             {/* ── Right Actions ───────────────────────────────────────────── */}

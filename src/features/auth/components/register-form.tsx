@@ -31,7 +31,7 @@ export default function RegisterForm() {
   const isPasswordValid = isMinLength && hasUppercase && hasNumberOrSymbol;
 
   // Form submission handler
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
 
@@ -58,7 +58,7 @@ export default function RegisterForm() {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       setSuccess(true);
-    } catch (_err) {
+    } catch {
       setError('Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);

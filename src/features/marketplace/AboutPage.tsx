@@ -168,25 +168,25 @@ const TEAM = [
   {
     name: 'Aurore Nadine Ishimwe',
     role: 'CEO',
-    avatar: './Aurore.jpeg',
+    avatar: 'https://res.cloudinary.com/dk7aohjpm/image/upload/v1779798096/Aurore_iagtbs.jpg',
     bio: 'Former fintech engineer with a passion for making technology accessible across Africa.',
   },
   {
     name: 'Emmanuel Ntakirutimana',
     role: 'Head of Operations',
-    avatar: './Emmy.png',
+    avatar: 'https://res.cloudinary.com/dk7aohjpm/image/upload/v1779798104/Emmy_j6awhb.png',
     bio: 'Supply chain expert who built our refurbishment quality process from the ground up.',
   },
   {
     name: 'Uwase Rwagasana Kellia',
     role: 'Financial Officer',
-    avatar: './kellia.jpeg',
+    avatar: 'https://res.cloudinary.com/dk7aohjpm/image/upload/v1779798097/kellia_jdloqx.jpg',
     bio: 'Built our payment and risk infrastructure',
   },
   {
     name: 'Igiraneza Aubin Joanes',
     role: 'Lead AI Engineer',
-    avatar: './Aubin.jpeg',
+    avatar: 'https://res.cloudinary.com/dk7aohjpm/image/upload/v1779798096/Aubin_cmswkh.jpg',
     bio: 'Built our LangChain valuation and credit-scoring pipeline.',
   },
 ];

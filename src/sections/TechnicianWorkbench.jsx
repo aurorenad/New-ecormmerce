@@ -6,13 +6,13 @@ import {
   TECH_PERF_STATS,
   TECH_ACTIVITY_SEED,
 } from '../mockData'
+import DashboardActions from '../components/DashboardActions'
 
 const STATUS_OPTIONS = ['Pending', 'In Progress', 'Awaiting Parts', 'Completed']
 
 const TW_NAV = [
   { id: 'overview', label: 'Overview' },
   { id: 'devices',  label: 'Assigned Devices' },
-  { id: 'details',  label: 'Device Details' },
   { id: 'profile',  label: 'Profile' },
 ]
 
@@ -277,12 +277,6 @@ function OverviewPage({ tickets, onGoToDevices, onViewDevice, onUpdateStatus }) 
           <p className="tw-page-sub">Welcome back, {TECHNICIAN_PROFILE.name}. Here&apos;s your repair overview.</p>
         </div>
         <div className="tw-header-btns">
-          <button type="button" className="tw-hbtn tw-hbtn--ghost" onClick={onGoToDevices}>
-            📋 View All Tasks
-          </button>
-          <button type="button" className="tw-hbtn tw-hbtn--primary" onClick={onGoToDevices}>
-            ➕ Start New Repair
-          </button>
           <div className="tw-notif-wrap">
             <button
               type="button"
@@ -812,8 +806,6 @@ function DeviceDetailsPage({
 function ProfilePage({ profilePic, onProfilePicChange }) {
   const fileRef = useRef(null)
 
-  const handleAvatarClick = () => fileRef.current?.click()
-
   const handleFileChange = (e) => {
     const file = e.target.files?.[0]
     if (!file) return
@@ -824,182 +816,180 @@ function ProfilePage({ profilePic, onProfilePicChange }) {
   }
 
   const repairDistData = [
-    { label: 'Completed', value: 127, color: '#10b981' },
+    { label: 'Completed',   value: 127, color: '#10b981' },
     { label: 'In Progress', value: 5,   color: '#3b82f6' },
     { label: 'Pending',     value: 3,   color: '#f59e0b' },
   ]
 
-  const perfColors = ['tw-kpi--green', 'tw-kpi--blue', 'tw-kpi--teal', 'tw-kpi--purple']
-
-  const activityDot = (type) => {
+  const activityDotColor = (type) => {
     const map = { complete: '#10b981', note: '#3b82f6', parts: '#8b5cf6', status: '#f59e0b', assign: '#025c50' }
     return map[type] ?? '#94a3b8'
   }
 
+  const infoRows = [
+    { icon: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></>, label: 'Email',        val: TECHNICIAN_PROFILE.email },
+    { icon: <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.06 6.06l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>, label: 'Phone',       val: TECHNICIAN_PROFILE.phone },
+    { icon: <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></>,                                                                                                                                                                                                                                                                                                                                                                                                       label: 'Location',    val: TECHNICIAN_PROFILE.location },
+    { icon: <><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></>,                                                                                                                                                                                                                                                                                                                              label: 'Member Since', val: TECHNICIAN_PROFILE.since },
+  ]
+
   return (
-    <div className="tw-page-wrap">
-      <div className="tw-page-header">
-        <h1 className="tw-page-title">My Profile</h1>
-        <p className="tw-page-sub">Manage your technician account and track your performance metrics.</p>
-      </div>
+    <div className="prf-page">
 
-      <div className="tw-prof-layout">
-
-        {/* ── Left: Profile card ── */}
-        <div className="tw-card tw-prof-left-card">
-          <div className="tw-prof-avatar-wrap" onClick={handleAvatarClick} title="Click to change photo">
-            {profilePic ? (
-              <img src={profilePic} alt="Profile" className="tw-prof-avatar-img" />
-            ) : (
-              <div className="tw-prof-avatar">{TECHNICIAN_PROFILE.initials}</div>
-            )}
-            <div className="tw-prof-avatar-overlay">
-              <IconCamera />
-              <span>Change</span>
-            </div>
+      {/* ── Left column ── */}
+      <div className="prf-left">
+        <div className="prf-card tw-card">
+          <div className="prf-cover">
+            <div className="prf-cover-accent" />
+            <div className="prf-cover-accent2" />
           </div>
-          <input ref={fileRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
+          <div className="prf-card-body">
 
-          <h2 className="tw-prof-name">{TECHNICIAN_PROFILE.name}</h2>
-          <p className="tw-prof-role">{TECHNICIAN_PROFILE.role}</p>
-          <span className="module-pill tw-prof-id-pill">{TECHNICIAN_PROFILE.id}</span>
-
-          <div className="tw-prof-contact-list">
-            {[
-              { label: 'EMAIL',       value: TECHNICIAN_PROFILE.email,    isEmail: true },
-              { label: 'PHONE',       value: TECHNICIAN_PROFILE.phone },
-              { label: 'LOCATION',    value: TECHNICIAN_PROFILE.location },
-              { label: 'MEMBER SINCE', value: TECHNICIAN_PROFILE.since },
-            ].map((item) => (
-              <div key={item.label} className="tw-prof-contact-item">
-                <span className="tw-prof-contact-label">{item.label}</span>
-                {item.isEmail ? (
-                  <a className="link-email" href={`mailto:${item.value}`}>{item.value}</a>
-                ) : (
-                  <span>{item.value}</span>
-                )}
+            <div className="prf-avatar-ring" onClick={() => fileRef.current?.click()}>
+              {profilePic
+                ? <img src={profilePic} alt="Profile" className="prf-avatar-img" />
+                : <div className="prf-avatar-initials">{TECHNICIAN_PROFILE.initials}</div>
+              }
+              <div className="prf-avatar-overlay">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+                <span>Upload</span>
               </div>
-            ))}
-          </div>
+            </div>
+            <input ref={fileRef} type="file" accept="image/*" hidden onChange={handleFileChange} />
 
-          <div className="tw-prof-activity-section">
-            <div className="tw-prof-activity-head">
-              <span className="tw-prof-active-badge">● ACTIVE</span>
-              <span className="tw-prof-activity-label">3d avg repair time</span>
-            </div>
-            <div className="progress" style={{ margin: '8px 0 4px' }}>
-              <div style={{ width: '82%', background: '#025c50' }} />
-            </div>
-            <div className="tw-prof-activity-foot">
-              <span>Efficiency</span>
-              <span>82 / 100</span>
-            </div>
-          </div>
+            <button type="button" className="prf-upload-label" onClick={() => fileRef.current?.click()}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              Upload photo
+            </button>
 
-          <div className="tw-prof-mini-stats">
-            <div className="tw-prof-mini-stat">
-              <p className="tw-prof-mini-label">Total Repairs</p>
-              <p className="tw-prof-mini-val">127</p>
+            <div className="prf-name-row">
+              <h2 className="prf-name">{TECHNICIAN_PROFILE.name}</h2>
             </div>
-            <div className="tw-prof-mini-stat">
-              <p className="tw-prof-mini-label">Open Tickets</p>
-              <p className="tw-prof-mini-val">5</p>
+            <span className="prf-role-tag">{TECHNICIAN_PROFILE.role}</span>
+            <p className="prf-id">{TECHNICIAN_PROFILE.id}</p>
+
+            <div className="prf-info-list">
+              {infoRows.map((row) => (
+                <div key={row.label} className="prf-info-item">
+                  <span className="prf-info-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>{row.icon}</svg>
+                  </span>
+                  <div className="prf-info-text">
+                    <p className="prf-info-label">{row.label}</p>
+                    <p className="prf-info-val">{row.val}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ width: '100%', marginTop: '18px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <span style={{ fontSize: '0.72rem', fontWeight: 700, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.07em' }}>Efficiency Score</span>
+                <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#025c50' }}>82 / 100</span>
+              </div>
+              <div className="progress">
+                <div style={{ width: '82%', background: 'linear-gradient(90deg, #025c50, #10b981)' }} />
+              </div>
+              <p style={{ fontSize: '0.68rem', color: '#9ca3af', margin: '4px 0 0' }}>3-day average repair time · Active status</p>
             </div>
           </div>
         </div>
 
-        {/* ── Right: Performance ── */}
-        <div className="tw-prof-right-section">
-
-          {/* KPI row */}
-          <div className="tw-kpi-grid">
-            {TECH_PERF_STATS.map((s, i) => (
-              <article key={s.label} className={`tw-kpi-card ${perfColors[i]}`}>
-                <p className="tw-kpi-label">{s.label}</p>
-                <p className="tw-kpi-value" style={{ fontSize: '26px' }}>{s.value}</p>
-                <p className="tw-kpi-hint">{s.hint}</p>
-              </article>
+        {/* Certifications */}
+        <div className="prf-section-card">
+          <h3 className="prf-section-title">Certifications</h3>
+          <div className="prf-cert-list">
+            {TECHNICIAN_PROFILE.certifications.map((cert) => (
+              <div key={cert} className="prf-cert-item">
+                <svg className="prf-cert-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                {cert}
+              </div>
             ))}
           </div>
+        </div>
+      </div>
 
-          {/* Charts row */}
-          <div className="tw-prof-charts-row">
+      {/* ── Right column ── */}
+      <div className="prf-right">
 
-            {/* Repair distribution donut */}
-            <section className="tw-card">
-              <h3 className="tw-card-title">Repair Distribution</h3>
-              <div className="tw-ov-donut-wrap">
-                <DonutChart data={repairDistData} size={160} centerLabel="135" centerSub="total" />
-                <div className="tw-ov-legend">
-                  {repairDistData.map((d) => (
-                    <div key={d.label} className="tw-ov-legend-item">
-                      <span className="tw-ov-legend-dot" style={{ background: d.color }} />
-                      <span className="tw-ov-legend-label">{d.label}</span>
-                      <span className="tw-ov-legend-count">{d.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </section>
+        <div className="prf-stats-row">
+          {TECH_PERF_STATS.map((s) => (
+            <div key={s.label} className="prf-stat-card">
+              <p className="prf-stat-num">{s.value}</p>
+              <p className="prf-stat-label">{s.label}</p>
+              <p className="prf-stat-hint">{s.hint}</p>
+            </div>
+          ))}
+        </div>
 
-            {/* Satisfaction ring */}
-            <section className="tw-card tw-prof-ring-card">
-              <h3 className="tw-card-title">Activity Stats</h3>
-              <div className="tw-prof-ring-wrap">
-                <RingChart value={98} size={156} color="#10b981" label="satisfaction" />
-              </div>
-              <p className="tw-prof-ring-sub">Your satisfaction rate</p>
-              <p className="tw-prof-ring-note">Based on customer feedback across 127 completed repairs.</p>
-              <div className="tw-prof-ring-stats">
-                <div>
-                  <p className="tw-kpi-label" style={{ marginBottom: '2px' }}>Parts Accuracy</p>
-                  <p className="tw-prof-ring-stat-val">99.1%</p>
-                </div>
-                <div>
-                  <p className="tw-kpi-label" style={{ marginBottom: '2px' }}>Avg. Repair Time</p>
-                  <p className="tw-prof-ring-stat-val">3d</p>
-                </div>
-              </div>
-            </section>
-
-          </div>
-
-          {/* Activity log */}
+        <div className="tw-prof-charts-row">
           <section className="tw-card">
-            <h3 className="tw-card-title">Activity Log</h3>
-            <div className="table-scroll">
-              <table className="admin-table">
-                <thead>
-                  <tr>
-                    <th>Time</th>
-                    <th>Activity</th>
-                    <th>Type</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {TECH_ACTIVITY_SEED.map((a) => (
-                    <tr key={a.id}>
-                      <td className="cell-mono cell-muted">{a.at}</td>
-                      <td>{a.action}</td>
-                      <td>
-                        <span className="tw-act-dot" style={{ background: activityDot(a.type) }} />
-                        <span className="tw-act-label">{a.type}</span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <h3 className="tw-card-title">Repair Distribution</h3>
+            <div className="tw-ov-donut-wrap">
+              <DonutChart data={repairDistData} size={160} centerLabel="135" centerSub="total" />
+              <div className="tw-ov-legend">
+                {repairDistData.map((d) => (
+                  <div key={d.label} className="tw-ov-legend-item">
+                    <span className="tw-ov-legend-dot" style={{ background: d.color }} />
+                    <span className="tw-ov-legend-label">{d.label}</span>
+                    <span className="tw-ov-legend-count">{d.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </section>
 
+          <section className="tw-card tw-prof-ring-card">
+            <h3 className="tw-card-title">Satisfaction Rate</h3>
+            <div className="tw-prof-ring-wrap">
+              <RingChart value={98} size={156} color="#10b981" label="satisfaction" />
+            </div>
+            <p className="tw-prof-ring-sub">98% customer satisfaction</p>
+            <p className="tw-prof-ring-note">Based on feedback across 127 completed repairs.</p>
+            <div className="tw-prof-ring-stats">
+              <div>
+                <p className="tw-kpi-label" style={{ marginBottom: '2px' }}>Parts Accuracy</p>
+                <p className="tw-prof-ring-stat-val">99.1%</p>
+              </div>
+              <div>
+                <p className="tw-kpi-label" style={{ marginBottom: '2px' }}>Avg. Repair Time</p>
+                <p className="tw-prof-ring-stat-val">2d</p>
+              </div>
+            </div>
+          </section>
         </div>
+
+        <article className="prf-section-card">
+          <h3 className="prf-section-title">Recent Activity</h3>
+          <ul className="prf-timeline">
+            {TECH_ACTIVITY_SEED.map((a) => (
+              <li key={a.id} className="prf-timeline-item">
+                <span className="prf-timeline-dot" style={{ background: activityDotColor(a.type) }} />
+                <div>
+                  <p className="prf-timeline-action">{a.action}</p>
+                  <p className="prf-timeline-time">{a.at}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </article>
+
       </div>
     </div>
   )
 }
 
 // ── MAIN COMPONENT ────────────────────────────────────────
-export default function TechnicianWorkbench({ onBack }) {
+export default function TechnicianWorkbench({ onBack, darkMode = false, onToggleDark, notifications = [], onMarkNotifRead }) {
   const [page, setPage]               = useState('overview')
   const [tickets, setTickets]         = useState(cloneTickets)
   const [selectedId, setSelectedId]   = useState(null)
@@ -1011,12 +1001,13 @@ export default function TechnicianWorkbench({ onBack }) {
     () => (selectedId ? tickets.find((t) => t.id === selectedId) : null),
     [tickets, selectedId],
   )
+  const urgentCount = tickets.filter((t) => t.priority === 'Urgent' && t.status !== 'Completed').length
 
   const handleViewDevice = (id) => {
     setSelectedId(id)
     setFaultDraft('')
     setSavedStatus(false)
-    setPage('details')
+    setPage('detail')
   }
 
   const handleUpdateStatus = (id, status) => {
@@ -1077,14 +1068,6 @@ export default function TechnicianWorkbench({ onBack }) {
 
       {/* ── Sidebar ── */}
       <aside className="tw-sidebar" aria-label="Technician navigation">
-        <div className="tw-sidebar-brand">
-          <span className="tw-sidebar-logo">VT</span>
-          <div className="tw-sidebar-brand-text">
-            <strong>reviveTech</strong>
-            <span>Technician</span>
-          </div>
-        </div>
-
         <p className="tw-sidebar-caption">Navigation</p>
 
         <nav className="tw-sidebar-nav">
@@ -1092,12 +1075,11 @@ export default function TechnicianWorkbench({ onBack }) {
             <button
               key={item.id}
               type="button"
-              className={`tw-nav-btn ${page === item.id ? 'active' : ''}`}
+              className={`tw-nav-btn ${(page === item.id || (item.id === 'devices' && page === 'detail')) ? 'active' : ''}`}
               onClick={() => setPage(item.id)}
             >
               <NavIcon id={item.id} />
               {item.label}
-              {item.id === 'details' && selectedId && <span className="tw-nav-dot" />}
             </button>
           ))}
         </nav>
@@ -1111,6 +1093,24 @@ export default function TechnicianWorkbench({ onBack }) {
 
       {/* ── Content ── */}
       <main className="tw-content">
+        <header className="tw-portal-header">
+          <div className="tw-portal-brand">
+            <span className="tw-portal-logo" aria-hidden>VT</span>
+            <div>
+              <strong>reviveTech</strong>
+              <p>Technician</p>
+            </div>
+          </div>
+          <span className="tw-portal-tagline">TECHNICIAN DASHBOARD</span>
+          <DashboardActions
+            darkMode={darkMode}
+            onToggleDark={onToggleDark}
+            userName={TECHNICIAN_PROFILE.name}
+            role={TECHNICIAN_PROFILE.role}
+            notifications={notifications}
+            onMarkRead={onMarkNotifRead}
+          />
+        </header>
         {page === 'overview' && (
           <OverviewPage
             tickets={tickets}
@@ -1126,15 +1126,14 @@ export default function TechnicianWorkbench({ onBack }) {
             onUpdateStatus={handleUpdateStatus}
           />
         )}
-        {page === 'details' && (
+        {page === 'detail' && (
           <DeviceDetailsPage
-            key={selectedId ?? 'empty'}
             ticket={selected}
             onBack={() => setPage('devices')}
             onTogglePart={handleTogglePart}
             onUpdateStatus={handleUpdateStatus}
             onSubmitNote={handleSubmitNote}
-            onUpdateFault={handleUpdateFault}
+            onUpdateFault={(text) => setTickets((prev) => prev.map((t) => t.id === selectedId ? { ...t, faultDetail: text } : t))}
             faultDraft={faultDraft}
             setFaultDraft={setFaultDraft}
             savedStatus={savedStatus}
@@ -1151,3 +1150,4 @@ export default function TechnicianWorkbench({ onBack }) {
     </div>
   )
 }
+

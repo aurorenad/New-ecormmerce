@@ -464,3 +464,12 @@ export const FO_ACTIVITY_LOG = [
   { id: 'FAL-005', at: '2026-05-20 14:30', action: 'Rejected FIN-23085 (Chantal Murekezi) — insufficient docs', type: 'reject' },
   { id: 'FAL-006', at: '2026-05-20 11:00', action: 'Marked FIN-22024 (Patrick Ndayisaba) as Settled', type: 'complete' },
 ]
+
+export const NOTIFICATIONS_SEED = [
+  { id: 'NTF-001', type: 'error', title: 'Payment webhook failed', desc: 'Payout retry failed for vendor VND-442 (attempt 3/5).', time: '2 min ago', read: false },
+  { id: 'NTF-002', type: 'warn',  title: 'Low stock alert',        desc: 'SKU DV-PX8-128 dropped below threshold — only 3 units remain.', time: '18 min ago', read: false },
+  { id: 'NTF-003', type: 'warn',  title: 'Delinquent loan',        desc: 'FIN-22029 (Divine Mukamana) payment is 4 days overdue.', time: '1 hr ago', read: false },
+  { id: 'NTF-004', type: 'warn',  title: 'High payout volume',     desc: '$48,200 in payouts in last 6 hrs. Manual review flagged.', time: '2 hrs ago', read: false },
+  { id: 'NTF-005', type: 'info',  title: 'Revenue milestone',      desc: 'Kigali region crossed $400K revenue for May 2026.', time: '3 hrs ago', read: true },
+  { id: 'NTF-006', type: 'info',  title: 'Monthly report ready',   desc: 'May 2026 sales report has been generated.', time: '4 hrs ago', read: true },
+]

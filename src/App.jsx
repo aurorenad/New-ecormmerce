@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { NAV_ITEMS, SECTION_COPY } from './mockData'
+import { useEffect, useState } from 'react'
+import { ADMIN_PROFILE, NAV_ITEMS, NOTIFICATIONS_SEED, SECTION_COPY } from './mockData'
 import {
   FinancingSection,
   InventorySection,
@@ -12,42 +12,66 @@ import {
 import OverviewSection from './sections/OverviewSection'
 import TechnicianWorkbench from './sections/TechnicianWorkbench'
 import FinanceOfficerDashboard from './sections/FinanceOfficerDashboard'
+import DashboardActions from './components/DashboardActions'
 import './App.css'
 
 function App() {
   const [activeTab, setActiveTab] = useState('overview')
   const [viewMode, setViewMode] = useState('admin')
+  const [darkMode, setDarkMode] = useState(false)
+  const [notifications, setNotifications] = useState(NOTIFICATIONS_SEED)
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
+  }, [darkMode])
+
+  function toggleDark() {
+    setDarkMode((v) => !v)
+  }
+
+  function markNotifRead(id) {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+    )
+  }
 
   if (viewMode === 'technician') {
-    return <TechnicianWorkbench onBack={() => setViewMode('admin')} />
+    return (
+      <TechnicianWorkbench
+        onBack={() => setViewMode('admin')}
+        darkMode={darkMode}
+        onToggleDark={toggleDark}
+        notifications={notifications}
+        onMarkNotifRead={markNotifRead}
+      />
+    )
   }
 
   if (viewMode === 'finance') {
-    return <FinanceOfficerDashboard onBack={() => setViewMode('admin')} />
+    return (
+      <FinanceOfficerDashboard
+        onBack={() => setViewMode('admin')}
+        darkMode={darkMode}
+        onToggleDark={toggleDark}
+        notifications={notifications}
+        onMarkNotifRead={markNotifRead}
+      />
+    )
   }
 
   const copy = SECTION_COPY[activeTab] ?? SECTION_COPY.overview
 
   const renderSection = () => {
     switch (activeTab) {
-      case 'overview':
-        return <OverviewSection />
-      case 'users':
-        return <UsersSection />
-      case 'inventory':
-        return <InventorySection />
-      case 'pricing':
-        return <PricingSection />
-      case 'financing':
-        return <FinancingSection />
-      case 'sales':
-        return <SalesSection />
-      case 'logs':
-        return <LogsSection />
-      case 'profile':
-        return <ProfileSection />
-      default:
-        return <OverviewSection />
+      case 'overview':   return <OverviewSection />
+      case 'users':      return <UsersSection />
+      case 'inventory':  return <InventorySection />
+      case 'pricing':    return <PricingSection />
+      case 'financing':  return <FinancingSection />
+      case 'sales':      return <SalesSection />
+      case 'logs':       return <LogsSection />
+      case 'profile':    return <ProfileSection />
+      default:           return <OverviewSection />
     }
   }
 
@@ -106,15 +130,15 @@ function App() {
       </aside>
       <main className="content">
         <header className="portal-header">
-          <div className="portal-brand">
-            <span className="portal-logo" aria-hidden>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-              </svg>
-            </span>
-            <strong>reviveTech</strong>
-          </div>
           <span className="portal-tagline">MANAGEMENT PORTAL</span>
+          <DashboardActions
+            darkMode={darkMode}
+            onToggleDark={toggleDark}
+            userName={ADMIN_PROFILE.name}
+            role={ADMIN_PROFILE.role}
+            notifications={notifications}
+            onMarkRead={markNotifRead}
+          />
         </header>
 
         <header className="topbar">

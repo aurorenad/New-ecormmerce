@@ -789,7 +789,6 @@ export function PricingSection() {
   const [pricing, setPricing]         = useState(PRICING_SEED)
   const [savingSkus, setSavingSkus]   = useState(new Set())
   const [savedSkus, setSavedSkus]     = useState(new Set())
-  const [selected, setSelected]       = useState(new Set())
   const [tierFilter, setTierFilter]   = useState('All')
   const [marginFilter, setMarginFilter] = useState('All')
   const [promoFilter, setPromoFilter] = useState('All')
@@ -841,14 +840,6 @@ export function PricingSection() {
     }, 600)
   }
 
-  const saveSelected = () => { selected.forEach(saveRow); setSelected(new Set()) }
-
-  const toggleSelect = (sku) =>
-    setSelected((prev) => { const s = new Set(prev); s.has(sku) ? s.delete(sku) : s.add(sku); return s })
-
-  const allChecked = filtered.length > 0 && filtered.every((r) => selected.has(r.sku))
-  const toggleAll  = () => setSelected(allChecked ? new Set() : new Set(filtered.map((r) => r.sku)))
-
   return (
     <div className="section-stack">
 
@@ -899,11 +890,6 @@ export function PricingSection() {
             </label>
           </div>
 
-          {selected.size > 0 && (
-            <button type="button" className="btn-bulk-save" onClick={saveSelected}>
-              Save {selected.size} Selected
-            </button>
-          )}
         </div>
 
         {/* ── Table ─────────────────────────────────────────────────────── */}
@@ -911,7 +897,6 @@ export function PricingSection() {
           <table className="admin-table">
             <thead>
               <tr>
-                <th><input type="checkbox" className="pricing-checkbox" checked={allChecked} onChange={toggleAll} /></th>
                 <th>SKU</th>
                 <th>Model</th>
                 <th>Tier</th>
@@ -932,11 +917,7 @@ export function PricingSection() {
                 const isSaving  = savingSkus.has(row.sku)
                 const isSaved   = savedSkus.has(row.sku)
                 return (
-                  <tr key={row.sku} className={selected.has(row.sku) ? 'pricing-row--selected' : ''}>
-                    <td>
-                      <input type="checkbox" className="pricing-checkbox"
-                        checked={selected.has(row.sku)} onChange={() => toggleSelect(row.sku)} />
-                    </td>
+                  <tr key={row.sku}>
                     <td className="cell-mono">{row.sku}</td>
                     <td className="cell-bold">{row.model}</td>
                     <td><span className="tier-pill">{row.tier}</span></td>
@@ -1657,7 +1638,7 @@ export function SalesSection() {
           </div>
         </div>
 
-        {/* ── Insights ─────────────────────────────────────────────────── */}vscode-webview://0il2m5se5ca93oj72ph2ag9ha8e3tl94ur6diaepo0hgjtrrn0hi/index.html?id=d5205395-cc2c-4b18-aac2-c50db1b25562&parentId=1&origin=be6560c1-b08a-4f34-9f17-45d9f39b92dc&swVersion=5&extensionId=Anthropic.claude-code&platform=electron&vscode-resource-base-authority=vscode-resource.vscode-cdn.net&parentOrigin=vscode-file%3A%2F%2Fvscode-app&purpose=webviewView&session=1559406b-cc1e-49c9-a76e-0441da5305c2#
+        {/* ── Insights ─────────────────────────────────────────────────── */}
         {insights.length > 0 && (
           <div className="sales-insights">
             <p className="sales-insights-title">
@@ -2188,78 +2169,123 @@ export function ProfileSection() {
     inventory: '#8b5cf6', reports: '#06b6d4', system: '#6b7280',
   }
 
+  const infoRows = [
+    {
+      icon: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></>,
+      label: 'Email',
+      content: editEmail
+        ? <input className="prf-inline-input" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={() => setEditEmail(false)} autoFocus />
+        : <span className="prf-info-val">{email} <button type="button" className="prf-edit-btn" onClick={() => setEditEmail(true)}>Edit</button></span>,
+    },
+    {
+      icon: <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.06 6.06l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>,
+      label: 'Phone',
+      content: editPhone
+        ? <input className="prf-inline-input" value={phone} onChange={(e) => setPhone(e.target.value)} onBlur={() => setEditPhone(false)} autoFocus />
+        : <span className="prf-info-val">{phone} <button type="button" className="prf-edit-btn" onClick={() => setEditPhone(true)}>Edit</button></span>,
+    },
+    {
+      icon: <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></>,
+      label: 'Location',
+      content: <span className="prf-info-val">{ADMIN_PROFILE.location}</span>,
+    },
+    {
+      icon: <><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></>,
+      label: 'Department',
+      content: <span className="prf-info-val">{ADMIN_PROFILE.department}</span>,
+    },
+    {
+      icon: <><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></>,
+      label: 'Member Since',
+      content: <span className="prf-info-val">{ADMIN_PROFILE.since}</span>,
+    },
+  ]
+
   return (
-    <div className="ap-layout">
-      <div className="ap-left">
-        <article className="panel-card ap-avatar-card">
-          <div className="ap-avatar-wrap" onClick={() => fileRef.current?.click()}>
-            {profilePic
-              ? <img src={profilePic} alt="Profile" className="ap-avatar-img" />
-              : <div className="ap-avatar-placeholder">{ADMIN_PROFILE.initials}</div>
-            }
-            <div className="ap-avatar-overlay">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                <circle cx="12" cy="13" r="4" />
-              </svg>
+    <div className="prf-page">
+
+      {/* ── Left column ── */}
+      <div className="prf-left">
+        <div className="prf-card panel-card">
+          <div className="prf-cover">
+            <div className="prf-cover-accent" />
+            <div className="prf-cover-accent2" />
+          </div>
+          <div className="prf-card-body">
+
+            <div className="prf-avatar-ring" onClick={() => fileRef.current?.click()}>
+              {profilePic
+                ? <img src={profilePic} alt="Profile" className="prf-avatar-img" />
+                : <div className="prf-avatar-initials">{ADMIN_PROFILE.initials}</div>
+              }
+              <div className="prf-avatar-overlay">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+                <span>Upload</span>
+              </div>
             </div>
             <input ref={fileRef} type="file" accept="image/*" hidden onChange={handleFileChange} />
-          </div>
 
-          <div className="ap-identity">
-            <div className="ap-name-row">
+            <button type="button" className="prf-upload-label" onClick={() => fileRef.current?.click()}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17 8 12 3 7 8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              Upload photo
+            </button>
+
+            <div className="prf-name-row">
               {editName
-                ? <input className="ap-edit-input" value={name} onChange={(e) => setName(e.target.value)} onBlur={() => setEditName(false)} autoFocus />
-                : <><h2 className="ap-name">{name}</h2><button className="ap-edit-btn" onClick={() => setEditName(true)}>Edit</button></>
+                ? <input className="prf-name-input" value={name} onChange={(e) => setName(e.target.value)} onBlur={() => setEditName(false)} autoFocus />
+                : <><h2 className="prf-name">{name}</h2><button type="button" className="prf-edit-btn" onClick={() => setEditName(true)}>Edit</button></>
               }
             </div>
-            <span className="ap-role-badge">{ADMIN_PROFILE.role}</span>
-            <p className="ap-id">{ADMIN_PROFILE.id}</p>
+            <span className="prf-role-tag">{ADMIN_PROFILE.role}</span>
+            <p className="prf-id">{ADMIN_PROFILE.id}</p>
+
+            <div className="prf-info-list">
+              {infoRows.map((row) => (
+                <div key={row.label} className="prf-info-item">
+                  <span className="prf-info-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>{row.icon}</svg>
+                  </span>
+                  <div className="prf-info-text">
+                    <p className="prf-info-label">{row.label}</p>
+                    {row.content}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              className={`prf-save-btn${saved ? ' prf-save-btn--saved' : ''}`}
+              onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000) }}
+            >
+              {saved ? '✓ Changes Saved' : 'Save Changes'}
+            </button>
           </div>
-
-          <ul className="ap-contact-list">
-            <li className="ap-contact-item">
-              <span className="ap-contact-label">Email</span>
-              {editEmail
-                ? <input className="ap-edit-input ap-edit-inline" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={() => setEditEmail(false)} autoFocus />
-                : <span className="ap-contact-val">{email} <button className="ap-edit-btn" onClick={() => setEditEmail(true)}>Edit</button></span>
-              }
-            </li>
-            <li className="ap-contact-item">
-              <span className="ap-contact-label">Phone</span>
-              {editPhone
-                ? <input className="ap-edit-input ap-edit-inline" value={phone} onChange={(e) => setPhone(e.target.value)} onBlur={() => setEditPhone(false)} autoFocus />
-                : <span className="ap-contact-val">{phone} <button className="ap-edit-btn" onClick={() => setEditPhone(true)}>Edit</button></span>
-              }
-            </li>
-            {[['Location', ADMIN_PROFILE.location], ['Department', ADMIN_PROFILE.department], ['Member Since', ADMIN_PROFILE.since]].map(([label, val]) => (
-              <li key={label} className="ap-contact-item">
-                <span className="ap-contact-label">{label}</span>
-                <span className="ap-contact-val">{val}</span>
-              </li>
-            ))}
-          </ul>
-
-          <button className={`ap-save-btn ${saved ? 'ap-save-btn--saved' : ''}`}
-            onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000) }}>
-            {saved ? '✓ Changes Saved' : 'Save Changes'}
-          </button>
-        </article>
+        </div>
       </div>
 
-      <div className="ap-right">
-        <div className="ap-stats-grid">
+      {/* ── Right column ── */}
+      <div className="prf-right">
+
+        <div className="prf-stats-row">
           {ADMIN_PLATFORM_STATS.map((s) => (
-            <article key={s.label} className="panel-card ap-stat-card">
-              <p className="ap-stat-val">{s.value}</p>
-              <p className="ap-stat-label">{s.label}</p>
-              <p className="ap-stat-hint">{s.hint}</p>
-            </article>
+            <div key={s.label} className="prf-stat-card">
+              <p className="prf-stat-num">{s.value}</p>
+              <p className="prf-stat-label">{s.label}</p>
+              <p className="prf-stat-hint">{s.hint}</p>
+            </div>
           ))}
         </div>
 
-        <article className="panel-card">
-          <h3 className="ap-section-title">Platform Snapshot</h3>
+        <article className="prf-section-card">
+          <h3 className="prf-section-title">Platform Snapshot</h3>
           <div className="ap-snapshot-grid">
             {[
               { icon: <><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /></>, val: '6', label: 'Platform Users', cls: 'ap-snap-teal' },
@@ -2282,15 +2308,15 @@ export function ProfileSection() {
           </div>
         </article>
 
-        <article className="panel-card">
-          <h3 className="ap-section-title">Recent Activity</h3>
-          <ul className="ap-activity-list">
+        <article className="prf-section-card">
+          <h3 className="prf-section-title">Recent Activity</h3>
+          <ul className="prf-timeline">
             {ADMIN_ACTIVITY_LOG.map((a) => (
-              <li key={a.id} className="ap-activity-item">
-                <span className="ap-activity-dot" style={{ background: activityColors[a.type] ?? '#6b7280' }} />
-                <div className="ap-activity-body">
-                  <p className="ap-activity-action">{a.action}</p>
-                  <p className="ap-activity-time">{a.at}</p>
+              <li key={a.id} className="prf-timeline-item">
+                <span className="prf-timeline-dot" style={{ background: activityColors[a.type] ?? '#6b7280' }} />
+                <div>
+                  <p className="prf-timeline-action">{a.action}</p>
+                  <p className="prf-timeline-time">{a.at}</p>
                 </div>
               </li>
             ))}

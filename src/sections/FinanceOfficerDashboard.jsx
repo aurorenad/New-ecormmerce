@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
+import DashboardActions from '../components/DashboardActions'
 import {
   FO_OFFICER_PROFILE,
   FO_OVERVIEW_KPIS,
@@ -843,6 +844,7 @@ function FoProfilePage({ profilePic, onProfilePicChange }) {
   const [name, setName] = useState(FO_OFFICER_PROFILE.name)
   const [editEmail, setEditEmail] = useState(false)
   const [email, setEmail] = useState(FO_OFFICER_PROFILE.email)
+  const [saved, setSaved] = useState(false)
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0]
@@ -853,84 +855,135 @@ function FoProfilePage({ profilePic, onProfilePicChange }) {
     e.target.value = ''
   }
 
+  const colorMap = { approve: '#22c55e', reject: '#ef4444', reminder: '#f0ab3c', escalate: '#ef4444', settings: '#3b82f6', complete: '#22c55e' }
+
+  const infoRows = [
+    {
+      icon: <><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></>,
+      label: 'Email',
+      content: editEmail
+        ? <input className="prf-inline-input" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={() => setEditEmail(false)} autoFocus />
+        : <span className="prf-info-val">{email} <button type="button" className="prf-edit-btn" onClick={() => setEditEmail(true)}>Edit</button></span>,
+    },
+    {
+      icon: <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.06 6.06l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>,
+      label: 'Phone',
+      content: <span className="prf-info-val">{FO_OFFICER_PROFILE.phone}</span>,
+    },
+    {
+      icon: <><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></>,
+      label: 'Location',
+      content: <span className="prf-info-val">{FO_OFFICER_PROFILE.location}</span>,
+    },
+    {
+      icon: <><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></>,
+      label: 'Member Since',
+      content: <span className="prf-info-val">{FO_OFFICER_PROFILE.since}</span>,
+    },
+  ]
+
   return (
     <div className="fo-page-wrap">
-      <div className="fo-profile-layout">
-        <div className="fo-profile-left">
-          <div className="fo-prof-avatar-wrap" onClick={() => fileRef.current?.click()}>
-            {profilePic
-              ? <img src={profilePic} alt="Profile" className="fo-prof-avatar-img" />
-              : <div className="fo-prof-avatar-placeholder">{FO_OFFICER_PROFILE.initials}</div>
-            }
-            <div className="fo-prof-avatar-overlay" aria-label="Change photo">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                <circle cx="12" cy="13" r="4" />
-              </svg>
-            </div>
-            <input ref={fileRef} type="file" accept="image/*" hidden onChange={handleFileChange} />
-          </div>
+      <div className="prf-page">
 
-          <div className="fo-prof-info">
-            <div className="fo-prof-name-row">
-              {editName
-                ? <input className="fo-prof-name-input" value={name} onChange={(e) => setName(e.target.value)} onBlur={() => setEditName(false)} autoFocus />
-                : <><h2 className="fo-prof-name">{name}</h2><button className="fo-prof-edit-btn" onClick={() => setEditName(true)}>Edit</button></>
-              }
+        {/* ── Left column ── */}
+        <div className="prf-left">
+          <div className="prf-card fo-panel-card">
+            <div className="prf-cover">
+              <div className="prf-cover-accent" />
+              <div className="prf-cover-accent2" />
             </div>
-            <p className="fo-prof-role">{FO_OFFICER_PROFILE.role}</p>
-            <p className="fo-prof-id">{FO_OFFICER_PROFILE.id}</p>
-          </div>
+            <div className="prf-card-body">
 
-          <div className="fo-prof-contact-list">
-            {[
-              ['Email', editEmail
-                ? <input key="email-input" className="fo-prof-name-input" value={email} onChange={(e) => setEmail(e.target.value)} onBlur={() => setEditEmail(false)} autoFocus />
-                : <span key="email-val">{email} <button className="fo-prof-edit-btn" onClick={() => setEditEmail(true)}>Edit</button></span>],
-              ['Phone', FO_OFFICER_PROFILE.phone],
-              ['Location', FO_OFFICER_PROFILE.location],
-              ['Member Since', FO_OFFICER_PROFILE.since],
-            ].map(([label, val]) => (
-              <div key={label} className="fo-prof-contact-item">
-                <span className="fo-prof-contact-label">{label}</span>
-                <span>{val}</span>
+              <div className="prf-avatar-ring" onClick={() => fileRef.current?.click()}>
+                {profilePic
+                  ? <img src={profilePic} alt="Profile" className="prf-avatar-img" />
+                  : <div className="prf-avatar-initials">{FO_OFFICER_PROFILE.initials}</div>
+                }
+                <div className="prf-avatar-overlay">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                    <circle cx="12" cy="13" r="4"/>
+                  </svg>
+                  <span>Upload</span>
+                </div>
               </div>
-            ))}
+              <input ref={fileRef} type="file" accept="image/*" hidden onChange={handleFileChange} />
+
+              <button type="button" className="prf-upload-label" onClick={() => fileRef.current?.click()}>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                  <polyline points="17 8 12 3 7 8"/>
+                  <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload photo
+              </button>
+
+              <div className="prf-name-row">
+                {editName
+                  ? <input className="prf-name-input" value={name} onChange={(e) => setName(e.target.value)} onBlur={() => setEditName(false)} autoFocus />
+                  : <><h2 className="prf-name">{name}</h2><button type="button" className="prf-edit-btn" onClick={() => setEditName(true)}>Edit</button></>
+                }
+              </div>
+              <span className="prf-role-tag">{FO_OFFICER_PROFILE.role}</span>
+              <p className="prf-id">{FO_OFFICER_PROFILE.id}</p>
+
+              <div className="prf-info-list">
+                {infoRows.map((row) => (
+                  <div key={row.label} className="prf-info-item">
+                    <span className="prf-info-icon">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>{row.icon}</svg>
+                    </span>
+                    <div className="prf-info-text">
+                      <p className="prf-info-label">{row.label}</p>
+                      {row.content}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                type="button"
+                className={`prf-save-btn${saved ? ' prf-save-btn--saved' : ''}`}
+                onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000) }}
+              >
+                {saved ? '✓ Changes Saved' : 'Save Changes'}
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="fo-profile-right">
-          <div className="fo-prof-stats-row">
+        {/* ── Right column ── */}
+        <div className="prf-right">
+          <div className="prf-stats-row">
             {[
-              { label: 'Loans Processed', val: '1,284' },
-              { label: 'Approval Rate', val: '87%' },
-              { label: 'Avg Review Time', val: '1.4d' },
-              { label: 'Delinquency Handled', val: '212' },
+              { label: 'Loans Processed',     val: '1,284', hint: 'All time' },
+              { label: 'Approval Rate',        val: '87%',   hint: 'Last 90 days' },
+              { label: 'Avg Review Time',      val: '1.4d',  hint: 'Per application' },
+              { label: 'Delinquency Handled',  val: '212',   hint: 'Resolved cases' },
             ].map((s) => (
-              <div key={s.label} className="fo-prof-stat-card">
-                <p className="fo-prof-stat-val">{s.val}</p>
-                <p className="fo-prof-stat-label">{s.label}</p>
+              <div key={s.label} className="prf-stat-card">
+                <p className="prf-stat-num">{s.val}</p>
+                <p className="prf-stat-label">{s.label}</p>
+                <p className="prf-stat-hint">{s.hint}</p>
               </div>
             ))}
           </div>
 
-          <div className="fo-panel-card">
-            <h3 className="fo-panel-title">Recent Activity</h3>
-            <ul className="fo-activity-list">
-              {FO_ACTIVITY_LOG.map((a) => {
-                const colorMap = { approve: '#22c55e', reject: '#ef4444', reminder: '#f0ab3c', escalate: '#ef4444', settings: '#3b82f6', complete: '#22c55e' }
-                return (
-                  <li key={a.id} className="fo-activity-item">
-                    <span className="fo-activity-dot" style={{ background: colorMap[a.type] ?? '#64748b' }} />
-                    <div>
-                      <p className="fo-activity-action">{a.action}</p>
-                      <p className="fo-activity-time">{a.at}</p>
-                    </div>
-                  </li>
-                )
-              })}
+          <article className="prf-section-card">
+            <h3 className="prf-section-title">Recent Activity</h3>
+            <ul className="prf-timeline">
+              {FO_ACTIVITY_LOG.map((a) => (
+                <li key={a.id} className="prf-timeline-item">
+                  <span className="prf-timeline-dot" style={{ background: colorMap[a.type] ?? '#64748b' }} />
+                  <div>
+                    <p className="prf-timeline-action">{a.action}</p>
+                    <p className="prf-timeline-time">{a.at}</p>
+                  </div>
+                </li>
+              ))}
             </ul>
-          </div>
+          </article>
         </div>
       </div>
     </div>
@@ -1029,13 +1082,32 @@ const FO_STATIC_ALERTS = [
   { type: 'info',  icon: '🟢', msg: 'Approval rate hit 87% this month — all-time high.' },
 ]
 
-export default function FinanceOfficerDashboard({ onBack }) {
+export default function FinanceOfficerDashboard({ onBack, darkMode = false, onToggleDark, notifications = [], onMarkNotifRead }) {
   const [page, setPage] = useState('overview')
   const [profilePic, setProfilePic] = useState(null)
-  const [showNotif, setShowNotif] = useState(false)
 
   const overdueLoans = FO_ACTIVE_LOANS_SEED.filter((l) => l.status === 'Overdue' || l.status === 'Due Soon')
-  const overdueCount = overdueLoans.length + FO_STATIC_ALERTS.filter((a) => a.type === 'error' || a.type === 'warn').length
+
+  // Merge Finance-specific alerts with shared notifications
+  const foNotifications = [
+    ...FO_STATIC_ALERTS.map((a, i) => ({
+      id: `FO-STATIC-${i}`,
+      type: a.type,
+      title: a.type === 'error' ? 'Escalation needed' : a.type === 'warn' ? 'Requests awaiting' : 'Approval milestone',
+      desc: a.msg,
+      time: 'Today',
+      read: a.type === 'info',
+    })),
+    ...overdueLoans.map((l) => ({
+      id: l.ref,
+      type: l.status === 'Overdue' ? 'error' : 'warn',
+      title: `${l.status}: ${l.customer}`,
+      desc: `${l.device} — Next due: ${l.nextDue}`,
+      time: 'Loan alert',
+      read: false,
+    })),
+    ...notifications,
+  ]
 
   const renderPage = () => {
     switch (page) {
@@ -1079,57 +1151,21 @@ export default function FinanceOfficerDashboard({ onBack }) {
 
       <main className="fo-main">
         <header className="fo-portal-header">
-          <div className="fo-portal-brand">
-            <span className="fo-portal-logo" aria-hidden>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-              </svg>
-            </span>
-            <strong>reviveTech</strong>
-          </div>
           <span className="fo-portal-tagline">FINANCE PORTAL</span>
+          <DashboardActions
+            darkMode={darkMode}
+            onToggleDark={onToggleDark}
+            userName={FO_OFFICER_PROFILE.name}
+            role={FO_OFFICER_PROFILE.role}
+            notifications={foNotifications}
+            onMarkRead={onMarkNotifRead}
+          />
         </header>
 
         <header className="fo-topbar">
           <div>
             <h1>{copy.title}</h1>
             <p>{copy.subtitle}</p>
-          </div>
-          <div className="fo-topbar-actions">
-            <div className="tw-notif-wrap">
-              <button type="button" className="tw-notif-btn fo-notif-btn" onClick={() => setShowNotif((v) => !v)} aria-label="Loan notifications">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                </svg>
-                {overdueCount > 0 && <span className="tw-notif-badge">{overdueCount}</span>}
-              </button>
-              {showNotif && (
-                <div className="tw-notif-panel fo-notif-panel">
-                  <div className="tw-notif-panel-header">
-                    <span>Notifications</span>
-                    <button type="button" className="tw-notif-close" onClick={() => setShowNotif(false)}>✕</button>
-                  </div>
-                  {FO_STATIC_ALERTS.map((a, i) => (
-                    <div key={i} className={`tw-notif-item fo-notif-alert fo-notif-alert--${a.type}`}>
-                      <span className="fo-notif-alert-icon">{a.icon}</span>
-                      <p className="tw-notif-device" style={{ fontWeight: 500 }}>{a.msg}</p>
-                    </div>
-                  ))}
-                  {overdueLoans.length > 0 && (
-                    <div className="fo-notif-divider">Overdue &amp; Due Soon Loans</div>
-                  )}
-                  {overdueLoans.map((l) => (
-                    <div key={l.ref} className="tw-notif-item">
-                      <div className="tw-notif-item-body">
-                        <p className="tw-notif-device">{l.customer} — {l.device}</p>
-                        <p className="tw-notif-fault">{l.ref} · Next due: {l.nextDue}</p>
-                        <span className={l.status === 'Overdue' ? 'fo-status fo-status-overdue' : 'fo-status fo-status-due-soon'}>{l.status}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
           </div>
         </header>
 

@@ -1,0 +1,105 @@
+/* ── Profile page layout ─────────────────────────────────────────────────── */
+.prf-page { display: grid; grid-template-columns: 300px 1fr; gap: 24px; align-items: start; }
+.prf-left  { position: sticky; top: 24px; display: flex; flex-direction: column; gap: 20px; }
+.prf-right { display: flex; flex-direction: column; gap: 20px; }
+
+/* ── Profile card ────────────────────────────────────────────────────────── */
+.prf-card        { padding: 0 !important; overflow: hidden; border-radius: 16px !important; }
+.prf-cover       { height: 96px; background: linear-gradient(135deg, #012f29 0%, #025c50 55%, #03796a 100%); position: relative; overflow: hidden; }
+.prf-cover::before { content: ''; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px); background-size: 18px 18px; }
+.prf-cover-accent  { position: absolute; top: -40px; right: -30px; width: 140px; height: 140px; border-radius: 50%; background: rgba(240,171,60,0.18); }
+.prf-cover-accent2 { position: absolute; bottom: -50px; left: -20px; width: 110px; height: 110px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+.prf-card-body { padding: 0 24px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; }
+
+/* ── Avatar ──────────────────────────────────────────────────────────────── */
+.prf-avatar-ring { width: 88px; height: 88px; border-radius: 50%; margin-top: -44px; border: 4px solid #ffffff; box-shadow: 0 4px 20px rgba(0,0,0,0.14); position: relative; cursor: pointer; overflow: hidden; background: linear-gradient(135deg, #025c50, #037a66); flex-shrink: 0; }
+.prf-avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.prf-avatar-initials { width: 100%; height: 100%; display: grid; place-items: center; font-size: 1.65rem; font-weight: 800; color: #ffffff; letter-spacing: -0.02em; }
+.prf-avatar-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.52); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; opacity: 0; transition: opacity 0.2s; color: #fff; font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+.prf-avatar-ring:hover .prf-avatar-overlay { opacity: 1; }
+.prf-upload-label { font-size: 0.68rem; color: #025c50; font-weight: 600; cursor: pointer; margin-top: 8px; display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 4px; transition: background 0.15s; background: none; border: none; }
+.prf-upload-label:hover { background: rgba(2,92,80,0.08); text-decoration: underline; }
+
+/* ── Identity ────────────────────────────────────────────────────────────── */
+.prf-name-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 10px 0 4px; width: 100%; }
+.prf-name { font-size: 1.1rem; font-weight: 800; color: #111827; margin: 0; letter-spacing: -0.01em; }
+.prf-name-input { font-size: 1rem; font-weight: 700; color: #025c50; border: 2px solid #025c50; border-radius: 6px; padding: 3px 10px; text-align: center; background: #f0faf8; width: 100%; }
+.prf-role-tag { display: inline-block; background: rgba(2,92,80,0.09); color: #025c50; font-size: 0.7rem; font-weight: 700; padding: 3px 12px; border-radius: 999px; letter-spacing: 0.04em; margin-bottom: 4px; }
+.prf-id { font-size: 0.68rem; font-family: 'JetBrains Mono', 'Fira Code', monospace; color: #9ca3af; margin: 0 0 18px; }
+
+/* ── Info list ───────────────────────────────────────────────────────────── */
+.prf-info-list { width: 100%; border-top: 1px solid #f1f5f9; padding-top: 14px; display: flex; flex-direction: column; }
+.prf-info-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f8fafc; text-align: left; }
+.prf-info-item:last-child { border-bottom: none; }
+.prf-info-icon { width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; background: rgba(2,92,80,0.08); color: #025c50; flex-shrink: 0; margin-top: 1px; }
+.prf-info-text { flex: 1; min-width: 0; }
+.prf-info-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.09em; color: #9ca3af; font-weight: 700; margin: 0; }
+.prf-info-val { font-size: 0.79rem; color: #374151; font-weight: 500; margin: 1px 0 0; display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.prf-edit-btn { background: none; border: none; font-size: 0.65rem; color: #025c50; font-weight: 600; cursor: pointer; padding: 1px 5px; border-radius: 3px; }
+.prf-edit-btn:hover { background: rgba(2,92,80,0.1); }
+.prf-inline-input { font-size: 0.79rem; color: #025c50; border: 1.5px solid #025c50; border-radius: 4px; padding: 2px 6px; background: #f0faf8; width: 100%; margin-top: 1px; }
+
+/* ── Save button ─────────────────────────────────────────────────────────── */
+.prf-save-btn { margin-top: 18px; width: 100%; padding: 10px 0; border-radius: 8px; border: none; background: linear-gradient(135deg, #025c50, #037a66); color: #ffffff; font-size: 0.82rem; font-weight: 700; cursor: pointer; letter-spacing: 0.02em; transition: opacity 0.15s, transform 0.15s; }
+.prf-save-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.prf-save-btn--saved { background: linear-gradient(135deg, #059669, #10b981) !important; }
+
+/* ── Stats row ───────────────────────────────────────────────────────────── */
+.prf-stats-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.prf-stat-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 16px; text-align: center; }
+.prf-stat-num   { font-size: 1.5rem; font-weight: 800; color: #025c50; margin: 0 0 4px; }
+.prf-stat-label { font-size: 0.75rem; font-weight: 600; color: #374151; margin: 0 0 2px; }
+.prf-stat-hint  { font-size: 0.7rem; color: #9ca3af; margin: 0; }
+
+/* ── Section cards ───────────────────────────────────────────────────────── */
+.prf-section-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; padding: 20px; }
+.prf-section-title { font-size: 0.75rem; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.07em; margin: 0 0 16px; display: flex; align-items: center; gap: 8px; }
+.prf-section-title::before { content: ''; display: block; width: 3px; height: 12px; background: #025c50; border-radius: 2px; flex-shrink: 0; }
+
+/* ── Timeline ────────────────────────────────────────────────────────────── */
+.prf-timeline { list-style: none; padding: 0; margin: 0; }
+.prf-timeline-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f8fafc; }
+.prf-timeline-item:last-child { border-bottom: none; }
+.prf-timeline-dot    { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.prf-timeline-action { font-size: 0.81rem; color: #374151; margin: 0 0 2px; line-height: 1.45; }
+.prf-timeline-time   { font-size: 0.7rem; color: #9ca3af; margin: 0; }
+
+/* ── Platform snapshot ───────────────────────────────────────────────────── */
+.ap-snapshot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.ap-snapshot-item { display: flex; align-items: center; gap: 12px; padding: 14px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; }
+.ap-snapshot-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ap-snap-teal   { background: rgba(2,92,80,0.1);   color: #025c50; }
+.ap-snap-amber  { background: rgba(240,171,60,0.12); color: #b45309; }
+.ap-snap-green  { background: rgba(22,163,74,0.1);  color: #15803d; }
+.ap-snap-purple { background: rgba(139,92,246,0.1); color: #6d28d9; }
+.ap-snap-val   { font-size: 1rem; font-weight: 700; color: #1f2937; margin: 0 0 2px; }
+.ap-snap-label { font-size: 0.72rem; color: #6b7280; margin: 0; }
+@media (max-width: 1100px) { .prf-page { grid-template-columns: 1fr; } .prf-left { position: static; } .ap-snapshot-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 700px)  { .ap-snapshot-grid { grid-template-columns: 1fr 1fr; } }
+
+/* ── Dark mode ───────────────────────────────────────────────────────────── */
+[data-theme="dark"] .prf-card-body    { background: #1e293b; }
+[data-theme="dark"] .prf-avatar-ring  { border-color: #1e293b; }
+[data-theme="dark"] .prf-name         { color: #f1f5f9; }
+[data-theme="dark"] .prf-role-tag     { background: rgba(2,92,80,0.25); color: #34d399; }
+[data-theme="dark"] .prf-id           { color: #64748b; }
+[data-theme="dark"] .prf-upload-label { color: #34d399; }
+[data-theme="dark"] .prf-upload-label:hover { background: rgba(2,92,80,0.22); }
+[data-theme="dark"] .prf-info-list    { border-color: #334155; }
+[data-theme="dark"] .prf-info-item    { border-color: #1e293b; }
+[data-theme="dark"] .prf-info-icon    { background: rgba(2,92,80,0.25); color: #34d399; }
+[data-theme="dark"] .prf-info-label   { color: #64748b; }
+[data-theme="dark"] .prf-info-val     { color: #e2e8f0; }
+[data-theme="dark"] .prf-edit-btn     { color: #34d399; }
+[data-theme="dark"] .prf-edit-btn:hover { background: rgba(2,92,80,0.22); }
+[data-theme="dark"] .prf-inline-input { background: #0f172a; color: #34d399; border-color: #34d399; }
+[data-theme="dark"] .prf-name-input   { background: #0f172a; color: #34d399; border-color: #34d399; }
+[data-theme="dark"] .prf-stat-card    { background: #1e293b; border-color: #334155; }
+[data-theme="dark"] .prf-stat-num     { color: #34d399; }
+[data-theme="dark"] .prf-stat-label   { color: #e2e8f0; }
+[data-theme="dark"] .prf-stat-hint    { color: #64748b; }
+[data-theme="dark"] .prf-section-card { background: #1e293b; border-color: #334155; }
+[data-theme="dark"] .prf-section-title { color: #94a3b8; }
+[data-theme="dark"] .prf-timeline-item { border-color: #1e293b; }
+[data-theme="dark"] .prf-timeline-action { color: #e2e8f0; }
+[data-theme="dark"] .prf-timeline-time   { color: #64748b; }

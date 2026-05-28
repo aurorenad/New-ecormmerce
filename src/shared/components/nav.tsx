@@ -13,11 +13,22 @@ import {
   Watch,
   Camera,
   Gamepad2,
+  User,
+  LogOut,
+  ChevronDown,
 } from 'lucide-react';
 import { useCart } from '../../context/useCart';
 import CartSidebar from './CartSidebar';
 import { Link, useNavigate } from 'react-router-dom';
 import { baseListings } from '../../data/listings';
+import { useAuth } from '../../context/AuthContext';
+
+const ROLE_LABELS: Record<string, string> = {
+  admin:      'Admin',
+  finance:    'Finance Officer',
+  technician: 'Technician',
+  customer:   'Customer',
+};
 
 // ─── Category quick-links shown in the search dropdown ───────────────────────
 const CATEGORY_LINKS = [
@@ -44,10 +55,25 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const { cartCount, setIsCartOpen } = useCart();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const searchRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const searchRef  = useRef<HTMLDivElement>(null);
+  const inputRef   = useRef<HTMLInputElement>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  const initials = user?.name
+    ? user.name.split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase()
+    : '';
+  const displayRole = user?.role ? (ROLE_LABELS[user.role] ?? user.role) : '';
+
+  function handleLogout() {
+    setShowUserMenu(false);
+    setIsMenuOpen(false);
+    logout();
+    navigate('/login', { replace: true });
+  }
 
   // Live search results filtered from listings
   const searchResults =
@@ -61,11 +87,14 @@ export default function Navbar() {
           .slice(0, 5)
       : [];
 
-  // Close search dropdown on outside click
+  // Close search dropdown and user menu on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(e.target as Node)) {
         setIsSearchFocused(false);
+      }
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setShowUserMenu(false);
       }
     }
     document.addEventListener('mousedown', handleClick);
@@ -286,22 +315,79 @@ export default function Navbar() {
               {/* Divider */}
               <div className='h-5 w-px bg-gray-200 mx-1 hidden md:block' />
 
-              {/* Desktop auth */}
+              {/* Desktop auth — shows chip when logged in, Sign In when not */}
               <div className='hidden md:flex items-center gap-2'>
-                <Link
-                  to='/login'
-                  className='inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#127058] hover:bg-gray-100 rounded-xl transition-all px-3 py-2'
-                >
-                  <LogIn size={15} />
-                  <span>Sign In</span>
-                </Link>
-                {/* <Link
-                  to='/register'
-                  className='inline-flex items-center gap-1.5 text-sm font-bold bg-[#127058] hover:bg-[#0e5845] active:scale-[0.97] text-white px-4 py-2 rounded-xl transition-all shadow-sm'
-                >
-                  <UserPlus size={15} />
-                  <span>Sign Up</span>
-                </Link> */}
+                {user ? (
+                  /* ── Logged-in user chip ── */
+                  <div className='relative' ref={userMenuRef}>
+                    <button
+                      type='button'
+                      onClick={() => setShowUserMenu((v) => !v)}
+                      aria-expanded={showUserMenu}
+                      aria-label='User menu'
+                      className={`flex items-center gap-2 pl-1.5 pr-3 py-1.5 rounded-xl border transition-all ${
+                        showUserMenu
+                          ? 'bg-gray-100 border-gray-300'
+                          : 'bg-gray-50 border-gray-200 hover:bg-gray-100 hover:border-gray-300'
+                      }`}
+                    >
+                      {/* Avatar */}
+                      <span className='flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 text-white text-xs font-bold flex-shrink-0'>
+                        {initials}
+                      </span>
+                      {/* Name + role */}
+                      <span className='flex flex-col text-left leading-tight'>
+                        <span className='text-xs font-semibold text-gray-900'>{user.name}</span>
+                        <span className='text-[11px] text-gray-500'>{displayRole}</span>
+                      </span>
+                      {/* Online dot */}
+                      <span className='w-2 h-2 rounded-full bg-green-500 flex-shrink-0 ring-2 ring-white' aria-hidden />
+                      {/* Chevron */}
+                      <ChevronDown
+                        size={13}
+                        className={`text-gray-400 transition-transform flex-shrink-0 ${showUserMenu ? 'rotate-180' : ''}`}
+                      />
+                    </button>
+
+                    {/* Dropdown */}
+                    {showUserMenu && (
+                      <div className='absolute top-full right-0 mt-2 w-52 bg-white border border-gray-200 rounded-2xl shadow-xl z-50 overflow-hidden'>
+                        {/* Header */}
+                        <div className='px-4 py-3 border-b border-gray-100'>
+                          <p className='text-sm font-semibold text-gray-900'>{user.name}</p>
+                          <p className='text-xs text-gray-500 mt-0.5'>{displayRole}</p>
+                        </div>
+                        {/* Profile */}
+                        <button
+                          type='button'
+                          onClick={() => { setShowUserMenu(false); navigate('/profile'); }}
+                          className='w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors'
+                        >
+                          <User size={14} className='text-gray-500' />
+                          Profile
+                        </button>
+                        {/* Log out */}
+                        <button
+                          type='button'
+                          onClick={handleLogout}
+                          className='w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors'
+                        >
+                          <LogOut size={14} />
+                          Log out
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* ── Guest: Sign In button ── */
+                  <Link
+                    to='/login'
+                    className='inline-flex items-center gap-1.5 text-sm font-semibold text-gray-600 hover:text-[#127058] hover:bg-gray-100 rounded-xl transition-all px-3 py-2'
+                  >
+                    <LogIn size={15} />
+                    <span>Sign In</span>
+                  </Link>
+                )}
               </div>
 
               {/* Mobile hamburger */}
@@ -338,22 +424,50 @@ export default function Navbar() {
                 <p className='text-[10px] font-black text-gray-400 uppercase tracking-wider px-4'>
                   Account
                 </p>
-                <Link
-                  to='/login'
-                  onClick={() => setIsMenuOpen(false)}
-                  className='flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors'
-                >
-                  <LogIn size={17} className='text-[#127058]' />
-                  Sign In to Account
-                </Link>
-                <Link
-                  to='/register'
-                  onClick={() => setIsMenuOpen(false)}
-                  className='flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white bg-[#127058] hover:bg-[#0e5845] transition-colors shadow-sm'
-                >
-                  <UserPlus size={17} className='text-white/80' />
-                  Create Free Account
-                </Link>
+
+                {user ? (
+                  /* ── Logged-in: user card + logout ── */
+                  <>
+                    <div className='flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-xl'>
+                      <span className='flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 text-white text-sm font-bold flex-shrink-0'>
+                        {initials}
+                      </span>
+                      <div className='flex-1 min-w-0'>
+                        <p className='text-sm font-semibold text-gray-900 truncate'>{user.name}</p>
+                        <p className='text-xs text-gray-500'>{displayRole}</p>
+                      </div>
+                      <span className='w-2 h-2 rounded-full bg-green-500 flex-shrink-0' aria-hidden />
+                    </div>
+                    <button
+                      type='button'
+                      onClick={handleLogout}
+                      className='flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-semibold text-red-600 bg-red-50 hover:bg-red-100 transition-colors'
+                    >
+                      <LogOut size={17} />
+                      Log out
+                    </button>
+                  </>
+                ) : (
+                  /* ── Guest: Sign In + Register ── */
+                  <>
+                    <Link
+                      to='/login'
+                      onClick={() => setIsMenuOpen(false)}
+                      className='flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors'
+                    >
+                      <LogIn size={17} className='text-[#127058]' />
+                      Sign In to Account
+                    </Link>
+                    <Link
+                      to='/register'
+                      onClick={() => setIsMenuOpen(false)}
+                      className='flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-bold text-white bg-[#127058] hover:bg-[#0e5845] transition-colors shadow-sm'
+                    >
+                      <UserPlus size={17} className='text-white/80' />
+                      Create Free Account
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>

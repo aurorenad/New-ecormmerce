@@ -1,0 +1,22 @@
+/* Users section uses shared um-* classes from dashboard-shared.css */
+/* Only section-specific overrides here */
+
+.inv-view-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 0 8px;
+}
+.inv-view-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(2,92,80,0.08);
+  color: #025c50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.inv-view-model { font-size: 15px; font-weight: 700; color: #111827; margin: 0 0 3px; }
+.inv-view-sku   { font-size: 12px; color: #94a3b8; margin: 0; font-family: monospace; }

@@ -1,0 +1,95 @@
+/* ── Growth pill ─────────────────────────────────────────────────────────── */
+.growth-pill     { display: inline-block; color: #047857; background: #d1fae5; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.growth-pill--neg { color: #be123c; background: #ffe4e6; }
+.sale-pos { color: #15803d; font-weight: 600; }
+.sale-neg { color: #dc2626; font-weight: 600; }
+
+/* ── Charts grid ─────────────────────────────────────────────────────────── */
+.sales-charts-grid      { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.sales-charts-grid--wide { grid-template-columns: 2fr 1fr; }
+@media (max-width: 768px) {
+  .sales-charts-grid, .sales-charts-grid--wide { grid-template-columns: 1fr; }
+}
+.sales-chart-card   { padding: 16px 20px 12px; }
+.sales-chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.sales-chart-title  { font-size: 13px; font-weight: 600; color: #374151; margin: 0; }
+
+/* ── Revenue / Profit toggle ─────────────────────────────────────────────── */
+.sales-chart-toggle { display: flex; gap: 0; border: 1px solid #e5e7eb; border-radius: 6px; overflow: hidden; }
+.sale-toggle-btn { padding: 4px 10px; font-size: 11px; font-weight: 500; color: #6b7280; background: #fff; border: none; cursor: pointer; transition: background 0.15s, color 0.15s; }
+.sale-toggle-btn + .sale-toggle-btn { border-left: 1px solid #e5e7eb; }
+.sale-toggle-btn--active { background: #025c50; color: #fff; }
+
+/* ── KPI progress bar ────────────────────────────────────────────────────── */
+.sale-kpi-bar-track { height: 4px; background: #f1f5f9; border-radius: 999px; overflow: hidden; margin-top: 8px; }
+.sale-kpi-bar-fill       { height: 100%; background: #025c50; border-radius: 999px; transition: width 0.4s; }
+.sale-kpi-bar-fill--blue { background: #1d4ed8; }
+.sale-kpi-target { font-size: 11px; color: #9ca3af; margin: 4px 0 0; }
+
+/* ── Toolbar ─────────────────────────────────────────────────────────────── */
+.sales-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; flex-wrap: wrap; }
+.sales-actions { display: flex; gap: 8px; align-items: center; }
+
+/* ── Export dropdown ─────────────────────────────────────────────────────── */
+.sale-export-dropdown { position: absolute; top: calc(100% + 6px); right: 0; z-index: 100; background: #fff; border: 1px solid #e5e7eb; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.10); min-width: 140px; overflow: hidden; }
+.sale-export-dropdown button { display: block; width: 100%; padding: 9px 14px; font-size: 13px; color: #374151; background: none; border: none; text-align: left; cursor: pointer; transition: background 0.12s; }
+.sale-export-dropdown button:hover { background: #f8fafc; }
+.sale-export-dropdown button + button { border-top: 1px solid #f1f5f9; }
+
+/* ── Insights ────────────────────────────────────────────────────────────── */
+.sales-insights { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; background: #f0fdf4; }
+.sales-insights-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: #15803d; margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+.sales-insights-list  { margin: 0; padding: 0 0 0 16px; display: flex; flex-direction: column; gap: 3px; }
+.sales-insights-list li { font-size: 13px; color: #374151; }
+
+/* ── Region breakdown ────────────────────────────────────────────────────── */
+.sales-regions       { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; }
+.sales-regions-title { font-size: 12px; font-weight: 600; color: #6b7280; margin: 0 0 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+.sales-region-bars { display: flex; flex-direction: column; gap: 8px; }
+.sales-region-row  { display: flex; align-items: center; gap: 10px; }
+.sales-region-rank { width: 28px; font-size: 13px; text-align: center; flex-shrink: 0; }
+.sales-region-name { width: 130px; font-size: 13px; color: #374151; flex-shrink: 0; }
+.sales-region-track{ flex: 1; height: 8px; background: #f1f5f9; border-radius: 999px; overflow: hidden; }
+.sales-region-fill { height: 100%; background: #025c50; border-radius: 999px; transition: width 0.4s; }
+.sales-region-pct  { width: 42px; font-size: 12px; font-weight: 700; color: #111827; text-align: right; flex-shrink: 0; }
+.sales-region-rev  { width: 90px; font-size: 12px; color: #6b7280; text-align: right; flex-shrink: 0; }
+
+/* ── Table cells ─────────────────────────────────────────────────────────── */
+.sale-cell-revenue     { font-weight: 700; color: #111827; }
+.sale-cell-profit      { font-weight: 600; color: #15803d; }
+.sale-cell-margin-warn { color: #b45309; font-weight: 600; }
+.sale-cell--best  { background: rgba(21,128,61,0.07); }
+.sale-cell--worst { background: rgba(220,38,38,0.05); }
+.sale-sort-th     { cursor: pointer; white-space: nowrap; user-select: none; }
+.sale-sort-th:hover { background: #f8fafc; }
+.sale-star { color: #d97706; font-size: 12px; margin-left: 3px; }
+.sale-row             { cursor: pointer; transition: background 0.12s; }
+.sale-row:hover       { background: #f8fafc; }
+.sale-row--neg        { background: #fff5f5; }
+.sale-row--neg:hover  { background: #fee2e2; }
+
+/* ── Modal icon ──────────────────────────────────────────────────────────── */
+.sale-modal-icon   { width: 44px; height: 44px; border-radius: 12px; background: #f0fdf4; color: #15803d; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sale-modal-profit { color: #15803d; font-weight: 700; }
+
+/* ── Dark mode ───────────────────────────────────────────────────────────── */
+[data-theme="dark"] .sales-chart-card   { background: #1e293b; border-color: #334155; }
+[data-theme="dark"] .sales-chart-title  { color: #e2e8f0; }
+[data-theme="dark"] .sales-toolbar      { border-color: #334155; }
+[data-theme="dark"] .sale-kpi-bar-track { background: #334155; }
+[data-theme="dark"] .sales-region-track { background: #334155; }
+[data-theme="dark"] .sales-region-name  { color: #e2e8f0; }
+[data-theme="dark"] .sale-row:hover     { background: #243447; }
+[data-theme="dark"] .sale-row--neg      { background: #2d1515; }
+[data-theme="dark"] .sale-row--neg:hover { background: #3d1a1a; }
+[data-theme="dark"] .sale-sort-th       { color: #e2e8f0; }
+[data-theme="dark"] .sale-sort-th:hover { background: #243447; }
+[data-theme="dark"] .sales-insights     { background: #1a3a2f; border-color: #1e5c46; }
+[data-theme="dark"] .sales-insights-title { color: #34d399; }
+[data-theme="dark"] .sales-insights-list li { color: #e2e8f0; }
+[data-theme="dark"] .sales-regions-title { color: #94a3b8; }
+[data-theme="dark"] .sales-regions       { border-color: #334155; }
+[data-theme="dark"] .sale-export-dropdown { background: #1e293b; border-color: #334155; box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
+[data-theme="dark"] .sale-export-dropdown button { color: #e2e8f0; }
+[data-theme="dark"] .sale-export-dropdown button:hover { background: #243447; }
+[data-theme="dark"] .sale-export-dropdown button + button { border-color: #334155; }

@@ -1,0 +1,155 @@
+/* ── Layout ───────────────────────────────────────────────────────────── */
+.dashboard {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────── */
+.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100vh;
+  overflow-y: auto;
+  background: #025c50;
+  color: #ffffff;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  z-index: 10;
+}
+
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-mark {
+  background: #ffffff;
+  color: #025c50;
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+.brand p { margin: 2px 0 0; opacity: 0.8; font-size: 12px; }
+.sidebar-caption { margin: -8px 0 4px; padding: 0 4px; font-size: 11px; line-height: 1.4; opacity: 0.75; }
+
+.menu { display: grid; gap: 8px; }
+.menu button {
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #ffffff;
+  text-align: left;
+  padding: 11px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.menu button:hover:not(.active) { background: rgba(255, 255, 255, 0.08); }
+.menu button.active { background: #f0ab3c; color: #1f2937; font-weight: 600; }
+
+/* ── Sidebar bottom CTA ───────────────────────────────────────────────── */
+.sidebar-bottom {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sidebar-bottom-label {
+  margin: 0;
+  padding: 0 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+.tech-cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  border: 1.5px solid rgba(240, 171, 60, 0.4);
+  border-radius: 10px;
+  background: rgba(240, 171, 60, 0.1);
+  color: #f0ab3c;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.tech-cta-btn span { flex: 1; }
+.tech-cta-btn:hover { background: rgba(240, 171, 60, 0.22); border-color: rgba(240, 171, 60, 0.65); }
+
+.finance-cta-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #014d43 0%, #025c50 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.18s, transform 0.12s;
+  letter-spacing: 0.01em;
+  box-shadow: 0 2px 8px rgba(2, 92, 80, 0.3);
+}
+.finance-cta-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+.finance-cta-btn span { flex: 1; text-align: left; }
+
+/* ── Main content area ────────────────────────────────────────────────── */
+.content {
+  background: #f4f7fa;
+  padding: 0 28px 32px;
+  overflow-y: auto;
+}
+
+.portal-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f4f7fa;
+  padding: 18px 0 16px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.portal-tagline {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #9ca3af;
+}
+
+.topbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.topbar h1 { margin: 0; font-size: 28px; font-weight: 700; color: #111827; letter-spacing: -0.02em; }
+.topbar p  { margin-top: 6px; color: #6b7280; font-size: 14px; max-width: 520px; }
+
+/* ── Dark mode ────────────────────────────────────────────────────────── */
+[data-theme="dark"] .sidebar { background: #0c1929; border-right: 1px solid #1e293b; }
+[data-theme="dark"] .content { background: #0f172a; }
+[data-theme="dark"] .portal-header { background: #0f172a; border-color: #1e293b; }
+[data-theme="dark"] .portal-tagline { color: #64748b; }
+[data-theme="dark"] .topbar h1 { color: #f1f5f9; }
+[data-theme="dark"] .topbar p  { color: #94a3b8; }

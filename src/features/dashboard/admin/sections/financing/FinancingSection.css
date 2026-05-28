@@ -1,0 +1,84 @@
+/* ── Status pills ────────────────────────────────────────────────────────── */
+.fin-pill { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.fin-active       { color: #166534; background: #dcfce7; }
+.fin-approved     { color: #166534; background: #dcfce7; }
+.fin-under-review { color: #92400e; background: #fef3c7; }
+.fin-delinquent   { color: #fff;    background: #dc2626; letter-spacing: 0.02em; }
+.fin-settled      { color: #6b7280; background: #f3f4f6; }
+
+/* ── Risk pills ──────────────────────────────────────────────────────────── */
+.risk-pill { display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.risk-low    { color: #166534; background: #dcfce7; }
+.risk-medium { color: #92400e; background: #fef3c7; }
+.risk-high   { color: #fff;    background: #dc2626; }
+
+/* ── Next-due urgency ────────────────────────────────────────────────────── */
+.fin-due-upcoming { color: #374151; font-size: 13px; }
+.fin-due-soon     { color: #b45309; font-weight: 600; font-size: 13px; }
+.fin-due-overdue  { color: #dc2626; font-weight: 700; font-size: 13px; }
+.fin-due-none     { color: #9ca3af; }
+
+/* ── Number cells ────────────────────────────────────────────────────────── */
+.fin-monthly     { color: #1d4ed8; font-weight: 700; font-size: 13px; }
+.fin-cell-amount { font-weight: 700; color: #111827; }
+.fin-cell-light  { color: #6b7280; font-size: 12px; }
+.fin-cell-device { color: #374151; }
+
+/* ── Row highlights ──────────────────────────────────────────────────────── */
+.fin-row                   { cursor: pointer; transition: background 0.12s; }
+.fin-row:hover             { background: #f0fdf9; }
+.fin-row--delinquent       { background: #fff5f5; }
+.fin-row--delinquent:hover { background: #fee2e2; }
+.fin-row--high             { background: #fffbeb; }
+.fin-row--high:hover       { background: #fef3c7; }
+
+/* ── Top bar ─────────────────────────────────────────────────────────────── */
+.fin-top-bar { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; padding: 14px 16px; border-bottom: 1px solid #f1f5f9; }
+.fin-top-left { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.fin-top-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.fin-top-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid transparent; white-space: nowrap; }
+.fin-top-btn--secondary { background: #f8fafc; color: #374151; border-color: #e2e8f0; }
+.fin-top-btn--secondary:hover { background: #f1f5f9; }
+
+/* ── Reset filter button ─────────────────────────────────────────────────── */
+.fin-reset-btn { padding: 5px 12px; border-radius: 6px; background: transparent; color: #6b7280; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 500; cursor: pointer; }
+.fin-reset-btn:hover { background: #f1f5f9; color: #111827; }
+
+/* ── Summary bar ─────────────────────────────────────────────────────────── */
+.fin-summary-bar { display: flex; gap: 24px; align-items: center; padding: 8px 16px; background: #f8fafc; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #6b7280; }
+.fin-summary-bar strong { color: #111827; }
+.fin-summary-red        { color: #dc2626; }
+
+/* ── Sort buttons ────────────────────────────────────────────────────────── */
+.fin-sort-btn { background: none; border: none; padding: 0; font: inherit; font-weight: 600; color: inherit; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.fin-sort-icon         { color: #cbd5e1; font-size: 11px; }
+.fin-sort-icon--active { color: #025c50; }
+
+/* ── Action buttons ──────────────────────────────────────────────────────── */
+.fin-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+.fin-action-btn { display: inline-flex; align-items: center; gap: 4px; padding: 4px 9px; border-radius: 6px; font-size: 11px; font-weight: 600; border: 1px solid transparent; cursor: pointer; white-space: nowrap; }
+.fin-action-view       { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+.fin-action-view:hover { background: #dbeafe; }
+
+/* ── Empty state ─────────────────────────────────────────────────────────── */
+.fin-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 48px 16px; text-align: center; }
+.fin-empty-title { font-weight: 600; color: #374151; margin: 0; }
+.fin-empty-hint  { color: #9ca3af; font-size: 13px; margin: 0; }
+
+/* ── Modal icon ──────────────────────────────────────────────────────────── */
+.fin-modal-icon { width: 44px; height: 44px; border-radius: 12px; background: #f0fdf4; color: #15803d; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.fin-modal-monthly { color: #1d4ed8; font-weight: 700; }
+
+/* ── Dark mode ───────────────────────────────────────────────────────────── */
+[data-theme="dark"] .fin-top-bar     { border-color: #334155; }
+[data-theme="dark"] .fin-cell-device { color: #e2e8f0; }
+[data-theme="dark"] .fin-cell-light  { color: #64748b; }
+[data-theme="dark"] .fin-cell-amount { color: #f1f5f9; }
+[data-theme="dark"] .fin-row:hover             { background: #243447; }
+[data-theme="dark"] .fin-row--delinquent       { background: #2d1515; }
+[data-theme="dark"] .fin-row--delinquent:hover { background: #3d1a1a; }
+[data-theme="dark"] .fin-row--high             { background: #2d2410; }
+[data-theme="dark"] .fin-row--high:hover       { background: #3d3010; }
+[data-theme="dark"] .fin-summary-bar    { background: #1e293b; border-color: #334155; color: #94a3b8; }
+[data-theme="dark"] .fin-summary-bar strong { color: #f1f5f9; }
+[data-theme="dark"] .fin-sort-btn       { color: #e2e8f0; }

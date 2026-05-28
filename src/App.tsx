@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
+import { SupportProvider } from './context/SupportContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import HeroSection from './features/marketplace/HeroSection';
@@ -19,10 +20,12 @@ import AdminDashboard from './features/dashboard/admin/AdminDashboard';
 import TechnicianPage from './pages/TechnicianPage';
 import FinancePage from './pages/FinancePage';
 import CustomerProfile from './pages/CustomerProfile';
+import AgentDashboard from './features/dashboard/agent/AgentDashboard';
 
 function App() {
   return (
     <AuthProvider>
+      <SupportProvider>
       <CartProvider>
         <ToastNotification />
         <Routes>
@@ -72,8 +75,17 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path='/agent'
+            element={
+              <ProtectedRoute role="agent">
+                <AgentDashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </CartProvider>
+      </SupportProvider>
     </AuthProvider>
   );
 }

@@ -63,10 +63,7 @@ const AGENT_NOTIFS = [
 function StatusBadge({ status }: { status: TicketStatus }) {
   const cfg = STATUS_CONFIG[status]
   return (
-    <span
-      className="agent-badge"
-      style={{ color: cfg.color, background: cfg.bg }}
-    >
+    <span className={`agent-badge agent-badge--${status}`}>
       {cfg.label}
     </span>
   )

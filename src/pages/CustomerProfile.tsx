@@ -1,16 +1,19 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
-  User, ShoppingBag, CreditCard, Heart, Shield,
+  ShoppingBag, CreditCard, Heart, Shield,
   Edit3, Check, X, LogOut, ArrowRight, Trash2,
   ShoppingCart, ChevronRight, Bell, Lock, Smartphone,
-  Star, Package, Calendar, TrendingUp,
+  Star, Package, TrendingUp, Camera, MessageSquare, Send,
+  Plus,
 } from 'lucide-react'
 import Navbar from '../shared/components/nav'
 import Footer from '../shared/components/Footer'
 import { useAuth } from '../context/AuthContext'
 import { baseListings } from '../data/listings'
 import { useCart } from '../context/useCart'
+import { useSupport } from '../context/SupportContext'
+import type { SupportTicket, TicketStatus } from '../context/SupportContext'
 
 // ── Mock data ────────────────────────────────────────────────────────────────
 const MOCK_ORDERS = [
@@ -72,12 +75,20 @@ const STATUS_STYLES: Record<string, string> = {
 
 // ── Tabs definition ──────────────────────────────────────────────────────────
 const TABS = [
-  { id: 'overview',      label: 'Overview',        icon: TrendingUp  },
-  { id: 'orders',        label: 'Orders',           icon: ShoppingBag },
-  { id: 'installments',  label: 'Installments',     icon: CreditCard  },
-  { id: 'saved',         label: 'Saved Devices',    icon: Heart       },
-  { id: 'security',      label: 'Security',         icon: Shield      },
+  { id: 'overview',      label: 'Overview',        icon: TrendingUp    },
+  { id: 'orders',        label: 'Orders',           icon: ShoppingBag   },
+  { id: 'installments',  label: 'Installments',     icon: CreditCard    },
+  { id: 'saved',         label: 'Saved Devices',    icon: Heart         },
+  { id: 'support',       label: 'Support',          icon: MessageSquare },
+  { id: 'security',      label: 'Security',         icon: Shield        },
 ]
+
+const TICKET_STATUS_STYLES: Record<TicketStatus, { label: string; cls: string }> = {
+  open:        { label: 'Open',        cls: 'bg-blue-100 text-blue-700'   },
+  in_progress: { label: 'In Progress', cls: 'bg-amber-100 text-amber-700' },
+  resolved:    { label: 'Resolved',    cls: 'bg-emerald-100 text-emerald-700' },
+  closed:      { label: 'Closed',      cls: 'bg-gray-100 text-gray-500'   },
+}
 
 const SAVED_IDS = [1, 3, 5, 6]
 
@@ -85,6 +96,7 @@ export default function CustomerProfile() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
   const { addToCart } = useCart()
+  const { getTicketsForCustomer, sendCustomerMessage, createTicket, markReadByCustomer } = useSupport()
 
   const [activeTab, setActiveTab]         = useState('overview')
   const [editing, setEditing]             = useState(false)
@@ -98,6 +110,20 @@ export default function CustomerProfile() {
   const [notifications, setNotifications] = useState({ orders: true, installments: true, promotions: false })
   const [pwForm, setPwForm]               = useState({ current: '', next: '', confirm: '' })
   const [pwSaved, setPwSaved]             = useState(false)
+
+  // Profile picture
+  const [profilePic, setProfilePic]       = useState<string | null>(null)
+  const fileInputRef                      = useRef<HTMLInputElement>(null)
+
+  // Support tab state
+  const [selectedTicket, setSelectedTicket] = useState<SupportTicket | null>(null)
+  const [replyText, setReplyText]           = useState('')
+  const [showNewTicket, setShowNewTicket]   = useState(false)
+  const [newSubject, setNewSubject]         = useState('')
+  const [newCategory, setNewCategory]       = useState('Order & Delivery')
+  const [newMessage, setNewMessage]         = useState('')
+  const [ticketSubmitting, setTicketSubmitting] = useState(false)
+  const messagesEndRef                      = useRef<HTMLDivElement>(null)
 
   const initials = name
     ? name.split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase()
@@ -127,7 +153,7 @@ export default function CustomerProfile() {
   }
 
   function handleAddToCart(listing: typeof baseListings[0]) {
-    addToCart({ ...listing, quantity: 1 })
+    addToCart(listing)
     setAddedId(listing.id)
     setTimeout(() => setAddedId(null), 2000)
   }
@@ -145,6 +171,51 @@ export default function CustomerProfile() {
     setTimeout(() => setPwSaved(false), 3000)
   }
 
+  function handleProfilePicChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => setProfilePic(ev.target?.result as string)
+    reader.readAsDataURL(file)
+  }
+
+  function handleSendReply(e: { preventDefault(): void }) {
+    e.preventDefault()
+    if (!selectedTicket || !replyText.trim() || !user) return
+    sendCustomerMessage(selectedTicket.id, user.name, replyText.trim())
+    setReplyText('')
+    setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
+  }
+
+  function openTicket(ticket: SupportTicket) {
+    setSelectedTicket(ticket)
+    setShowNewTicket(false)
+    markReadByCustomer(ticket.id)
+    setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
+  }
+
+  async function handleCreateTicket(e: { preventDefault(): void }) {
+    e.preventDefault()
+    if (!user || !newSubject.trim() || !newMessage.trim()) return
+    setTicketSubmitting(true)
+    await new Promise((r) => setTimeout(r, 500))
+    const t = createTicket({
+      customerId: user.id,
+      customerName: user.name,
+      customerEmail: user.email,
+      subject: newSubject.trim(),
+      category: newCategory,
+      firstMessage: newMessage.trim(),
+    })
+    setNewSubject('')
+    setNewMessage('')
+    setShowNewTicket(false)
+    setSelectedTicket(t)
+    setTicketSubmitting(false)
+  }
+
+  const myTickets = user ? getTicketsForCustomer(user.id) : []
+
   return (
     <>
       <Navbar />
@@ -157,10 +228,30 @@ export default function CustomerProfile() {
             <div className='h-24 bg-gradient-to-r from-[#127058] via-[#1a8f6e] to-[#6E9F94]' />
             <div className='px-6 pb-6'>
               <div className='flex flex-wrap items-end justify-between gap-4 -mt-10'>
-                {/* Avatar */}
+                {/* Avatar with upload */}
                 <div className='flex items-end gap-4'>
-                  <div className='w-20 h-20 rounded-2xl bg-gradient-to-br from-[#127058] to-[#0b4738] flex items-center justify-center text-white text-2xl font-black ring-4 ring-white shadow-lg flex-shrink-0'>
-                    {initials}
+                  <div className='relative flex-shrink-0'>
+                    <div className='w-20 h-20 rounded-2xl ring-4 ring-white shadow-lg overflow-hidden bg-gradient-to-br from-[#127058] to-[#0b4738] flex items-center justify-center'>
+                      {profilePic
+                        ? <img src={profilePic} alt="Profile" className='w-full h-full object-cover' />
+                        : <span className='text-white text-2xl font-black'>{initials}</span>
+                      }
+                    </div>
+                    <button
+                      type='button'
+                      onClick={() => fileInputRef.current?.click()}
+                      aria-label='Upload profile picture'
+                      className='absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-[#127058] hover:bg-[#0e5845] text-white flex items-center justify-center shadow-md transition-colors border-2 border-white'
+                    >
+                      <Camera size={12} />
+                    </button>
+                    <input
+                      ref={fileInputRef}
+                      type='file'
+                      accept='image/*'
+                      className='hidden'
+                      onChange={handleProfilePicChange}
+                    />
                   </div>
                   <div className='mb-1'>
                     <div className='flex items-center gap-2 flex-wrap'>
@@ -591,6 +682,208 @@ export default function CustomerProfile() {
                   })}
                 </div>
               )}
+            </div>
+          )}
+
+          {/* SUPPORT ────────────────────────────────────────────────────── */}
+          {activeTab === 'support' && (
+            <div className='flex gap-5' style={{ minHeight: '520px' }}>
+
+              {/* Left pane — ticket list */}
+              <div className='w-72 flex-shrink-0 flex flex-col gap-3'>
+                <button
+                  type='button'
+                  onClick={() => { setShowNewTicket(true); setSelectedTicket(null) }}
+                  className='flex items-center justify-center gap-2 w-full bg-[#127058] hover:bg-[#0e5845] text-white font-semibold py-2.5 rounded-xl text-sm transition-colors shadow-sm'
+                >
+                  <Plus size={15} /> New Support Request
+                </button>
+
+                {myTickets.length === 0 && !showNewTicket ? (
+                  <div className='bg-white border border-gray-100 rounded-2xl shadow-sm p-8 text-center flex flex-col items-center gap-3'>
+                    <MessageSquare size={32} className='text-gray-300' />
+                    <p className='text-sm font-semibold text-gray-500'>No support requests yet</p>
+                    <p className='text-xs text-gray-400'>Click above to contact our team.</p>
+                  </div>
+                ) : (
+                  myTickets.map((t) => (
+                    <button
+                      key={t.id}
+                      type='button'
+                      onClick={() => openTicket(t)}
+                      className={`text-left w-full bg-white border rounded-2xl p-4 shadow-sm transition-all hover:shadow-md ${
+                        selectedTicket?.id === t.id
+                          ? 'border-[#127058]/40 ring-2 ring-[#127058]/15'
+                          : 'border-gray-100 hover:border-[#127058]/20'
+                      }`}
+                    >
+                      <div className='flex items-start justify-between gap-2 mb-1.5'>
+                        <span className='font-mono text-[11px] font-bold text-[#127058]'>{t.id}</span>
+                        <div className='flex items-center gap-1.5'>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${TICKET_STATUS_STYLES[t.status].cls}`}>
+                            {TICKET_STATUS_STYLES[t.status].label}
+                          </span>
+                          {t.unreadByCustomer > 0 && (
+                            <span className='w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold grid place-items-center flex-shrink-0'>
+                              {t.unreadByCustomer}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <p className='text-sm font-semibold text-gray-900 truncate'>{t.subject}</p>
+                      <p className='text-xs text-gray-400 mt-0.5'>{t.category} · {t.updatedAt}</p>
+                    </button>
+                  ))
+                )}
+              </div>
+
+              {/* Right pane — chat or new ticket form */}
+              <div className='flex-1 bg-white border border-gray-100 rounded-2xl shadow-sm flex flex-col overflow-hidden min-w-0'>
+
+                {/* New ticket form */}
+                {showNewTicket && (
+                  <div className='p-6 flex flex-col gap-4 overflow-y-auto'>
+                    <div className='flex items-center gap-2'>
+                      <MessageSquare size={18} className='text-[#127058]' />
+                      <h2 className='text-base font-bold text-gray-900'>New Support Request</h2>
+                    </div>
+                    <form onSubmit={handleCreateTicket} className='flex flex-col gap-4'>
+                      <div>
+                        <label className='text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5 block'>Category</label>
+                        <select
+                          value={newCategory}
+                          onChange={(e) => setNewCategory(e.target.value)}
+                          className='w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 focus:outline-none focus:border-[#127058] focus:ring-2 focus:ring-[#127058]/10'
+                        >
+                          {['Order & Delivery','Product Quality','Financing','Returns & Refunds','Technical Support','Account','Other'].map((c) => (
+                            <option key={c}>{c}</option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label className='text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5 block'>Subject</label>
+                        <input
+                          type='text'
+                          value={newSubject}
+                          onChange={(e) => setNewSubject(e.target.value)}
+                          placeholder='Brief description of your issue'
+                          required
+                          maxLength={120}
+                          className='w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-[#127058] focus:ring-2 focus:ring-[#127058]/10'
+                        />
+                      </div>
+                      <div>
+                        <label className='text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5 block'>Message</label>
+                        <textarea
+                          value={newMessage}
+                          onChange={(e) => setNewMessage(e.target.value)}
+                          placeholder='Describe your issue in detail…'
+                          required
+                          rows={5}
+                          maxLength={800}
+                          className='w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 resize-none focus:outline-none focus:border-[#127058] focus:ring-2 focus:ring-[#127058]/10'
+                        />
+                        <span className='text-xs text-gray-400 float-right mt-1'>{newMessage.length}/800</span>
+                      </div>
+                      <div className='flex gap-3 pt-1'>
+                        <button
+                          type='submit'
+                          disabled={ticketSubmitting || !newSubject.trim() || !newMessage.trim()}
+                          className='flex items-center gap-2 bg-[#127058] hover:bg-[#0e5845] disabled:opacity-50 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition-all'
+                        >
+                          {ticketSubmitting ? 'Sending…' : <><Send size={13} /> Submit Request</>}
+                        </button>
+                        <button
+                          type='button'
+                          onClick={() => setShowNewTicket(false)}
+                          className='px-4 py-2.5 border border-gray-200 text-gray-600 hover:bg-gray-50 font-semibold rounded-xl text-sm transition-colors'
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                )}
+
+                {/* Ticket chat view */}
+                {selectedTicket && !showNewTicket && (() => {
+                  const live = myTickets.find((t) => t.id === selectedTicket.id) ?? selectedTicket
+                  return (
+                    <>
+                      {/* Chat header */}
+                      <div className='flex items-center justify-between px-5 py-4 border-b border-gray-100 flex-shrink-0'>
+                        <div>
+                          <p className='text-sm font-bold text-gray-900'>{live.subject}</p>
+                          <p className='text-xs text-gray-400 mt-0.5'>{live.id} · {live.category}</p>
+                        </div>
+                        <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${TICKET_STATUS_STYLES[live.status].cls}`}>
+                          {TICKET_STATUS_STYLES[live.status].label}
+                        </span>
+                      </div>
+
+                      {/* Messages */}
+                      <div className='flex-1 overflow-y-auto p-5 flex flex-col gap-3 bg-gray-50'>
+                        {live.messages.map((msg) => (
+                          <div
+                            key={msg.id}
+                            className={`flex max-w-[80%] ${msg.sender === 'customer' ? 'self-end' : 'self-start'}`}
+                          >
+                            <div
+                              className={`rounded-2xl px-4 py-3 ${
+                                msg.sender === 'customer'
+                                  ? 'bg-[#127058] text-white'
+                                  : 'bg-white border border-gray-200 text-gray-900'
+                              }`}
+                            >
+                              <p className={`text-[10px] font-bold mb-1 ${msg.sender === 'customer' ? 'text-white/70' : 'text-[#127058]'}`}>
+                                {msg.sender === 'agent' ? '🛡 Support Agent' : 'You'}
+                              </p>
+                              <p className='text-sm leading-relaxed'>{msg.text}</p>
+                              <span className={`text-[10px] mt-1.5 block text-right ${msg.sender === 'customer' ? 'text-white/60' : 'text-gray-400'}`}>
+                                {msg.timestamp}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                        <div ref={messagesEndRef} />
+                      </div>
+
+                      {/* Reply box */}
+                      {live.status !== 'closed' ? (
+                        <form onSubmit={handleSendReply} className='flex items-end gap-3 px-4 py-3 border-t border-gray-100 bg-white flex-shrink-0'>
+                          <textarea
+                            value={replyText}
+                            onChange={(e) => setReplyText(e.target.value)}
+                            placeholder='Type a message…'
+                            rows={2}
+                            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendReply(e) } }}
+                            className='flex-1 px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 resize-none focus:outline-none focus:border-[#127058] focus:ring-2 focus:ring-[#127058]/10'
+                          />
+                          <button
+                            type='submit'
+                            disabled={!replyText.trim()}
+                            className='flex items-center gap-1.5 bg-[#127058] hover:bg-[#0e5845] disabled:opacity-50 text-white font-bold px-4 py-2.5 rounded-xl text-sm transition-all flex-shrink-0'
+                          >
+                            <Send size={13} /> Send
+                          </button>
+                        </form>
+                      ) : (
+                        <div className='px-5 py-3 bg-gray-50 border-t border-gray-100 text-center text-xs text-gray-400 font-medium flex-shrink-0'>
+                          This ticket is closed. Open a new request if you need further help.
+                        </div>
+                      )}
+                    </>
+                  )
+                })()}
+
+                {/* Empty state when nothing is selected */}
+                {!selectedTicket && !showNewTicket && (
+                  <div className='flex-1 flex flex-col items-center justify-center gap-3 text-gray-400'>
+                    <MessageSquare size={40} strokeWidth={1.5} />
+                    <p className='text-sm font-semibold'>Select a conversation or start a new one</p>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 

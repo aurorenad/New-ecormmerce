@@ -2,7 +2,7 @@ import { createContext, useContext, useState, type ReactNode } from 'react'
 
 // ── Mock credential table ──────────────────────────────────────────────────
 // These are used for frontend testing only until the real backend is wired in.
-export type UserRole = 'customer' | 'admin' | 'finance' | 'technician'
+export type UserRole = 'customer' | 'admin' | 'finance' | 'technician' | 'agent'
 
 interface MockUser {
   id: string
@@ -45,6 +45,14 @@ const MOCK_USERS: MockUser[] = [
     password: 'Tech@1234',
     role: 'technician',
     redirectTo: '/technician',
+  },
+  {
+    id: 'USR-0005',
+    name: 'Sarah Mitchell',
+    email: 'agent@demo.com',
+    password: 'Agent@1234',
+    role: 'agent',
+    redirectTo: '/agent',
   },
 ]
 

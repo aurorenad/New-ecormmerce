@@ -9,6 +9,7 @@ const ROLE_LABELS: Record<string, string> = {
   finance:    'Finance Officer',
   technician: 'Technician',
   customer:   'Customer',
+  agent:      'Support Agent',
 }
 
 // ── Icons ────────────────────────────────────────────────────────────────

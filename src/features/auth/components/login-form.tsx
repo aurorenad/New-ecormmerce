@@ -8,6 +8,7 @@ const ROLE_LABELS: Record<string, string> = {
   admin:      'Admin',
   finance:    'Finance Officer',
   technician: 'Technician',
+  agent:      'Support Agent',
 }
 
 const ROLE_COLORS: Record<string, string> = {
@@ -15,6 +16,7 @@ const ROLE_COLORS: Record<string, string> = {
   admin:      'bg-purple-100 text-purple-700',
   finance:    'bg-amber-100 text-amber-700',
   technician: 'bg-green-100 text-green-700',
+  agent:      'bg-teal-100 text-teal-700',
 }
 
 export default function LoginForm() {

@@ -4,8 +4,9 @@ import Navbar from '../../shared/components/nav';
 import DeviceCard from './DeviceCard';
 import Footer from '../../shared/components/Footer';
 import LoadingSpinner from '../../shared/components/loading-spinner';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 import AboutPage from './AboutPage';
+import SupportChatWidget from './components/SupportChatWidget';
 
 export default function HeroSection() {
   // 1. Move state and lifecycle hooks to the top of the function
@@ -94,6 +95,8 @@ export default function HeroSection() {
       <AboutPage />
 
       <Footer />
+
+      <SupportChatWidget />
     </>
   );
 }

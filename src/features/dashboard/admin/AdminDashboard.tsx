@@ -8,7 +8,6 @@ import InventorySection from './sections/inventory/InventorySection'
 import PricingSection from './sections/pricing/PricingSection'
 import FinancingSection from './sections/financing/FinancingSection'
 import SalesSection from './sections/sales/SalesSection'
-import LogsSection from './sections/logs/LogsSection'
 import ProfileSection from './sections/profile/ProfileSection'
 import TechnicianWorkbench from '../technician/TechnicianWorkbench'
 import FinanceOfficerDashboard from '../finance/FinanceOfficerDashboard'
@@ -70,7 +69,6 @@ export default function AdminDashboard() {
       case 'pricing':    return <PricingSection />
       case 'financing':  return <FinancingSection />
       case 'sales':      return <SalesSection />
-      case 'logs':       return <LogsSection />
       case 'profile':    return <ProfileSection />
       default:           return <OverviewSection />
     }

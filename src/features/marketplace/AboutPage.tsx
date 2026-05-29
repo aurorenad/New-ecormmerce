@@ -114,7 +114,7 @@ const TESTIMONIALS = [
     avatar:
       'https://api.dicebear.com/7.x/notionists/svg?seed=Amina&backgroundColor=b6e3f4',
     rating: 5,
-    text: 'I got a MacBook Air M2 for $799 and chose to pay $67 a month. I was skeptical at first — but the device arrived exactly as described, Grade B with 42 battery cycles. It runs perfectly. Jaribu changed how I think about buying tech.',
+    text: 'I got a MacBook Air M2 for $799 and chose to pay $67 a month. I was skeptical at first — but the device arrived exactly as described, Grade B with 42 battery cycles. It runs perfectly. ReviveTech changed how I think about buying tech.',
     device: 'MacBook Air M2',
   },
   {
@@ -123,7 +123,7 @@ const TESTIMONIALS = [
     avatar:
       'https://api.dicebear.com/7.x/notionists/svg?seed=Eric&backgroundColor=c0aede',
     rating: 5,
-    text: 'Sold my old Galaxy S22 through Jaribu and got an offer within 18 hours. The AI valuation was actually higher than what I expected. Payment hit my MTN Mobile Money the same day I dropped off the phone. Zero stress.',
+    text: 'Sold my old Galaxy S22 through ReviveTech and got an offer within 18 hours. The AI valuation was actually higher than what I expected. Payment hit my MTN Mobile Money the same day I dropped off the phone. Zero stress.',
     device: 'Sold: Galaxy S22',
   },
   {
@@ -266,7 +266,7 @@ export default function AboutPage() {
               devices sit in drawers, slowly becoming e-waste.
             </p>
             <p className='text-gray-600 mt-4 leading-relaxed'>
-              Jaribu was built to fix both problems at once. We refurbish,
+              ReviveTech was built to fix both problems at once. We refurbish,
               fairly price, and finance devices so more people can access the
               tools they need — and we give sellers a fast, honest way to turn
               their old tech into money.

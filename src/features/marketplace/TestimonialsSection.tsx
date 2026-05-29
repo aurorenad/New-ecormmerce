@@ -136,7 +136,7 @@ export default function TestimonialsSection({
             Real people. Real results.
           </h2>
           <p className='text-[#a8d5c5] mt-3 max-w-xl mx-auto text-sm leading-relaxed'>
-            Over 1,800 customers have bought or sold through Jaribu. Here's
+            Over 1,800 customers have bought or sold through ReviveTech. Here's
             what some of them say.
           </p>
         </div>

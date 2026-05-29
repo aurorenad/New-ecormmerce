@@ -66,7 +66,7 @@ export default function HeroSection() {
             </h1>
 
             <p className='text-[#D5E4E1] text-base md:text-lg leading-relaxed max-w-lg drop-shadow-sm'>
-              Jaribu is a platform for buying and selling professionally
+              ReviveTech is a platform for buying and selling professionally
               refurbished electronics with transparent condition grading,
               AI-powered pricing, and flexible monthly payment plans — making
               quality devices accessible to everyone.

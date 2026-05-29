@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FO_OFFICER_PROFILE, FO_ACTIVE_LOANS_SEED } from '../../../data/mockData'
+import type { DashboardNotification } from '../shared/types/dashboard.types'
 import DashboardActions from '../../../components/DashboardActions'
 import FoSidebar from './FoSidebar'
 import FoOverviewPage from './FoOverviewPage'
@@ -17,19 +19,20 @@ interface Props {
   onBack: () => void
   darkMode?: boolean
   onToggleDark?: () => void
-  notifications?: unknown[]
+  notifications?: DashboardNotification[]
   onMarkNotifRead?: (id: string) => void
 }
 
-export default function FinanceOfficerDashboard({ onBack, darkMode = false, onToggleDark, notifications = [], onMarkNotifRead }: Props) {
+export default function FinanceOfficerDashboard({ onBack: _onBack, darkMode = false, onToggleDark, notifications = [], onMarkNotifRead }: Props) {
+  const navigate = useNavigate()
   const [page, setPage]           = useState('overview')
   const [profilePic, setProfilePic] = useState<string | null>(null)
 
   const overdueLoans = FO_ACTIVE_LOANS_SEED.filter((l) => l.status === 'Overdue' || l.status === 'Due Soon')
-  const foNotifications = [
+  const foNotifications: DashboardNotification[] = [
     ...FO_STATIC_ALERTS.map((a, i) => ({
       id: `FO-STATIC-${i}`,
-      type: a.type,
+      type: a.type as DashboardNotification['type'],
       title: a.type === 'error' ? 'Escalation needed' : a.type === 'warn' ? 'Requests awaiting' : 'Approval milestone',
       desc: a.msg,
       time: 'Today',
@@ -37,7 +40,7 @@ export default function FinanceOfficerDashboard({ onBack, darkMode = false, onTo
     })),
     ...overdueLoans.map((l) => ({
       id: l.ref,
-      type: l.status === 'Overdue' ? 'error' : 'warn',
+      type: (l.status === 'Overdue' ? 'error' : 'warn') as DashboardNotification['type'],
       title: `${l.status}: ${l.customer}`,
       desc: `${l.device} — Next due: ${l.nextDue}`,
       time: 'Loan alert',
@@ -65,10 +68,10 @@ export default function FinanceOfficerDashboard({ onBack, darkMode = false, onTo
   return (
     <div className="fo-layout">
       <aside className="fo-sidebar">
-        <div className="fo-brand">
+        <button type="button" className="fo-brand" onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}>
           <span className="fo-brand-mark">FO</span>
           <div><strong>reviveTech</strong><p>Finance Portal</p></div>
-        </div>
+        </button>
         <p className="fo-sidebar-caption">Loan management &amp; risk monitoring</p>
         <nav className="fo-nav">
           <FoSidebar page={page} setPage={setPage} />

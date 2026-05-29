@@ -684,6 +684,7 @@ const TAB_CONFIG: Record<AgentTab, { label: string; icon: string | string[]; tit
 }
 
 export default function AgentDashboard() {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab]         = useState<AgentTab>('overview')
   const [darkMode, setDarkMode]           = useState(false)
   const [notifications, setNotifications] = useState(AGENT_NOTIFS)
@@ -712,13 +713,13 @@ export default function AgentDashboard() {
     <div className="agent-dashboard">
       {/* Sidebar */}
       <aside className="agent-sidebar">
-        <div className="agent-brand">
+        <button type="button" className="agent-brand" onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}>
           <span className="agent-brand-mark">JS</span>
           <div>
             <strong className="agent-brand-name">Jaribu Support</strong>
             <p className="agent-brand-sub">Agent Portal</p>
           </div>
-        </div>
+        </button>
 
         <p className="agent-sidebar-caption">Customer experience &amp; support</p>
 

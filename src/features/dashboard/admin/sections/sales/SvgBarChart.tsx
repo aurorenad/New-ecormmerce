@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import type { LineDataPoint } from '../../../shared/types/dashboard.types'
+
+interface ChartPoint { label: string; value: number }
 
 interface Props {
-  data: LineDataPoint[]
+  data: ChartPoint[]
   color?: string
 }
 

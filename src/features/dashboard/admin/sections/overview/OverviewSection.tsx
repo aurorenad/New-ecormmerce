@@ -3,6 +3,7 @@ import DonutChart from '../../../shared/components/DonutChart'
 import RevenueBarChart from './RevenueBarChart'
 import OrdersLineChart from './OrdersLineChart'
 import StatIcon from './StatIcon'
+import type { StatIconType } from './StatIcon'
 import './OverviewSection.css'
 
 export default function OverviewSection() {
@@ -15,7 +16,7 @@ export default function OverviewSection() {
         {OVERVIEW_STATS.map((stat) => (
           <article className="ov-kpi-card" key={stat.label}>
             <div className="ov-kpi-top">
-              <StatIcon type={stat.icon} />
+              <StatIcon type={stat.icon as StatIconType} />
               <span className={`ov-kpi-trend ${stat.trend}`}>
                 {stat.trend === 'up' ? '↗' : '↘'} {stat.change}
               </span>

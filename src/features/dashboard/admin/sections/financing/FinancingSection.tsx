@@ -11,7 +11,7 @@ export default function FinancingSection() {
   const [search, setSearch]             = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [termFilter, setTermFilter]     = useState('all')
-  const [loans, setLoans]               = useState<Loan[]>(FINANCING_SEED)
+  const [loans]                          = useState<Loan[]>(FINANCING_SEED)
   const [viewLoan, setViewLoan]         = useState<Loan | null>(null)
   const [sortKey, setSortKey]           = useState<string | null>(null)
   const [sortDir, setSortDir]           = useState<'asc' | 'desc'>('asc')

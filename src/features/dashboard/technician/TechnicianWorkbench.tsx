@@ -1,24 +1,27 @@
 import { useMemo, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { TECHNICIAN_PROFILE } from '../../../data/mockData'
 import DashboardActions from '../../../components/DashboardActions'
 import TechOverviewPage from './TechOverviewPage'
 import AssignedDevicesPage from './AssignedDevicesPage'
 import DeviceDetailsPage from './DeviceDetailsPage'
 import TechProfilePage from './TechProfilePage'
-import { IconBack, NavIcon } from './TechIcons'
+import { NavIcon } from './TechIcons'
 import { cloneTickets, TW_NAV } from './techHelpers'
 import type { RepairTicket } from './techHelpers'
+import type { DashboardNotification } from '../shared/types/dashboard.types'
 import './TechnicianWorkbench.css'
 
 interface Props {
   onBack: () => void
   darkMode?: boolean
   onToggleDark?: () => void
-  notifications?: unknown[]
+  notifications?: DashboardNotification[]
   onMarkNotifRead?: (id: string) => void
 }
 
-export default function TechnicianWorkbench({ onBack, darkMode = false, onToggleDark, notifications = [], onMarkNotifRead }: Props) {
+export default function TechnicianWorkbench({ onBack: _onBack, darkMode = false, onToggleDark, notifications = [], onMarkNotifRead }: Props) {
+  const navigate = useNavigate()
   const [page, setPage]               = useState('overview')
   const [tickets, setTickets]         = useState<RepairTicket[]>(cloneTickets)
   const [selectedId, setSelectedId]   = useState<string | null>(null)
@@ -96,10 +99,10 @@ export default function TechnicianWorkbench({ onBack, darkMode = false, onToggle
 
       <main className="tw-content">
         <header className="tw-portal-header">
-          <div className="tw-portal-brand">
+          <button type="button" className="tw-portal-brand" onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}>
             <span className="tw-portal-logo" aria-hidden>VT</span>
             <div><strong>reviveTech</strong><p>Technician</p></div>
-          </div>
+          </button>
           <span className="tw-portal-tagline">TECHNICIAN DASHBOARD</span>
           <DashboardActions darkMode={darkMode} onToggleDark={onToggleDark}
             userName={TECHNICIAN_PROFILE.name} role={TECHNICIAN_PROFILE.role}

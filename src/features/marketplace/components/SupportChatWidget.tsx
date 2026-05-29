@@ -100,7 +100,7 @@ export default function SupportChatWidget() {
                 </div>
                 <div>
                   <p className="font-bold text-sm leading-tight">Customer Support</p>
-                  <p className="text-xs text-white/70 leading-tight">Jaribu Help Center</p>
+                  <p className="text-xs text-white/70 leading-tight">ReviveTech Help Center</p>
                 </div>
               </div>
               <button
@@ -276,7 +276,7 @@ export default function SupportChatWidget() {
 
             {/* Footer */}
             <div className="px-5 py-3 border-t border-gray-100 text-center">
-              <span className="text-xs text-gray-400">Powered by Jaribu Support · Avg. response &lt; 2 hrs</span>
+              <span className="text-xs text-gray-400">Powered by ReviveTech Support · Avg. response &lt; 2 hrs</span>
             </div>
           </div>
         </div>

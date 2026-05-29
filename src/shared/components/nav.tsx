@@ -137,7 +137,7 @@ export default function Navbar() {
               to='/'
               className='text-2xl font-black tracking-tight text-gray-950 hover:opacity-75 transition-opacity flex-shrink-0'
             >
-              Jaribu
+              ReviveTech
             </Link>
 
             {/* ── Search Bar ─────────────────────────────────────────────── */}

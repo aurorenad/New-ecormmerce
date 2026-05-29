@@ -7,9 +7,9 @@ export default function Footer() {
         <div className='lg:col-span-2 space-y-4'>
           <div className='flex items-center gap-2'>
             <span className='h-8 w-8 rounded-lg bg-[#ef9f27] flex items-center justify-center font-bold text-white text-lg'>
-              J
+              R
             </span>
-            <span className='text-xl font-bold tracking-tight'>Jaribu.</span>
+            <span className='text-xl font-bold tracking-tight'>ReviveTech.</span>
           </div>
           <p className='text-sm text-white max-w-sm leading-relaxed'>
             Your trusted marketplace for high-quality, affordable secondhand
@@ -119,7 +119,7 @@ export default function Footer() {
       <div className='border-t border-[#6E9F94]/20 bg-black/20'>
         <div className='max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white'>
           <p>
-            &copy; {new Date().getFullYear()} Jaribu Platform. All rights
+            &copy; {new Date().getFullYear()} ReviveTech Platform. All rights
             reserved.
           </p>
           <div className='flex gap-6'>

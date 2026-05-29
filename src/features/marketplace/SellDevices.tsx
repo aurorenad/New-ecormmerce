@@ -609,7 +609,7 @@ export default function SellDevice() {
       {/* Page hero band */}
       <div className='bg-gradient-to-br from-[#0b4738] via-[#127058] to-[#6E9F94] text-white'>
         <div className='max-w-7xl mx-auto px-6 py-10'>
-          <p className='text-[#a8d5c5] text-sm font-semibold uppercase tracking-widest mb-2'>Sell with Jaribu</p>
+          <p className='text-[#a8d5c5] text-sm font-semibold uppercase tracking-widest mb-2'>Sell with ReviveTech</p>
           <h1 className='text-3xl md:text-4xl font-black tracking-tight'>Turn your old device into cash</h1>
           <p className='mt-2 text-[#c5e3da] text-base max-w-xl'>
             List your device in minutes. Our AI reviews it, gives you a fair price, and handles everything else.

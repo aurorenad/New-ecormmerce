@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ADMIN_PROFILE, NAV_ITEMS, NOTIFICATIONS_SEED, SECTION_COPY } from '../../../data/mockData'
 import type { DashboardNotification } from '../shared/types/dashboard.types'
 import DashboardActions from '../../../components/DashboardActions'
@@ -16,6 +17,7 @@ import './AdminDashboard.css'
 type ViewMode = 'admin' | 'technician' | 'finance'
 
 export default function AdminDashboard() {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState('overview')
   const [viewMode, setViewMode] = useState<ViewMode>('admin')
   const [darkMode, setDarkMode] = useState(false)
@@ -59,7 +61,7 @@ export default function AdminDashboard() {
     )
   }
 
-  const copy = SECTION_COPY[activeTab] ?? SECTION_COPY.overview
+  const copy = SECTION_COPY[activeTab as keyof typeof SECTION_COPY] ?? SECTION_COPY.overview
 
   function renderSection() {
     switch (activeTab) {
@@ -77,13 +79,13 @@ export default function AdminDashboard() {
   return (
     <div className="dashboard">
       <aside className="sidebar">
-        <div className="brand">
+        <button type="button" className="brand" onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}>
           <span className="brand-mark">VT</span>
           <div>
             <strong>reviveTech</strong>
             <p>Management Portal</p>
           </div>
-        </div>
+        </button>
         <p className="sidebar-caption">Platform operations &amp; analytics</p>
         <nav className="menu">
           {NAV_ITEMS.map((item) => (

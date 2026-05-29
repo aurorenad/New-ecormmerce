@@ -61,7 +61,7 @@ export const PAGE_META: Record<string, { title: string; subtitle: string }> = {
 }
 
 export const FO_STATIC_ALERTS = [
-  { type: 'error', msg: '5 loans overdue by more than 7 days — escalation recommended.' },
-  { type: 'warn',  msg: '63 new financing requests awaiting review.' },
-  { type: 'info',  msg: 'Approval rate hit 87% this month — all-time high.' },
+  { type: 'error' as const, msg: '5 loans overdue by more than 7 days — escalation recommended.' },
+  { type: 'warn'  as const, msg: '63 new financing requests awaiting review.' },
+  { type: 'info'  as const, msg: 'Approval rate hit 87% this month — all-time high.' },
 ]

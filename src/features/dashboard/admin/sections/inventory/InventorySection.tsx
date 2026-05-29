@@ -3,7 +3,7 @@ import { DEVICES_SEED } from '../../../../../data/mockData'
 import type { Device } from '../../../shared/types/dashboard.types'
 import Pagination from '../../../shared/components/Pagination'
 import { DeviceViewModal, DeviceEditModal, AdjustStockModal } from './DeviceModals'
-import { getStockClass, getStockStatus, INV_CATEGORIES, INV_CONDITIONS, INV_WAREHOUSES, PAGE_SIZE } from './inventoryHelpers'
+import { getStockStatus, INV_CATEGORIES, INV_WAREHOUSES, PAGE_SIZE } from './inventoryHelpers'
 import '../../../shared/styles/dashboard-shared.css'
 import './InventorySection.css'
 

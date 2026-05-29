@@ -16,6 +16,7 @@ import {
   User,
   LogOut,
   ChevronDown,
+  LayoutDashboard,
 } from 'lucide-react';
 import { useCart } from '../../context/useCart';
 import CartSidebar from './CartSidebar';
@@ -28,7 +29,10 @@ const ROLE_LABELS: Record<string, string> = {
   finance:    'Finance Officer',
   technician: 'Technician',
   customer:   'Customer',
+  agent:      'Support Agent',
 };
+
+const DASHBOARD_ROLES = new Set(['admin', 'finance', 'technician', 'agent']);
 
 // ─── Category quick-links shown in the search dropdown ───────────────────────
 const CATEGORY_LINKS = [
@@ -285,6 +289,15 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              {user && DASHBOARD_ROLES.has(user.role) && (
+                <Link
+                  to={user.redirectTo}
+                  className='inline-flex items-center gap-1.5 text-sm font-semibold text-[#127058] bg-[#127058]/8 hover:bg-[#127058]/15 px-3 py-2 rounded-xl transition-all'
+                >
+                  <LayoutDashboard size={15} />
+                  Dashboard
+                </Link>
+              )}
             </div>
 
             {/* ── Right Actions ───────────────────────────────────────────── */}
@@ -419,6 +432,16 @@ export default function Navbar() {
                   <ArrowRight className='w-4 h-4 text-gray-400' />
                 </Link>
               ))}
+              {user && DASHBOARD_ROLES.has(user.role) && (
+                <Link
+                  to={user.redirectTo}
+                  onClick={() => setIsMenuOpen(false)}
+                  className='flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold text-[#127058] bg-[#127058]/8 hover:bg-[#127058]/15 transition-colors'
+                >
+                  <span className='flex items-center gap-2'><LayoutDashboard size={16} />Dashboard</span>
+                  <ArrowRight className='w-4 h-4 text-[#127058]/60' />
+                </Link>
+              )}
 
               <div className='border-t border-gray-100 my-2 pt-2 space-y-2'>
                 <p className='text-[10px] font-black text-gray-400 uppercase tracking-wider px-4'>

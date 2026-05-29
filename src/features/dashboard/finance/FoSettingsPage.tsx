@@ -8,14 +8,14 @@ export default function FoSettingsPage() {
 
   const update = (path: string, value: unknown) => {
     setSettings((prev) => {
-      const next = { ...prev } as Record<string, unknown>
+      const next = { ...prev } as unknown as Record<string, unknown>
       if (path.includes('.')) {
         const [k, sub] = path.split('.')
-        next[k] = { ...(prev as Record<string, unknown>)[k] as object, [sub]: value }
+        next[k] = { ...(prev as unknown as Record<string, unknown>)[k] as object, [sub]: value }
       } else {
         next[path] = value
       }
-      return next as FoSettings
+      return next as unknown as FoSettings
     })
   }
 

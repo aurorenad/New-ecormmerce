@@ -1,3 +1,5 @@
+import type { DashboardNotification, User, Loan } from '../features/dashboard/shared/types/dashboard.types'
+
 export const NAV_ITEMS = [
   { id: 'overview', label: 'Overview' },
   { id: 'users', label: 'User Management' },
@@ -198,7 +200,7 @@ export const APPLICATIONS_SEED = [
   { orderId: '106778899', fullName: 'Claudine Iraguha', rejectedOnce: false, email: 'claudine.i@gmail.com', phone: '+250793555666', docs: 11, status: 'REJECTED' },
 ]
 
-export const USERS_SEED = [
+export const USERS_SEED: User[] = [
   { id: 'USR-1001', name: 'Liam Chen',         phone: '+250 788 001 001', email: 'liam.chen@revivetech.io', role: 'Admin',           status: 'Active',      lastActive: '12 mins ago', lastActiveDate: 'May 22, 2026', joinDate: '2026-01-15' },
   { id: 'USR-1002', name: 'Sarah Miller',       phone: '+250 788 001 002', email: 'sarah.m@revivetech.rw',   role: 'Support Agent',   status: 'Active',      lastActive: '1 hr ago',    lastActiveDate: 'May 22, 2026', joinDate: '2026-02-08' },
   { id: 'USR-1003', name: 'Marcus Johnson',     phone: '+250 788 001 003', email: 'marcus.j@revivetech.rw',  role: 'Technician',      status: 'Active',      lastActive: '3 hrs ago',   lastActiveDate: 'May 22, 2026', joinDate: '2026-03-01' },
@@ -236,7 +238,7 @@ export const PRICING_SEED = [
   { sku: 'DV-IPP129', model: 'iPad Pro 12.9', tier: 'Premium', cost: 590, listPrice: 899, financeFrom: 74, promo: 'None' },
 ]
 
-export const FINANCING_SEED = [
+export const FINANCING_SEED: Loan[] = [
   { ref: 'FIN-22041', customer: 'Jean Baptiste N.',  device: 'iPhone 15 Pro',     principal: 1099, term: 12, apr: 14.2, status: 'Active',       nextDue: '2026-06-01' },
   { ref: 'FIN-22038', customer: 'Marie Uwimana',     device: 'MacBook Air M2',    principal: 949,  term: 18, apr: 13.8, status: 'Approved',     nextDue: null },
   { ref: 'FIN-22035', customer: 'Eric Habimana',     device: 'Samsung S23 Ultra', principal: 1150, term: 24, apr: 15.1, status: 'Under Review', nextDue: null },
@@ -465,7 +467,7 @@ export const FO_ACTIVITY_LOG = [
   { id: 'FAL-006', at: '2026-05-20 11:00', action: 'Marked FIN-22024 (Patrick Ndayisaba) as Settled', type: 'complete' },
 ]
 
-export const NOTIFICATIONS_SEED = [
+export const NOTIFICATIONS_SEED: DashboardNotification[] = [
   { id: 'NTF-001', type: 'error', title: 'Payment webhook failed', desc: 'Payout retry failed for vendor VND-442 (attempt 3/5).', time: '2 min ago', read: false },
   { id: 'NTF-002', type: 'warn',  title: 'Low stock alert',        desc: 'SKU DV-PX8-128 dropped below threshold — only 3 units remain.', time: '18 min ago', read: false },
   { id: 'NTF-003', type: 'warn',  title: 'Delinquent loan',        desc: 'FIN-22029 (Divine Mukamana) payment is 4 days overdue.', time: '1 hr ago', read: false },

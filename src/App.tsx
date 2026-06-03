@@ -35,7 +35,7 @@ function App() {
           <Route path='/'                element={<HeroSection />} />
           <Route path='/login'           element={<LoginForm />} />
           <Route
-            path='/signup'
+            path='/register'
             element={<RegisterForm />}
           />
           <Route path='/forget-password' element={<ForgetPasswordForm />} />

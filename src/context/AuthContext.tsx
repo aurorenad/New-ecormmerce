@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import * as authService from '../services/auth.service'
-import { fetchProfile } from '../services/users.service'
+// import { fetchProfile } from '../services/users.service'
 import { getErrorMessage } from '../lib/api'
 import { getRedirectForRole, toFrontendRole } from '../lib/roles'
 

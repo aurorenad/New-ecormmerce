@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { CartProvider } from './context/CartContext';
-// import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import { SupportProvider } from './context/SupportContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import ApiStatusBanner from './components/ApiStatusBanner';
@@ -25,7 +25,7 @@ import AgentDashboard from './features/dashboard/agent/AgentDashboard';
 
 function App() {
   return (
-    <>
+    <AuthProvider>
       <SupportProvider>
       <CartProvider>
         <ApiStatusBanner />
@@ -91,7 +91,7 @@ function App() {
         </Routes>
       </CartProvider>
       </SupportProvider>
-    </>
+    </AuthProvider>
   );
 }
 

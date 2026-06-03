@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import * as authService from '../services/auth.service'
-import { fetchProfile } from '../services/users.service'
+// import { fetchProfile } from '../services/users.service'
 import { getErrorMessage } from '../lib/api'
 import { getRedirectForRole, toFrontendRole } from '../lib/roles'
 
@@ -67,27 +67,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
   }
 
-  useEffect(() => {
-    if (!token) return
+  // useEffect(() => {
+  //   if (!token) return
 
-    fetchProfile()
-      .then((profile) => {
-        const role = toFrontendRole(profile.role)
-        const authUser: AuthUser = {
-          id: profile.id,
-          name: `${profile.firstName} ${profile.lastName}`.trim(),
-          email: profile.email,
-          role,
-          redirectTo: getRedirectForRole(role),
-        }
-        setUser(authUser)
-        sessionStorage.setItem('auth_user', JSON.stringify(authUser))
-      })
-      .catch(() => {
-        // Token invalid
-        logout()
-      })
-  }, [token])
+  //   fetchProfile()
+  //     .then((profile) => {
+  //       const role = toFrontendRole(profile.role)
+  //       const authUser: AuthUser = {
+  //         id: profile.id,
+  //         name: `${profile.firstName} ${profile.lastName}`.trim(),
+  //         email: profile.email,
+  //         role,
+  //         redirectTo: getRedirectForRole(role),
+  //       }
+  //       setUser(authUser)
+  //       sessionStorage.setItem('auth_user', JSON.stringify(authUser))
+  //     })
+  //     .catch(() => {
+  //       // Token invalid
+  //       logout()
+  //     })
+  // }, [token])
 
   return (
     <AuthContext.Provider

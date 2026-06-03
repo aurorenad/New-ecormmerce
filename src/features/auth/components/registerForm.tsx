@@ -14,7 +14,7 @@ import {
 import * as authService from '../../../services/auth.service';
 import { getErrorMessage } from '../../../lib/api';
 
-export default function RegisterForm() {
+function RegisterForm() {
   const navigate = useNavigate();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -333,3 +333,5 @@ export default function RegisterForm() {
     </div>
   );
 }
+
+export default RegisterForm;

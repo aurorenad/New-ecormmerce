@@ -34,7 +34,10 @@ function App() {
           {/* Public routes */}
           <Route path='/'                element={<HeroSection />} />
           <Route path='/login'           element={<LoginForm />} />
-          <Route path='/register'        element={<RegisterForm />} />
+          <Route
+            path='/signup'
+            element={<RegisterForm />}
+          />
           <Route path='/forget-password' element={<ForgetPasswordForm />} />
           <Route path='/VerifyOtpForm'   element={<VerifyOtpForm />} />
           <Route path='/ResetPassword'   element={<ResetPasswordForm />} />

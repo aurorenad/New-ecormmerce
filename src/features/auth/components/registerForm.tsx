@@ -51,18 +51,13 @@ function RegisterForm() {
       const firstName = parts[0] || 'User';
       const lastName = parts.slice(1).join(' ') || 'Account';
 
-      const result = await authService.register({
+      await authService.register({
         firstName,
         lastName,
         email: email.trim(),
         phone: phone.trim() || undefined,
         password,
       });
-
-      sessionStorage.setItem('pending_verify_email', result.email);
-      if (result.otpCode) {
-        sessionStorage.setItem('dev_otp', result.otpCode);
-      }
 
       setSuccess(true);
     } catch (err) {
@@ -84,15 +79,15 @@ function RegisterForm() {
             Registration successful!
           </h1>
           <p className='text-sm text-gray-500'>
-            We sent a verification code to{' '}
+            Your account is ready. Sign in with{' '}
             <span className='font-semibold text-gray-700'>{email}</span>.
           </p>
           <button
             type='button'
-            onClick={() => navigate('/VerifyOtpForm')}
+            onClick={() => navigate('/login')}
             className='inline-flex w-full items-center justify-center bg-[#127058] hover:bg-[#0e5845] text-white font-semibold py-3 px-4 rounded-xl transition-colors text-sm'
           >
-            Verify email
+            Go to sign in
           </button>
         </div>
       </div>
@@ -166,7 +161,7 @@ function RegisterForm() {
             <div className='flex items-start gap-2 pt-0.5 px-0.5'>
               <Info size={16} className='text-gray-400 mt-0.5 flex-shrink-0' />
               <p className='text-gray-500 text-xs leading-normal'>
-                We'll send a verification code here.
+                Use this email to sign in after registration.
               </p>
             </div>
           </div>
@@ -321,12 +316,13 @@ function RegisterForm() {
         {/* ── Form Footer ───────────────────────────────────────────────────── */}
         <p className='text-center text-sm text-gray-500'>
           Already have an account?{' '}
-          <a
-            href='/login'
+          <button
+            type='button'
+            onClick={() => navigate('/login')}
             className='font-semibold text-[#127058] hover:text-[#0e5845] hover:underline transition-colors'
           >
             Sign in
-          </a>
+          </button>
         </p>
 
       </div>

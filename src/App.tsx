@@ -7,7 +7,7 @@ import ApiStatusBanner from './components/ApiStatusBanner';
 
 import HeroSection from './features/marketplace/HeroSection';
 import LoginForm from './features/auth/components/login-form';
-import RegisterForm from './features/auth/components/register-form';
+import RegisterForm from './features/auth/components/registerForm';
 import ForgetPasswordForm from './features/auth/components/forgot-password-form';
 import VerifyOtpForm from './features/auth/components/otp-form';
 import ResetPasswordForm from './features/auth/components/ResetPassword';

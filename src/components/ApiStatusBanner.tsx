@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 
-function apiRoot(): string {
+function healthCheckUrl(): string {
   const configured = import.meta.env.VITE_API_BASE_URL as string | undefined
-  if (configured) return configured.replace(/\/api\/?$/, '')
-  return 'http://localhost:5001'
+  if (configured) {
+    const root = configured.replace(/\/api\/?$/, '')
+    return `${root}/health`
+  }
+  return '/health'
 }
 
 export default function ApiStatusBanner() {
@@ -14,7 +17,7 @@ export default function ApiStatusBanner() {
 
     async function check() {
       try {
-        const res = await fetch(`${apiRoot()}/health`)
+        const res = await fetch(healthCheckUrl())
         if (!cancelled) setOffline(!res.ok)
       } catch {
         if (!cancelled) setOffline(true)

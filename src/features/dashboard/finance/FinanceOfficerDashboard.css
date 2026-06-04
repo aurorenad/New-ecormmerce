@@ -526,3 +526,35 @@
 [data-theme="dark"] .fo-legend-label { color: #94a3b8; }
 [data-theme="dark"] .fo-toggle { background: #334155; }
 [data-theme="dark"] .fo-toggle-on { background: #025c50; }
+
+.fo-sell-grid { display: grid; grid-template-columns: minmax(240px, 300px) 1fr; gap: 20px; align-items: start; }
+.fo-sell-list { display: flex; flex-direction: column; gap: 8px; }
+@media (max-width: 900px) { .fo-sell-grid { grid-template-columns: 1fr; } }
+
+.fo-sell-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.fo-sell-kpi {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.fo-sell-kpi-label { font-size: 0.72rem; color: #6b7280; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; }
+.fo-sell-kpi strong { font-size: 1.35rem; font-weight: 800; color: #111827; }
+.fo-sell-kpi--warn { border-color: #fcd34d; background: #fffbeb; }
+.fo-sell-kpi--warn strong { color: #b45309; }
+.fo-sell-kpi--ok { border-color: #86efac; background: #f0fdf4; }
+.fo-sell-kpi--ok strong { color: #166534; }
+.fo-sell-kpi--bad { border-color: #fecaca; background: #fef2f2; }
+.fo-sell-kpi--bad strong { color: #991b1b; }
+.fo-sell-filters { flex-wrap: wrap; }
+.fo-sell-table td { vertical-align: middle; }
+.fo-empty-cell { text-align: center; padding: 32px !important; color: #9ca3af; font-size: 0.9rem; }
+.fo-sell-review-layout { max-width: 720px; }

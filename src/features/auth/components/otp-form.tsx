@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, ShieldAlert, CheckCircle2 } from 'lucide-react';
-import * as authService from '../../../services/auth.service';
+import { verifyOtp } from '../../../services/auth.service';
 import { getErrorMessage } from '../../../lib/api';
 
 export default function VerifyOtpForm() {
@@ -63,7 +63,7 @@ export default function VerifyOtpForm() {
     setError(null);
     setIsLoading(true);
     try {
-      await authService.verifyOtp(email, fullCode);
+      await verifyOtp(email, fullCode);
       sessionStorage.removeItem('dev_otp');
       setIsVerified(true);
     } catch (err) {

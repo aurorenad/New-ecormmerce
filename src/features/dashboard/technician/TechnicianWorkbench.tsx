@@ -6,6 +6,7 @@ import TechOverviewPage from './TechOverviewPage'
 import AssignedDevicesPage from './AssignedDevicesPage'
 import DeviceDetailsPage from './DeviceDetailsPage'
 import TechProfilePage from './TechProfilePage'
+import TechSellRequestsPage from './TechSellRequestsPage'
 import { NavIcon } from './TechIcons'
 import { cloneTickets, TW_NAV } from './techHelpers'
 import type { RepairTicket } from './techHelpers'
@@ -84,7 +85,7 @@ export default function TechnicianWorkbench({ onBack: _onBack, darkMode = false,
         <nav className="tw-sidebar-nav">
           {TW_NAV.map((item) => (
             <button key={item.id} type="button"
-              className={`tw-nav-btn ${(page === item.id || (item.id === 'devices' && page === 'detail')) ? 'active' : ''}`}
+              className={`tw-nav-btn ${(page === item.id || (item.id === 'devices' && page === 'detail') || (item.id === 'sell-requests' && page === 'sell-requests')) ? 'active' : ''}`}
               onClick={() => setPage(item.id)}>
               <NavIcon id={item.id} />{item.label}
             </button>
@@ -116,6 +117,7 @@ export default function TechnicianWorkbench({ onBack: _onBack, darkMode = false,
         {page === 'devices' && (
           <AssignedDevicesPage tickets={tickets} onViewDevice={handleViewDevice} onUpdateStatus={handleUpdateStatus} />
         )}
+        {page === 'sell-requests' && <TechSellRequestsPage />}
         {page === 'detail' && (
           <DeviceDetailsPage ticket={selected} onBack={() => setPage('devices')}
             onTogglePart={handleTogglePart} onUpdateStatus={handleUpdateStatus}

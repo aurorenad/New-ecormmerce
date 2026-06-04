@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
-import * as authService from '../services/auth.service'
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react'
+import { login as apiLogin } from '../services/auth.service'
 import { fetchProfile } from '../services/users.service'
 import { getErrorMessage } from '../lib/api'
 import { getRedirectForRole, toFrontendRole } from '../lib/roles'
@@ -37,10 +37,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(loadStoredUser)
   const [token, setToken] = useState<string | null>(() => sessionStorage.getItem('auth_token'))
 
-  async function login(email: string, password: string): Promise<AuthUser> {
-    let data: Awaited<ReturnType<typeof authService.login>>
+  const logout = useCallback(() => {
+    sessionStorage.removeItem('auth_token')
+    sessionStorage.removeItem('auth_user')
+    setToken(null)
+    setUser(null)
+  }, [])
+
+  const login = useCallback(async (email: string, password: string): Promise<AuthUser> => {
+    let data: Awaited<ReturnType<typeof apiLogin>>
     try {
-      data = await authService.login(email.trim(), password)
+      data = await apiLogin(email.trim(), password)
     } catch (err) {
       throw new Error(getErrorMessage(err))
     }
@@ -58,14 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setToken(data.token)
     setUser(authUser)
     return authUser
-  }
-
-  function logout() {
-    sessionStorage.removeItem('auth_token')
-    sessionStorage.removeItem('auth_user')
-    setToken(null)
-    setUser(null)
-  }
+  }, [])
 
   useEffect(() => {
     if (!token) return
@@ -87,7 +87,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Token invalid
         logout()
       })
-  }, [token])
+  }, [token, logout])
 
   return (
     <AuthContext.Provider

@@ -318,3 +318,31 @@
 [data-theme="dark"] .tw-ov-legend-label { color: #94a3b8; }
 [data-theme="dark"] .tw-ov-legend-count { color: #f1f5f9; }
 [data-theme="dark"] .tw-urgent-alert-btn { background: #1e293b; border-color: #334155; color: #94a3b8; }
+
+/* Sell requests (technician) */
+.tw-sell-grid { display: grid; grid-template-columns: minmax(220px, 280px) 1fr; gap: 20px; align-items: start; }
+.tw-sell-list { display: flex; flex-direction: column; gap: 8px; }
+.tw-sell-count { font-size: 0.8rem; color: #6b7280; margin: 0 0 8px; font-weight: 600; }
+.tw-sell-empty { font-size: 0.85rem; color: #9ca3af; padding: 24px; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; }
+.tw-sell-card { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; cursor: pointer; text-align: left; width: 100%; transition: border-color 0.15s; }
+.tw-sell-card:hover { border-color: #127058; }
+.tw-sell-card--active { border-color: #127058; background: #f0fdf9; box-shadow: 0 0 0 1px #127058; }
+.tw-sell-card strong { font-size: 0.9rem; color: #111827; }
+.tw-sell-card span { font-size: 0.75rem; color: #6b7280; }
+.tw-sell-meta { color: #127058 !important; font-weight: 600; }
+.tw-sell-detail { background: #fff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+.tw-sell-detail--empty { align-items: center; justify-content: center; min-height: 200px; color: #9ca3af; font-size: 0.9rem; }
+.tw-sell-detail h2 { margin: 0; font-size: 1.25rem; font-weight: 800; color: #0f172a; }
+.tw-sell-customer { margin: 0; font-size: 0.85rem; color: #6b7280; }
+.tw-sell-facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 0; }
+.tw-sell-facts div { background: #f9fafb; border-radius: 8px; padding: 10px; }
+.tw-sell-facts dt { font-size: 0.7rem; color: #6b7280; font-weight: 600; text-transform: uppercase; }
+.tw-sell-facts dd { margin: 4px 0 0; font-size: 0.9rem; font-weight: 700; color: #111827; }
+.tw-sell-ai { font-size: 0.85rem; color: #374151; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; padding: 12px; margin: 0; line-height: 1.5; }
+.tw-field { display: flex; flex-direction: column; gap: 6px; font-size: 0.85rem; font-weight: 600; color: #374151; }
+.tw-field textarea, .tw-field input { border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px 12px; font-size: 0.9rem; font-weight: 400; font-family: inherit; }
+.tw-btn-primary { align-self: flex-start; padding: 10px 20px; background: #127058; color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
+.tw-btn-primary:hover:not(:disabled) { background: #0e5845; }
+.tw-btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+.tw-sell-error { font-size: 0.85rem; color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; border-radius: 10px; padding: 10px 14px; margin: 0; }
+@media (max-width: 800px) { .tw-sell-grid { grid-template-columns: 1fr; } }

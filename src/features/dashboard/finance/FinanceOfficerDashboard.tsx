@@ -12,6 +12,7 @@ import FoCustomersPage from './FoCustomersPage'
 import FoReportsPage from './FoReportsPage'
 import FoSettingsPage from './FoSettingsPage'
 import FoProfilePage from './FoProfilePage'
+import FoSellRequestsPage from './FoSellRequestsPage'
 import { PAGE_META, FO_STATIC_ALERTS } from './foHelpers'
 import './FinanceOfficerDashboard.css'
 
@@ -54,6 +55,7 @@ export default function FinanceOfficerDashboard({ onBack: _onBack, darkMode = fa
   const renderPage = () => {
     switch (page) {
       case 'overview':  return <FoOverviewPage />
+      case 'sell-requests': return <FoSellRequestsPage />
       case 'requests':  return <FoRequestsPage />
       case 'loans':     return <FoLoansPage />
       case 'risk':      return <FoRiskPage />

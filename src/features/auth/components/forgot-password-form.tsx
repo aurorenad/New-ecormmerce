@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Mail, CheckCircle2 } from 'lucide-react';
-import * as authService from '../../../services/auth.service';
+import { forgotPassword } from '../../../services/auth.service';
 import { getErrorMessage } from '../../../lib/api';
 
 export default function ForgetPasswordForm() {
@@ -16,7 +16,7 @@ export default function ForgetPasswordForm() {
     setError(null);
     setIsLoading(true);
     try {
-      const result = await authService.forgotPassword(email.trim());
+      const result = await forgotPassword(email.trim());
       sessionStorage.setItem('pending_verify_email', email.trim());
       if (result.otpCode) {
         sessionStorage.setItem('dev_otp', result.otpCode);

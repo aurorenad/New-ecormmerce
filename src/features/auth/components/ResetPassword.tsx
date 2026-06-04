@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeOff, ArrowRight, ShieldCheck, AlertCircle, CheckCircle2 } from 'lucide-react';
-import * as authService from '../../../services/auth.service';
+import { resetPassword } from '../../../services/auth.service';
 import { getErrorMessage } from '../../../lib/api';
 
 export default function ResetPasswordForm() {
@@ -36,7 +36,7 @@ export default function ResetPasswordForm() {
     setError(null);
     setIsLoading(true);
     try {
-      await authService.resetPassword(email, otpCode, password);
+      await resetPassword(email, otpCode, password);
       sessionStorage.removeItem('dev_otp');
       setIsSuccess(true);
     } catch (err) {

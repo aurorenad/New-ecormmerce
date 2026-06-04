@@ -8,8 +8,8 @@ export default function DeviceCard() {
   const trendingListings = listings.slice(0, 4);
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 gap-4">
+    <div className="px-4 sm:px-6 pt-2 pb-6 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-5 gap-3">
         <div>
           <h3 className="text-3xl font-bold bg-gradient-to-r from-[#6E9F94] to-[#127058] bg-clip-text text-black">
             Trending Devices

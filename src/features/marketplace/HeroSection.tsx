@@ -14,7 +14,7 @@ export default function HeroSection() {
 
   // Fake network delay simulation
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
+    const timer = setTimeout(() => setIsLoading(false), 400);
     return () => clearTimeout(timer);
   }, []);
 
@@ -34,9 +34,9 @@ export default function HeroSection() {
     <>
       <Navbar />
 
-      <main className='max-w-7xl mx-auto px-6 py-8'>
+      <main className='max-w-7xl mx-auto px-4 sm:px-6 py-4'>
         {/* Parent Card Container with Relative Positioning */}
-        <div className='relative overflow-hidden p-8 md:p-16 text-white rounded-3xl min-h-[480px] flex items-center shadow-xl'>
+        <div className='relative overflow-hidden p-5 md:p-8 text-white rounded-2xl min-h-[200px] md:min-h-[240px] flex items-center shadow-lg'>
           {/* Background Image Layer */}
           <div className='absolute inset-0 z-0'>
             <img
@@ -53,37 +53,35 @@ export default function HeroSection() {
           <div className='absolute inset-0 z-10 bg-gradient-to-r from-black/50 via-transparent to-transparent'></div>
 
           {/* Foreground Content Layer */}
-          <div className='relative z-20 flex flex-col items-start space-y-5 max-w-2xl'>
-            <span className='inline-block bg-[#EF9F27] text-gray-950 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-full shadow-md'>
+          <div className='relative z-20 flex flex-col items-start space-y-2 md:space-y-3 max-w-xl'>
+            <span className='inline-block bg-[#EF9F27] text-gray-950 text-[10px] md:text-xs font-black uppercase tracking-wider px-2.5 py-1 rounded-full shadow-md'>
               Quality Devices. Flexible Payments.
             </span>
 
-            <h1 className='text-4xl md:text-6xl font-black text-white tracking-tight leading-tight mt-2'>
+            <h1 className='text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight'>
               Affordable tech,{' '}
               <span className='text-[#EF9F27]'>fairly priced.</span>
               <br />
               No compromise.
             </h1>
 
-            <p className='text-[#D5E4E1] text-base md:text-lg leading-relaxed max-w-lg drop-shadow-sm'>
-              ReviveTech is a platform for buying and selling professionally
-              refurbished electronics with transparent condition grading,
-              AI-powered pricing, and flexible monthly payment plans — making
-              quality devices accessible to everyone.
+            <p className='text-[#D5E4E1] text-sm md:text-base leading-snug max-w-md drop-shadow-sm line-clamp-2 md:line-clamp-none'>
+              Buy and sell certified refurbished electronics with transparent grading,
+              AI pricing, and flexible monthly payments.
             </p>
 
-            <div className='flex flex-wrap gap-3 mt-8'>
+            <div className='flex flex-wrap gap-2 pt-1'>
               <Link
                 to='/marketplace'
-                className='inline-flex items-center gap-2 bg-[#EF9F27] hover:bg-[#d98f20] text-gray-950 font-bold px-6 py-3 rounded-full transition-all shadow-lg shadow-[#EF9F27]/20 active:scale-[0.97]'
+                className='inline-flex items-center gap-1.5 bg-[#EF9F27] hover:bg-[#d98f20] text-gray-950 text-sm font-bold px-4 py-2 rounded-full transition-all shadow-md shadow-[#EF9F27]/20 active:scale-[0.97]'
               >
-                Shop Devices <ArrowRight className='w-4 h-4' />
+                Shop Devices <ArrowRight className='w-3.5 h-3.5' />
               </Link>
               <Link
                 to='/Sell-Your-Device'
-                className='inline-flex items-center gap-2 border border-white/30 hover:border-white/60 text-white font-semibold px-6 py-3 rounded-full transition-all'
+                className='inline-flex items-center gap-1.5 border border-white/30 hover:border-white/60 text-white text-sm font-semibold px-4 py-2 rounded-full transition-all'
               >
-                Sell Your Device <ChevronRight className='w-4 h-4' />
+                Sell Your Device <ChevronRight className='w-3.5 h-3.5' />
               </Link>
             </div>
           </div>

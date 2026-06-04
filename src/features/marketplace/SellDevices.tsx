@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   ChevronRight,
   ChevronLeft,
@@ -24,9 +24,15 @@ import {
   Info,
   Banknote,
   Shield,
+  Sparkles,
+  Loader2,
 } from 'lucide-react';
 import Navbar from '../../shared/components/nav';
 import Footer from '../../shared/components/Footer';
+import { useAuth } from '../../context/AuthContext';
+import { submitTradeIn } from '../../services/tradeIn.service';
+import { getErrorMessage } from '../../lib/api';
+import type { TradeInAiEvaluation } from '../../lib/tradeIn';
 
 // ─── Step Config ──────────────────────────────────────────────────────────────
 const STEPS = [
@@ -548,29 +554,52 @@ function Step5({ data, images }: { data: FormData; images: File[] }) {
 }
 
 // ─── Success Screen ───────────────────────────────────────────────────────────
-function SuccessScreen() {
+function SuccessScreen({
+  aiEstimate,
+  aiReasoning,
+}: {
+  aiEstimate?: number
+  aiReasoning?: string
+}) {
   return (
-    <div className='text-center py-16 px-6'>
+    <div className='text-center py-12 px-6'>
       <div className='w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6'>
         <CheckCircle2 className='w-10 h-10 text-emerald-600' />
       </div>
       <h2 className='text-2xl font-black text-gray-900 mb-3'>Submission Received!</h2>
+
+      {aiEstimate != null && (
+        <div className='max-w-md mx-auto mb-6 bg-[#127058]/5 border border-[#127058]/20 rounded-2xl p-5 text-left'>
+          <div className='flex items-center gap-2 mb-2'>
+            <Sparkles className='w-5 h-5 text-[#127058]' />
+            <p className='text-sm font-bold text-[#127058]'>AI suggested offer</p>
+          </div>
+          <p className='text-3xl font-black text-gray-900'>${aiEstimate.toFixed(0)}</p>
+          {aiReasoning && (
+            <p className='text-sm text-gray-600 mt-2 leading-relaxed'>{aiReasoning}</p>
+          )}
+          <p className='text-xs text-gray-500 mt-3'>
+            A technician will inspect your device, then finance will confirm the final offer.
+          </p>
+        </div>
+      )}
+
       <p className='text-gray-500 max-w-sm mx-auto leading-relaxed mb-8'>
-        Thank you for listing your device. Our team will review your submission and send you
-        an AI-assisted valuation offer within <strong className='text-gray-700'>24 hours</strong>.
+        Track progress anytime under <strong className='text-gray-700'>Profile → Sells</strong>.
       </p>
       <div className='flex flex-col sm:flex-row gap-3 justify-center'>
         <Link
-          to='/marketplace'
+          to='/profile'
+          state={{ tab: 'sells' }}
           className='inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#127058] hover:bg-[#0e5845] text-white font-bold rounded-xl transition-colors shadow-sm'
         >
-          Browse Marketplace
+          View my sells
         </Link>
         <Link
-          to='/'
+          to='/marketplace'
           className='inline-flex items-center justify-center gap-2 px-6 py-3 border border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors'
         >
-          Back to Home
+          Browse Marketplace
         </Link>
       </div>
     </div>
@@ -579,10 +608,25 @@ function SuccessScreen() {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 export default function SellDevice() {
+  const navigate = useNavigate();
+  const { user, isAuthenticated } = useAuth();
   const [step, setStep]       = useState(1);
   const [submitted, setSubmit] = useState(false);
   const [form, setForm]       = useState<FormData>(INITIAL_FORM);
   const [images, setImages]   = useState<File[]>([]);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [aiResult, setAiResult] = useState<TradeInAiEvaluation | null>(null);
+
+  useEffect(() => {
+    if (user?.email) {
+      setForm((prev) => ({
+        ...prev,
+        email: prev.email || user.email,
+        name: prev.name || user.name,
+      }));
+    }
+  }, [user]);
 
   function set(key: keyof FormData, value: string | string[]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -596,10 +640,35 @@ export default function SellDevice() {
     return true;
   }
 
-  function handleSubmit() {
-    // TODO: wire to your API
-    console.log('Submitting:', form, images);
-    setSubmit(true);
+  async function handleSubmit() {
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: '/Sell-Your-Device' } });
+      return;
+    }
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await submitTradeIn({
+        brand: form.brand,
+        model: form.model,
+        condition: form.condition,
+        category: form.category,
+        batteryHealth: form.batteryHealth || undefined,
+        askingPrice: form.askingPrice || undefined,
+        defects: form.defects || undefined,
+        storage: form.storage || undefined,
+        ram: form.ram || undefined,
+        color: form.color || undefined,
+        location: form.location || undefined,
+        images,
+      });
+      setAiResult(res.aiEvaluation);
+      setSubmit(true);
+    } catch (err) {
+      setSubmitError(getErrorMessage(err));
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -619,7 +688,10 @@ export default function SellDevice() {
 
       <div className='max-w-3xl mx-auto px-6 py-10'>
         {submitted ? (
-          <SuccessScreen />
+          <SuccessScreen
+            aiEstimate={aiResult?.tradeInRecommendation}
+            aiReasoning={aiResult?.reasoning}
+          />
         ) : (
           <>
             {/* Step Progress Bar */}
@@ -650,6 +722,12 @@ export default function SellDevice() {
                 ))}
               </div>
             </div>
+
+            {submitError && (
+              <div className='mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600'>
+                {submitError}
+              </div>
+            )}
 
             {/* Form Card */}
             <div className='bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden'>
@@ -691,10 +769,20 @@ export default function SellDevice() {
                   <button
                     type='button'
                     onClick={handleSubmit}
-                    className='flex items-center gap-2 px-6 py-2.5 bg-[#127058] hover:bg-[#0e5845] text-white font-bold rounded-xl transition-all shadow-sm text-sm active:scale-[0.97]'
+                    disabled={submitting}
+                    className='flex items-center gap-2 px-6 py-2.5 bg-[#127058] hover:bg-[#0e5845] disabled:opacity-60 text-white font-bold rounded-xl transition-all shadow-sm text-sm active:scale-[0.97]'
                   >
-                    Submit Device
-                    <CheckCircle2 className='w-4 h-4' />
+                    {submitting ? (
+                      <>
+                        <Loader2 className='w-4 h-4 animate-spin' />
+                        Getting AI estimate…
+                      </>
+                    ) : (
+                      <>
+                        Submit Device
+                        <CheckCircle2 className='w-4 h-4' />
+                      </>
+                    )}
                   </button>
                 )}
               </div>

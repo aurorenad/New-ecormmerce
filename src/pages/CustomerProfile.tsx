@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import {
-  ShoppingBag, CreditCard, Heart, Shield,
+  ShoppingBag, CreditCard, Heart, Shield, Tag,
   Edit3, Check, X, LogOut, ArrowRight, Trash2,
   ShoppingCart, ChevronRight, Bell, Lock, Smartphone,
   Star, Package, TrendingUp, Camera, MessageSquare, Send,
@@ -19,6 +19,7 @@ import { fetchFinancingApplications } from '../services/payments.service'
 import { fetchProfile, updateProfile } from '../services/users.service'
 import { getErrorMessage } from '../lib/api'
 import { useSupport } from '../context/SupportContext'
+import CustomerSellsTab from '../features/customer/CustomerSellsTab'
 import type { SupportTicket, TicketStatus } from '../context/SupportContext'
 
 const MOCK_ACTIVITY = [
@@ -46,6 +47,7 @@ const STATUS_STYLES: Record<string, string> = {
 const TABS = [
   { id: 'overview',      label: 'Overview',        icon: TrendingUp    },
   { id: 'orders',        label: 'Orders',           icon: ShoppingBag   },
+  { id: 'sells',         label: 'Sells',            icon: Tag           },
   { id: 'installments',  label: 'Installments',     icon: CreditCard    },
   { id: 'saved',         label: 'Saved Devices',    icon: Heart         },
   { id: 'support',       label: 'Support',          icon: MessageSquare },
@@ -62,6 +64,7 @@ const TICKET_STATUS_STYLES: Record<TicketStatus, { label: string; cls: string }>
 export default function CustomerProfile() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
   const { addToCart } = useCart()
   const { getTicketsForCustomer, sendCustomerMessage, createTicket, markReadByCustomer } = useSupport()
 
@@ -105,6 +108,11 @@ export default function CustomerProfile() {
     : orders.filter((o) => o.status === orderFilter)
 
   const totalMonthly = installments.reduce((s, i) => s + i.monthly, 0)
+
+  useEffect(() => {
+    const tab = (location.state as { tab?: string } | null)?.tab
+    if (tab && TABS.some((t) => t.id === tab)) setActiveTab(tab)
+  }, [location.state])
 
   useEffect(() => {
     if (!user) return
@@ -509,6 +517,8 @@ export default function CustomerProfile() {
           )}
 
           {/* ORDERS ─────────────────────────────────────────────────────── */}
+          {activeTab === 'sells' && <CustomerSellsTab />}
+
           {activeTab === 'orders' && (
             <div className='space-y-4'>
               {/* Filter pills */}

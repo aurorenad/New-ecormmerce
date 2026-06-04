@@ -11,7 +11,7 @@ import {
   Phone,
   CircleCheckBig,
 } from 'lucide-react';
-import * as authService from '../../../services/auth.service';
+import { register as registerAccount } from '../../../services/auth.service';
 import { getErrorMessage } from '../../../lib/api';
 
 function RegisterForm() {
@@ -51,7 +51,7 @@ function RegisterForm() {
       const firstName = parts[0] || 'User';
       const lastName = parts.slice(1).join(' ') || 'Account';
 
-      await authService.register({
+      await registerAccount({
         firstName,
         lastName,
         email: email.trim(),

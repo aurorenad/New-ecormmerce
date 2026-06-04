@@ -19,12 +19,5 @@ export async function fetchDevices(params?: Record<string, string>) {
   return data.devices
 }
 
-export async function submitTradeIn(payload: {
-  brand: string
-  model: string
-  condition: string
-  estimatedValue?: number
-}) {
-  const { data } = await api.post('/devices/trade-in', payload)
-  return data
-}
+/** @deprecated Use submitTradeIn from tradeIn.service.ts (multipart + images) */
+export { submitTradeIn } from './tradeIn.service'

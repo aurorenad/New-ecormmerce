@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react'
 import { useAuth } from '../../../context/AuthContext'
+import { getErrorMessage } from '../../../lib/api'
 
 export default function LoginForm() {
   const { login } = useAuth()
@@ -13,7 +14,7 @@ export default function LoginForm() {
   const [isLoading, setIsLoading]       = useState(false)
   const [error, setError]               = useState<string | null>(null)
 
-  const handleSubmit = async (e: { preventDefault(): void }) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError(null)
     setIsLoading(true)
@@ -22,7 +23,7 @@ export default function LoginForm() {
       const user = await login(email.trim(), password)
       navigate(user.redirectTo, { replace: true })
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
+      setError(getErrorMessage(err))
     } finally {
       setIsLoading(false)
     }
@@ -65,9 +66,9 @@ export default function LoginForm() {
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <label className="text-sm font-semibold text-gray-700">Password</label>
-                <a href="/forget-password" className="text-xs font-semibold text-[#127058] hover:text-[#0e5845] transition-colors">
+                <Link to="/forget-password" className="text-xs font-semibold text-[#127058] hover:text-[#0e5845] transition-colors">
                   Forgot Password?
-                </a>
+                </Link>
               </div>
               <div className="relative flex items-center">
                 <span className="absolute left-3.5 text-gray-400"><Lock size={18} /></span>

@@ -15,13 +15,23 @@ api.interceptors.request.use((config) => {
   return config
 })
 
+function axiosErrorData(error: AxiosError): { message?: string; error?: string } | undefined {
+  const data = error.response?.data
+  if (data && typeof data === 'object') {
+    return data as { message?: string; error?: string }
+  }
+  return undefined
+}
+
 export function getErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
-    const data = error.response?.data as { message?: string } | undefined
-    return data?.message || error.message
+    const data = axiosErrorData(error)
+    if (typeof data?.message === 'string' && data.message) return data.message
+    if (typeof data?.error === 'string' && data.error) return data.error
+    return error.message || 'Request failed'
   }
   if (error instanceof Error) return error.message
   return 'Request failed'
 }
 
-export type ApiError = AxiosError<{ message?: string }>
+export type ApiError = AxiosError<{ message?: string; error?: string }>

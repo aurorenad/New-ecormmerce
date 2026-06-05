@@ -141,6 +141,33 @@
 .tw-search-box svg { color: #94a3b8; flex-shrink: 0; }
 .tw-search-box input { flex: 1; border: none; background: transparent; font-size: 14px; color: #111827; outline: none; min-width: 0; }
 .tw-search-box input::placeholder { color: #94a3b8; }
+.tw-select-wrap { position: relative; display: inline-flex; align-items: center; flex-shrink: 0; }
+.tw-select-wrap select {
+  appearance: none; -webkit-appearance: none;
+  border: 1px solid #e2e8f0; border-radius: 10px;
+  padding: 9px 36px 9px 14px; font-size: 13px; font-weight: 600;
+  color: #334155; background: #fff; cursor: pointer; min-width: 140px;
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+.tw-select-wrap select:hover { border-color: #cbd5e1; }
+.tw-select-wrap select:focus { outline: none; border-color: #025c50; box-shadow: 0 0 0 3px rgba(2,92,80,0.12); }
+.tw-select-chevron { position: absolute; right: 12px; pointer-events: none; color: #64748b; }
+
+/* ── Priority picker (device details) ─────────────────────────────────────── */
+.tw-priority-picker { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.tw-priority-picker-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #94a3b8; }
+.tw-priority-options { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.tw-priority-opt {
+  border: 1.5px solid #e2e8f0; border-radius: 999px; background: #f8fafc;
+  padding: 5px 12px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.12s;
+}
+.tw-priority-opt--urgent   { color: #991b1b; }
+.tw-priority-opt--standard { color: #1e40af; }
+.tw-priority-opt--low      { color: #065f46; }
+.tw-priority-opt:hover { border-color: #94a3b8; background: #fff; }
+.tw-priority-opt.is-active.tw-priority-opt--urgent   { background: #fee2e2; border-color: #fca5a5; color: #991b1b; }
+.tw-priority-opt.is-active.tw-priority-opt--standard { background: #dbeafe; border-color: #93c5fd; color: #1e40af; }
+.tw-priority-opt.is-active.tw-priority-opt--low      { background: #d1fae5; border-color: #6ee7b7; color: #065f46; }
 
 /* ── Table row highlights ─────────────────────────────────────────────────── */
 .tw-ad-table tbody tr.tw-ad-row { transition: background 0.1s; }
@@ -200,13 +227,9 @@
 .tw-status-opt { border: 1.5px solid #e2e8f0; border-radius: 8px; background: #f8fafc; padding: 9px 16px; font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.12s; }
 .tw-status-opt:hover { border-color: #025c50; color: #025c50; background: #f0fdf4; }
 .tw-status-opt.is-active { border-color: #025c50; background: #025c50; color: #fff; }
+.tw-status-options--locked .tw-status-opt { opacity: 0.55; cursor: not-allowed; pointer-events: none; }
+.tw-status-options--locked .tw-status-opt.is-active { opacity: 1; }
 .tw-saved-msg { display: inline-flex; align-items: center; gap: 6px; margin: 12px 0 0; font-size: 13px; font-weight: 600; color: #047857; }
-
-/* ── Complete button ──────────────────────────────────────────────────────── */
-.tw-complete-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin-top: 14px; padding: 13px 20px; border: none; border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer; background: #025c50; color: #fff; transition: background 0.15s; }
-.tw-complete-btn:hover:not(:disabled) { background: #014d43; }
-.tw-complete-btn.is-done { background: #d1fae5; color: #065f46; cursor: default; }
-.tw-complete-btn:disabled { cursor: default; }
 
 /* ── Parts checklist ──────────────────────────────────────────────────────── */
 .tech-parts-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
@@ -257,13 +280,8 @@
 @media (max-width: 1200px) { .tw-prof-charts-row { grid-template-columns: 1fr; } }
 @media (max-width: 1100px) { .tw-det-body { grid-template-columns: 1fr; } }
 @media (max-width: 1100px) { .tw-kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 900px) {
-  .tw-layout { grid-template-columns: 1fr; }
-  .tw-sidebar { position: relative; height: auto; }
-  .tw-sidebar-nav { flex-direction: row; flex-wrap: wrap; }
-  .tw-nav-btn { flex: 1 1 auto; justify-content: center; }
-  .tw-sidebar-bottom { display: none; }
-  .tw-content { min-height: auto; }
+@media (max-width: 900px) and (min-width: 769px) {
+  .tw-layout { grid-template-columns: 200px 1fr; }
 }
 @media (max-width: 700px) {
   .tw-page-wrap { padding: 20px 16px 40px; }
@@ -272,6 +290,14 @@
   .tw-ov-donut-wrap { flex-direction: column; align-items: center; }
   .tw-kpi-grid { grid-template-columns: 1fr; }
   .tw-status-options { flex-direction: column; }
+  .tw-page-header--actions { flex-direction: column; align-items: stretch; }
+  .tw-header-btns { width: 100%; justify-content: flex-start; }
+  .tw-det-banner { flex-direction: column; }
+  .tw-det-banner-right { width: 100%; }
+  .tech-photo-row { grid-template-columns: 1fr; }
+  .tw-portal-header { flex-wrap: wrap; gap: 10px; }
+  .tw-portal-tagline { display: none; }
+  .tw-sell-facts { grid-template-columns: 1fr; }
 }
 
 /* ── Dark mode ────────────────────────────────────────────────────────────── */

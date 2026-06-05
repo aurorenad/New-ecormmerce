@@ -1,5 +1,4 @@
 import { useMemo, useState } from 'react'
-import { REPAIR_TICKETS_SEED } from '../../../data/mockData'
 import { deviceIcon, dueInfo, priorityClass, progressClass, statusPillClass, twRelTime, TW_NOW } from './techHelpers'
 import type { RepairTicket } from './techHelpers'
 import { SeverityBadge } from './TechIcons'
@@ -8,6 +7,7 @@ interface Props {
   tickets: RepairTicket[]
   onViewDevice: (id: string) => void
   onUpdateStatus: (id: string, status: string) => void
+  onRefresh?: () => void
 }
 
 function ActionButtons({ t, onUpdateStatus, onViewDevice }: { t: RepairTicket; onUpdateStatus: Props['onUpdateStatus']; onViewDevice: Props['onViewDevice'] }) {
@@ -31,20 +31,20 @@ function ActionButtons({ t, onUpdateStatus, onViewDevice }: { t: RepairTicket; o
   )
 }
 
-export default function AssignedDevicesPage({ tickets, onViewDevice, onUpdateStatus }: Props) {
+export default function AssignedDevicesPage({ tickets, onViewDevice, onUpdateStatus, onRefresh }: Props) {
   const [search, setSearch]           = useState('')
   const [statusFilter, setStatus]     = useState('all')
   const [typeFilter, setType]         = useState('all')
   const [quickFilter, setQuickFilter] = useState<string | null>(null)
 
   const categories = useMemo(() => {
-    const set = new Set(REPAIR_TICKETS_SEED.map((t) => {
+    const set = new Set(tickets.map((t) => {
       if (t.device.toLowerCase().includes('macbook') || t.device.toLowerCase().includes('laptop')) return 'Laptop'
       if (t.device.toLowerCase().includes('ipad') || t.device.toLowerCase().includes('tab')) return 'Tablet'
       return 'Smartphone'
     }))
     return ['all', ...set]
-  }, [])
+  }, [tickets])
 
   const filtered = useMemo(() => {
     let list = [...tickets]
@@ -89,7 +89,10 @@ export default function AssignedDevicesPage({ tickets, onViewDevice, onUpdateSta
     <div className="tw-page-wrap">
       <div className="tw-page-header">
         <h1 className="tw-page-title">Assigned Devices</h1>
-        <p className="tw-page-sub">Urgent tasks sorted to top. Click any row to open device details.</p>
+        <p className="tw-page-sub">Devices from accepted sell offers assigned to you for repair. Click any row to open details.</p>
+        {onRefresh && (
+          <button type="button" className="btn-table" style={{ marginTop: 8 }} onClick={onRefresh}>Refresh</button>
+        )}
       </div>
       <div className="tw-ad-summary">
         <span>Total: <strong>{summary.total}</strong></span>
@@ -110,19 +113,21 @@ export default function AssignedDevicesPage({ tickets, onViewDevice, onUpdateSta
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg>
           <input type="search" placeholder="Search device, ticket ID, or fault…" value={search} onChange={(e) => setSearch(e.target.value)} />
         </div>
-        <div className="select-wrap">
-          <select value={statusFilter} onChange={(e) => setStatus(e.target.value)}>
+        <div className="tw-select-wrap">
+          <select value={statusFilter} onChange={(e) => { setStatus(e.target.value); setQuickFilter(null) }}>
             <option value="all">All statuses</option>
             <option value="pending">Pending</option>
             <option value="in-progress">In Progress</option>
             <option value="awaiting-parts">Awaiting Parts</option>
             <option value="completed">Completed</option>
           </select>
+          <svg className="tw-select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden><path d="M6 9l6 6 6-6"/></svg>
         </div>
-        <div className="select-wrap">
-          <select value={typeFilter} onChange={(e) => setType(e.target.value)}>
+        <div className="tw-select-wrap">
+          <select value={typeFilter} onChange={(e) => { setType(e.target.value); setQuickFilter(null) }}>
             {categories.map((c) => <option key={c} value={c}>{c === 'all' ? 'All device types' : c}</option>)}
           </select>
+          <svg className="tw-select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden><path d="M6 9l6 6 6-6"/></svg>
         </div>
       </div>
       <div className="tw-card" style={{ padding: 0, overflow: 'hidden' }}>

@@ -29,6 +29,7 @@ export default function FoSidebar({ page, setPage }: Props) {
     <>
       <NavBtn id="overview" label="Overview" active={page === 'overview'} onClick={() => setPage('overview')} icon={ICON_OVERVIEW} />
       <NavBtn id="sell-requests" label="Sell Requests" active={page === 'sell-requests'} onClick={() => setPage('sell-requests')} icon={ICON_FINANCING} />
+      <NavBtn id="ready-pricing" label="Ready for Pricing" active={page === 'ready-pricing'} onClick={() => setPage('ready-pricing')} icon={ICON_ANALYTICS} />
 
       <div className="fo-nav-group">
         <button type="button" className={`fo-nav-btn fo-nav-parent ${isFinancingSub ? 'fo-nav-parent-active' : ''}`}

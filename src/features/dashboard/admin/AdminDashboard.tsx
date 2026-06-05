@@ -13,6 +13,8 @@ import ProfileSection from './sections/profile/ProfileSection'
 import TechnicianWorkbench from '../technician/TechnicianWorkbench'
 import FinanceOfficerDashboard from '../finance/FinanceOfficerDashboard'
 import './AdminDashboard.css'
+import '../shared/styles/dashboard-layout.css'
+import { DashboardMenuButton, DashboardNavOverlay, DashboardSidebarClose, useDashboardMobileNav } from '../shared/components/DashboardMobileNav'
 
 type ViewMode = 'admin' | 'technician' | 'finance'
 
@@ -22,6 +24,7 @@ export default function AdminDashboard() {
   const [viewMode, setViewMode] = useState<ViewMode>('admin')
   const [darkMode, setDarkMode] = useState(false)
   const [notifications, setNotifications] = useState<DashboardNotification[]>(NOTIFICATIONS_SEED)
+  const { open, openNav, closeNav, navClass } = useDashboardMobileNav(activeTab)
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light')
@@ -77,8 +80,10 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="dashboard">
+    <div className={`dashboard${navClass}`}>
+      <DashboardNavOverlay open={open} onClose={closeNav} />
       <aside className="sidebar">
+        <DashboardSidebarClose onClick={closeNav} />
         <button type="button" className="brand" onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}>
           <span className="brand-mark">VT</span>
           <div>
@@ -93,7 +98,7 @@ export default function AdminDashboard() {
               type="button"
               key={item.id}
               className={item.id === activeTab ? 'active' : ''}
-              onClick={() => setActiveTab(item.id)}
+              onClick={() => { setActiveTab(item.id); closeNav() }}
             >
               {item.label}
             </button>
@@ -132,6 +137,7 @@ export default function AdminDashboard() {
 
       <main className="content">
         <header className="portal-header">
+          <DashboardMenuButton onClick={openNav} />
           <span className="portal-tagline">MANAGEMENT PORTAL</span>
           <DashboardActions
             darkMode={darkMode}

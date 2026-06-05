@@ -399,3 +399,30 @@
   background: rgba(220,38,38,0.12);
   color: #fca5a5;
 }
+
+/* ── Mobile ─────────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .dashboard-actions {
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .dashboard-user-meta {
+    display: none;
+  }
+
+  .dashboard-user-chip {
+    padding: 4px;
+    gap: 0;
+  }
+
+  .da-user-chevron {
+    display: none;
+  }
+
+  .da-notif-panel {
+    width: min(300px, calc(100vw - 32px));
+    right: 0;
+  }
+}

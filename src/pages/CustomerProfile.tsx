@@ -21,6 +21,13 @@ import { getErrorMessage } from '../lib/api'
 import { useSupport } from '../context/SupportContext'
 import CustomerSellsTab from '../features/customer/CustomerSellsTab'
 import type { SupportTicket, TicketStatus } from '../context/SupportContext'
+import '../features/dashboard/shared/styles/dashboard-layout.css'
+import {
+  DashboardMenuButton,
+  DashboardNavOverlay,
+  DashboardSidebarClose,
+  useDashboardMobileNav,
+} from '../features/dashboard/shared/components/DashboardMobileNav'
 
 const MOCK_ACTIVITY = [
   { id: 1, icon: ShoppingBag, text: 'Order ORD-2841 delivered', time: '2 days ago', color: 'text-emerald-600' },
@@ -69,6 +76,8 @@ export default function CustomerProfile() {
   const { getTicketsForCustomer, sendCustomerMessage, createTicket, markReadByCustomer } = useSupport()
 
   const [activeTab, setActiveTab]         = useState('overview')
+  const { open, openNav, closeNav } = useDashboardMobileNav(activeTab)
+  const activeTabMeta = TABS.find((t) => t.id === activeTab) ?? TABS[0]
   const [editing, setEditing]             = useState(false)
   const [name, setName]                   = useState(user?.name ?? '')
   const [phone, setPhone]                 = useState('+250 788 123 456')
@@ -259,6 +268,32 @@ export default function CustomerProfile() {
     <>
       <Navbar />
       <div className='bg-[#EEF2F7] min-h-screen'>
+        <div className={`cp-layout relative${open ? ' cp-nav-open' : ''}`}>
+          <DashboardNavOverlay open={open} onClose={closeNav} />
+          <aside className='cp-drawer' aria-label='Account navigation'>
+            <DashboardSidebarClose onClick={closeNav} />
+            <div className='cp-drawer-brand'>
+              <span className='cp-drawer-mark'>AC</span>
+              <div>
+                <strong>reviveTech</strong>
+                <span>My Account</span>
+              </div>
+            </div>
+            <p className='cp-drawer-caption'>Orders, payments &amp; support</p>
+            <nav className='cp-drawer-nav'>
+              {TABS.map(({ id, label, icon: TabIcon }) => (
+                <button
+                  key={id}
+                  type='button'
+                  className={`cp-drawer-btn${activeTab === id ? ' cp-drawer-btn--active' : ''}`}
+                  onClick={() => { setActiveTab(id); closeNav() }}
+                >
+                  <TabIcon size={16} />
+                  {label}
+                </button>
+              ))}
+            </nav>
+          </aside>
         <main className='max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-5'>
 
           {dataError && (
@@ -375,14 +410,14 @@ export default function CustomerProfile() {
                   </div>
                 </div>
               ) : (
-                <div className='mt-4 pt-4 border-t border-gray-100 flex flex-wrap gap-0'>
+                <div className='mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 sm:flex sm:flex-wrap gap-4 sm:gap-0'>
                   {[
                     { label: 'Phone', value: phone },
                     { label: 'Email', value: user?.email ?? '' },
                     { label: 'Member since', value: 'Jan 2025' },
                     { label: 'Account ID', value: user?.id ?? 'USR-0001' },
                   ].map(({ label, value }, i, arr) => (
-                    <div key={label} className={`py-1 pr-8 ${i < arr.length - 1 ? 'border-r border-gray-200 mr-8' : ''}`}>
+                    <div key={label} className={`py-1 sm:pr-8 ${i < arr.length - 1 ? 'sm:border-r sm:border-gray-200 sm:mr-8' : ''}`}>
                       <span className='text-[10px] font-bold text-gray-400 uppercase tracking-widest block'>{label}</span>
                       <p className='text-sm font-semibold text-gray-800 mt-0.5'>{value}</p>
                     </div>
@@ -392,8 +427,14 @@ export default function CustomerProfile() {
             </div>
           </div>
 
-          {/* ── Tab navigation ────────────────────────────────────────── */}
-          <div className='bg-white border border-gray-100 rounded-2xl shadow-sm px-2 py-1.5'>
+          {/* ── Mobile: open drawer (same as staff dashboards) ─────── */}
+          <div className='cp-mobile-nav-bar bg-white border border-gray-100 rounded-2xl shadow-sm px-3 py-2.5'>
+            <DashboardMenuButton onClick={openNav} />
+            <span className='cp-current-tab-label'>{activeTabMeta.label}</span>
+          </div>
+
+          {/* ── Tab navigation (desktop) ───────────────────────────── */}
+          <div className='cp-tabs-desktop bg-white border border-gray-100 rounded-2xl shadow-sm px-2 py-1.5'>
             <div className='flex gap-1 overflow-x-auto scrollbar-hide'>
               {TABS.map(({ id, label, icon: Icon }) => (
                 <button
@@ -756,10 +797,10 @@ export default function CustomerProfile() {
 
           {/* SUPPORT ────────────────────────────────────────────────────── */}
           {activeTab === 'support' && (
-            <div className='flex gap-5' style={{ minHeight: '520px' }}>
+            <div className='flex flex-col lg:flex-row gap-5 min-h-[320px] lg:min-h-[520px]'>
 
               {/* Left pane — ticket list */}
-              <div className='w-72 flex-shrink-0 flex flex-col gap-3'>
+              <div className='w-full lg:w-72 flex-shrink-0 flex flex-col gap-3 max-h-[280px] lg:max-h-none overflow-y-auto lg:overflow-visible'>
                 <button
                   type='button'
                   onClick={() => { setShowNewTicket(true); setSelectedTicket(null) }}
@@ -1065,6 +1106,7 @@ export default function CustomerProfile() {
           )}
 
         </main>
+        </div>
       </div>
       <Footer />
     </>

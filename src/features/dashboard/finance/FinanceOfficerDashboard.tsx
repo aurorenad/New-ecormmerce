@@ -13,8 +13,11 @@ import FoReportsPage from './FoReportsPage'
 import FoSettingsPage from './FoSettingsPage'
 import FoProfilePage from './FoProfilePage'
 import FoSellRequestsPage from './FoSellRequestsPage'
+import FoReadyForPricingPage from './FoReadyForPricingPage'
 import { PAGE_META, FO_STATIC_ALERTS } from './foHelpers'
 import './FinanceOfficerDashboard.css'
+import '../shared/styles/dashboard-layout.css'
+import { DashboardMenuButton, DashboardNavOverlay, DashboardSidebarClose, useDashboardMobileNav } from '../shared/components/DashboardMobileNav'
 
 interface Props {
   onBack: () => void
@@ -28,6 +31,7 @@ export default function FinanceOfficerDashboard({ onBack: _onBack, darkMode = fa
   const navigate = useNavigate()
   const [page, setPage]           = useState('overview')
   const [profilePic, setProfilePic] = useState<string | null>(null)
+  const { open, openNav, closeNav, navClass } = useDashboardMobileNav(page)
 
   const overdueLoans = FO_ACTIVE_LOANS_SEED.filter((l) => l.status === 'Overdue' || l.status === 'Due Soon')
   const foNotifications: DashboardNotification[] = [
@@ -56,6 +60,7 @@ export default function FinanceOfficerDashboard({ onBack: _onBack, darkMode = fa
     switch (page) {
       case 'overview':  return <FoOverviewPage />
       case 'sell-requests': return <FoSellRequestsPage />
+      case 'ready-pricing': return <FoReadyForPricingPage />
       case 'requests':  return <FoRequestsPage />
       case 'loans':     return <FoLoansPage />
       case 'risk':      return <FoRiskPage />
@@ -68,15 +73,17 @@ export default function FinanceOfficerDashboard({ onBack: _onBack, darkMode = fa
   }
 
   return (
-    <div className="fo-layout">
+    <div className={`fo-layout${navClass}`}>
+      <DashboardNavOverlay open={open} onClose={closeNav} />
       <aside className="fo-sidebar">
+        <DashboardSidebarClose onClick={closeNav} />
         <button type="button" className="fo-brand" onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}>
           <span className="fo-brand-mark">FO</span>
           <div><strong>reviveTech</strong><p>Finance Portal</p></div>
         </button>
         <p className="fo-sidebar-caption">Loan management &amp; risk monitoring</p>
         <nav className="fo-nav">
-          <FoSidebar page={page} setPage={setPage} />
+          <FoSidebar page={page} setPage={(id) => { setPage(id); closeNav() }} />
         </nav>
         {/* <div className="fo-sidebar-bottom">
           <button type="button" className="fo-back-sidebar-btn" onClick={onBack}>
@@ -90,6 +97,7 @@ export default function FinanceOfficerDashboard({ onBack: _onBack, darkMode = fa
 
       <main className="fo-main">
         <header className="fo-portal-header">
+          <DashboardMenuButton onClick={openNav} />
           <span className="fo-portal-tagline">FINANCE PORTAL</span>
           <DashboardActions darkMode={darkMode} onToggleDark={onToggleDark}
             userName={FO_OFFICER_PROFILE.name} role={FO_OFFICER_PROFILE.role}

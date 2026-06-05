@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../../context/AuthContext'
 import { useSupport, type SupportTicket, type TicketStatus, type TicketPriority } from '../../../context/SupportContext'
 import './AgentDashboard.css'
+import '../shared/styles/dashboard-layout.css'
+import { DashboardMenuButton, DashboardNavOverlay, DashboardSidebarClose, useDashboardMobileNav } from '../shared/components/DashboardMobileNav'
 
 // ── Icons ───────────────────────────────────────────────────────────────────
 function Icon({ d, size = 16 }: { d: string | string[]; size?: number }) {
@@ -523,6 +525,7 @@ function AgentHeader({
   onMarkRead,
   title,
   subtitle,
+  onOpenNav,
 }: {
   darkMode: boolean
   onToggleDark: () => void
@@ -530,6 +533,7 @@ function AgentHeader({
   onMarkRead: (id: string) => void
   title: string
   subtitle: string
+  onOpenNav: () => void
 }) {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
@@ -557,6 +561,7 @@ function AgentHeader({
   return (
     <header className="agent-header">
       <div className="agent-header-left">
+        <DashboardMenuButton onClick={onOpenNav} />
         <span className="agent-header-portal-tag">SUPPORT PORTAL</span>
         <div>
           <h1 className="agent-header-title">{title}</h1>
@@ -689,6 +694,7 @@ export default function AgentDashboard() {
   const [darkMode, setDarkMode]           = useState(false)
   const [notifications, setNotifications] = useState(AGENT_NOTIFS)
   const [chatTicket, setChatTicket]       = useState<SupportTicket | null>(null)
+  const { open, openNav, closeNav, navClass } = useDashboardMobileNav(activeTab)
 
   const { tickets } = useSupport()
 
@@ -710,9 +716,11 @@ export default function AgentDashboard() {
   const unreadTotal = tickets.reduce((s, t) => s + t.unreadByAgent, 0)
 
   return (
-    <div className="agent-dashboard">
+    <div className={`agent-dashboard${navClass}`}>
+      <DashboardNavOverlay open={open} onClose={closeNav} />
       {/* Sidebar */}
       <aside className="agent-sidebar">
+        <DashboardSidebarClose onClick={closeNav} />
         <button type="button" className="agent-brand" onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}>
           <span className="agent-brand-mark">JS</span>
           <div>
@@ -729,7 +737,7 @@ export default function AgentDashboard() {
               key={id}
               type="button"
               className={`agent-nav-btn${activeTab === id ? ' active' : ''}`}
-              onClick={() => setActiveTab(id)}
+              onClick={() => { setActiveTab(id); closeNav() }}
             >
               <Icon d={cfg.icon} size={15} />
               <span>{cfg.label}</span>
@@ -757,6 +765,7 @@ export default function AgentDashboard() {
           onMarkRead={markNotifRead}
           title={tab.title}
           subtitle={tab.subtitle}
+          onOpenNav={openNav}
         />
 
         <div className="agent-content">

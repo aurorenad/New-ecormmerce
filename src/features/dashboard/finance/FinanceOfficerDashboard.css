@@ -443,18 +443,14 @@
   .fo-charts-row { grid-template-columns: 1fr 1fr; }
   .fo-charts-row .fo-chart-card:last-child { grid-column: span 2; }
 }
-@media (max-width: 900px) {
-  .fo-layout { grid-template-columns: 1fr; }
-  .fo-sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; padding: 12px; }
-  .fo-nav { flex-direction: row; flex-wrap: wrap; padding: 0; }
-  .fo-nav-btn { flex: 0 0 auto; font-size: 0.75rem; padding: 7px 10px; }
+@media (max-width: 900px) and (min-width: 769px) {
+  .fo-layout { grid-template-columns: 200px 1fr; }
   .fo-kpi-grid { grid-template-columns: repeat(2, 1fr); }
   .fo-charts-row { grid-template-columns: 1fr; }
   .fo-charts-row .fo-chart-card:last-child { grid-column: span 1; }
   .fo-settings-grid { grid-template-columns: 1fr; }
   .fo-risk-summary-row { grid-template-columns: repeat(2, 1fr); }
   .fo-reports-summary { grid-template-columns: repeat(2, 1fr); }
-  .fo-page-wrap { padding: 20px 16px 40px; }
 }
 
 /* Dark mode */
@@ -558,3 +554,156 @@
 .fo-sell-table td { vertical-align: middle; }
 .fo-empty-cell { text-align: center; padding: 32px !important; color: #9ca3af; font-size: 0.9rem; }
 .fo-sell-review-layout { max-width: 720px; }
+
+.fo-pricing-page { display: flex; flex-direction: column; gap: 16px; }
+.fo-pricing-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.fo-pricing-count { margin: 0; font-size: 0.9rem; color: #4b5563; font-weight: 600; }
+.fo-pricing-error { margin: 0; color: #b91c1c; font-size: 0.88rem; }
+.fo-pricing-success { margin: 0; color: #166534; font-size: 0.88rem; font-weight: 600; }
+.fo-pricing-empty {
+  background: #fff;
+  border: 1px dashed #d1d5db;
+  border-radius: 14px;
+  padding: 40px 24px;
+  text-align: center;
+}
+.fo-pricing-empty h3 { margin: 0 0 8px; color: #111827; }
+.fo-pricing-empty p { margin: 0; color: #6b7280; max-width: 480px; margin-inline: auto; }
+.fo-pricing-grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr;
+  gap: 20px;
+  align-items: start;
+}
+@media (max-width: 900px) { .fo-pricing-grid { grid-template-columns: 1fr; } }
+.fo-pricing-list { display: flex; flex-direction: column; gap: 8px; }
+.fo-pricing-card {
+  text-align: left;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.fo-pricing-card:hover { border-color: #025c50; }
+.fo-pricing-card--active { border-color: #025c50; box-shadow: 0 0 0 2px rgba(2,92,80,0.15); }
+.fo-pricing-card strong { font-size: 0.95rem; color: #111827; }
+.fo-pricing-card-meta { font-size: 0.78rem; color: #6b7280; }
+.fo-pricing-card-cost { font-size: 0.78rem; color: #025c50; font-weight: 600; }
+.fo-pricing-detail {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.fo-pricing-detail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.fo-pricing-detail-head h2 { margin: 0 0 4px; font-size: 1.2rem; }
+.fo-pricing-detail-head p { margin: 0; color: #6b7280; font-size: 0.88rem; }
+.fo-pricing-insight h3,
+.fo-pricing-ai-box h3,
+.fo-pricing-form h3 { margin: 0 0 10px; font-size: 0.95rem; color: #111827; }
+.fo-pricing-dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px 16px;
+  margin: 0;
+}
+.fo-pricing-dl div { display: flex; flex-direction: column; gap: 2px; }
+.fo-pricing-dl dt { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.04em; color: #9ca3af; font-weight: 600; }
+.fo-pricing-dl dd { margin: 0; font-size: 0.86rem; color: #374151; }
+.fo-pricing-ai-box {
+  background: #f0fdf9;
+  border: 1px solid #99f6e4;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.fo-pricing-ai-reason { margin: 6px 0 0; font-size: 0.84rem; color: #4b5563; line-height: 1.5; }
+.fo-pricing-form { display: flex; flex-direction: column; gap: 12px; }
+.fo-pricing-field { display: flex; flex-direction: column; gap: 4px; }
+.fo-pricing-field label { font-size: 0.78rem; font-weight: 600; color: #4b5563; }
+.fo-pricing-field input,
+.fo-pricing-field select {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+}
+.fo-pricing-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fo-pricing-summary {
+  display: flex;
+  gap: 20px;
+  font-size: 0.9rem;
+  color: #374151;
+  padding: 10px 0;
+}
+.fo-pricing-summary--wide { flex-wrap: wrap; gap: 16px 24px; }
+
+.fo-pricing-kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 4px;
+}
+.fo-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.fo-pricing-table-wrap { margin-top: 4px; }
+.fo-pricing-table th { white-space: nowrap; }
+.fo-pricing-table td { vertical-align: middle; }
+.fo-pricing-row--active td { background: #f0fdf9 !important; }
+.fo-pricing-device-name { display: block; font-size: 0.88rem; color: #111827; }
+.fo-pricing-device-sub { display: block; font-size: 0.72rem; color: #9ca3af; margin-top: 2px; }
+.fo-pricing-cond { font-size: 0.8rem; font-weight: 600; color: #374151; }
+.fo-pricing-cond-arrow { font-size: 0.75rem; color: #059669; }
+.fo-pricing-money { font-weight: 700; color: #111827; white-space: nowrap; }
+.fo-pricing-muted { color: #6b7280 !important; font-weight: 600 !important; }
+.fo-pricing-inline-input {
+  width: 88px;
+  padding: 6px 8px;
+  font-size: 0.82rem;
+}
+.fo-pricing-inline-input--sm { width: 64px; }
+.fo-pricing-promo-cell { display: flex; gap: 6px; flex-wrap: wrap; }
+.fo-profit-pill {
+  display: inline-block;
+  font-weight: 800;
+  font-size: 0.84rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.fo-profit--pos { background: #dcfce7; color: #166534; }
+.fo-profit--neg { background: #fee2e2; color: #991b1b; }
+.fo-profit--zero { background: #f3f4f6; color: #6b7280; }
+.fo-pricing-margin-sub { display: block; font-size: 0.7rem; color: #9ca3af; margin-top: 3px; }
+.fo-pricing-row-actions { display: flex; gap: 6px; }
+.fo-btn-view--primary { background: #025c50 !important; color: #fff !important; }
+.fo-btn-view--primary:hover { background: #034a40 !important; }
+.fo-btn-view--active { background: #e0f2f1 !important; color: #025c50 !important; font-weight: 700; }
+.fo-pricing-detail-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.fo-pricing-status-pill {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.fo-pricing-status-pill--wait { background: #fef3c7; color: #92400e; }
+.fo-pricing-status-pill--pub { background: #dcfce7; color: #166534; }

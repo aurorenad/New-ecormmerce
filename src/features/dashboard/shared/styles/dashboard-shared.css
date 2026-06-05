@@ -237,6 +237,14 @@
 @media (max-width: 600px) {
   .um-kpi-grid, .mini-kpi-grid { grid-template-columns: 1fr 1fr; }
   .um-filters { flex-wrap: wrap; }
+  .um-info-grid,
+  .um-form-grid { grid-template-columns: 1fr; }
+  .panel-card { padding: 16px; }
+  .um-pagination { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 400px) {
+  .um-kpi-grid, .mini-kpi-grid { grid-template-columns: 1fr; }
 }
 
 /* ════════════════════════════════════════════════════════════

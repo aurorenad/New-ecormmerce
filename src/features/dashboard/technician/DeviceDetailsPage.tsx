@@ -1,6 +1,6 @@
 import { IconBack, IconCheck, IconDetail } from './TechIcons'
 import FaultSection from './FaultSection'
-import { priorityClass, progressClass, statusPillClass, STATUS_OPTIONS } from './techHelpers'
+import { progressClass, PRIORITY_OPTIONS, STATUS_OPTIONS } from './techHelpers'
 import type { RepairTicket } from './techHelpers'
 
 interface Props {
@@ -8,6 +8,7 @@ interface Props {
   onBack: () => void
   onTogglePart: (ticketId: string, partId: string) => void
   onUpdateStatus: (id: string, status: string) => void
+  onUpdatePriority: (id: string, priority: string) => void
   onSubmitNote: () => void
   onUpdateFault: (ticketId: string, text: string) => void
   faultDraft: string
@@ -16,7 +17,7 @@ interface Props {
 }
 
 export default function DeviceDetailsPage({
-  ticket, onBack, onTogglePart, onUpdateStatus, onSubmitNote, onUpdateFault,
+  ticket, onBack, onTogglePart, onUpdateStatus, onUpdatePriority, onSubmitNote, onUpdateFault,
   faultDraft, setFaultDraft, savedStatus,
 }: Props) {
   if (!ticket) {
@@ -54,8 +55,18 @@ export default function DeviceDetailsPage({
           <p className="tw-det-meta">IMEI: {ticket.imei} · Model: {ticket.modelCode}</p>
         </div>
         <div className="tw-det-banner-right">
-          <span className={priorityClass(ticket.priority)}>{ticket.priority}</span>
-          <span className={statusPillClass(ticket.status)}>{ticket.status}</span>
+          <div className="tw-priority-picker">
+            <span className="tw-priority-picker-label">Priority</span>
+            <div className="tw-priority-options">
+              {PRIORITY_OPTIONS.map((p) => (
+                <button key={p} type="button"
+                  className={`tw-priority-opt tw-priority-opt--${p.toLowerCase()} ${ticket.priority === p ? 'is-active' : ''}`}
+                  onClick={() => onUpdatePriority(ticket.id, p)}>
+                  {p}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -102,21 +113,21 @@ export default function DeviceDetailsPage({
               <span className="tw-section-icon tw-icon-status">✓</span>
               Completion Status
             </h2>
-            <p className="tw-card-sub">Update the repair status for this device</p>
-            <div className="tw-status-options">
+            <p className="tw-card-sub">
+              {isComplete ? 'This repair is complete — status cannot be changed.' : 'Update the repair status for this device'}
+            </p>
+            <div className={`tw-status-options ${isComplete ? 'tw-status-options--locked' : ''}`}>
               {STATUS_OPTIONS.map((s) => (
                 <button key={s} type="button"
                   className={`tw-status-opt ${ticket.status === s ? 'is-active' : ''}`}
+                  disabled={isComplete}
                   onClick={() => onUpdateStatus(ticket.id, s)}>
                   {s}
                 </button>
               ))}
             </div>
-            {savedStatus && <p className="tw-saved-msg"><IconCheck /> Status updated</p>}
-            <button type="button" className={`tw-complete-btn ${isComplete ? 'is-done' : ''}`}
-              onClick={() => onUpdateStatus(ticket.id, 'Completed')} disabled={isComplete}>
-              {isComplete ? <><IconCheck /> Marked as Complete</> : 'Mark as Complete'}
-            </button>
+            {savedStatus && !isComplete && <p className="tw-saved-msg"><IconCheck /> Status updated</p>}
+            {isComplete && <p className="tw-saved-msg"><IconCheck /> Marked as complete</p>}
           </section>
         </div>
       </div>

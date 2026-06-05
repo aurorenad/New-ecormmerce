@@ -31,6 +31,7 @@ export interface ApiTradeIn {
   decisionAt?: string | null
   customerOfferDecision?: string | null
   customerDecisionAt?: string | null
+  deviceId?: string | null
   status: 'PENDING' | 'APPROVED' | 'REJECTED' | 'COMPLETED'
   createdAt: string
   updatedAt: string
@@ -120,6 +121,17 @@ export function getTradeInWorkflowSteps(t: ApiTradeIn): WorkflowStep[] {
           : '—',
       done: hasCustomer || t.status === 'COMPLETED' || (t.status === 'REJECTED' && hasFinance),
       active: t.status === 'APPROVED' && !!t.finalOfferAmount && !hasCustomer,
+    },
+    {
+      id: 'repair',
+      label: 'Technician repair',
+      detail: t.status === 'COMPLETED' && t.deviceId
+        ? 'Device assigned for refurbishment'
+        : t.status === 'COMPLETED'
+          ? 'Repair in progress'
+          : '—',
+      done: t.status === 'COMPLETED' && Boolean(t.deviceId),
+      active: t.status === 'COMPLETED' && Boolean(t.deviceId),
     },
   ]
 }

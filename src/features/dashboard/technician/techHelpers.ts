@@ -1,8 +1,12 @@
 import { REPAIR_TICKETS_SEED } from '../../../data/mockData'
+import type { ApiRefurbishment, RefurbishmentStatus } from '../../../services/refurbishment.service'
 
-export const TW_NOW = new Date('2026-05-25T11:00:00')
+export const TW_NOW = new Date()
 export const STATUS_OPTIONS = ['Pending', 'In Progress', 'Awaiting Parts', 'Completed'] as const
 export type TStatus = (typeof STATUS_OPTIONS)[number]
+
+export const PRIORITY_OPTIONS = ['Urgent', 'Standard', 'Low'] as const
+export type TPriority = (typeof PRIORITY_OPTIONS)[number]
 
 export const TW_NAV = [
   { id: 'overview', label: 'Overview' },
@@ -20,6 +24,90 @@ export interface RepairTicket {
   imei: string; modelCode: string; severity: 'Critical' | 'Medium' | 'Minor'
   assignedAt: string; dueAt: string | null; faultDetail: string
   parts: RepairPart[]; faultNotes: FaultNote[]; progress: number
+  refurbishmentId?: string
+  deviceId?: string
+}
+
+const REFURB_STATUS_PROGRESS: Record<RefurbishmentStatus, number> = {
+  RECEIVED: 5,
+  DIAGNOSING: 25,
+  REPAIRING: 55,
+  QUALITY_CHECK: 75,
+  CERTIFIED: 90,
+  READY: 100,
+}
+
+export function refurbishmentToTicket(r: ApiRefurbishment): RepairTicket {
+  const tradeIn = r.device.tradeInRequest
+  const repairEst = tradeIn?.technicianRepairEstimate ?? 0
+  const priority: RepairTicket['priority'] =
+    repairEst >= 150 ? 'Urgent' : repairEst >= 60 ? 'Standard' : 'Low'
+  const severity: RepairTicket['severity'] =
+    repairEst >= 150 ? 'Critical' : repairEst >= 60 ? 'Medium' : 'Minor'
+
+  let status: TStatus = 'Pending'
+  if (r.status === 'READY' || r.status === 'CERTIFIED') status = 'Completed'
+  else if (r.status === 'REPAIRING') status = 'In Progress'
+  else if (r.status === 'DIAGNOSING' || r.status === 'QUALITY_CHECK') status = 'In Progress'
+
+  const fault = tradeIn?.defects || r.diagnostics || 'Awaiting diagnostic review'
+  const faultDetail = [r.diagnostics, r.repairNotes, tradeIn?.technicianComment].filter(Boolean).join('\n\n') || fault
+
+  const notes: FaultNote[] = []
+  if (r.repairNotes && r.repairNotes !== r.diagnostics) {
+    notes.push({ at: new Date(r.updatedAt).toISOString().slice(0, 16).replace('T', ' '), text: r.repairNotes })
+  }
+
+  let parts: RepairPart[] = []
+  try {
+    const parsed = JSON.parse(r.partsUsed)
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      parts = parsed.map((label: string, i: number) => ({
+        id: `part-${i}`,
+        label: String(label),
+        done: r.status === 'QUALITY_CHECK' || r.status === 'CERTIFIED' || r.status === 'READY',
+      }))
+    }
+  } catch {
+    parts = []
+  }
+  if (parts.length === 0) {
+    parts = [
+      { id: 'diag', label: 'Run full diagnostics', done: r.status !== 'RECEIVED' },
+      { id: 'repair', label: 'Complete repair work', done: ['QUALITY_CHECK', 'CERTIFIED', 'READY'].includes(r.status) },
+      { id: 'qc', label: 'Quality check & certify', done: r.status === 'CERTIFIED' || r.status === 'READY' },
+    ]
+  }
+
+  const assigned = new Date(r.createdAt)
+  const due = new Date(assigned)
+  due.setDate(due.getDate() + (priority === 'Urgent' ? 1 : priority === 'Standard' ? 3 : 5))
+
+  return {
+    id: r.id.slice(0, 8).toUpperCase(),
+    refurbishmentId: r.id,
+    deviceId: r.deviceId,
+    device: `${r.device.brand} ${r.device.model}`,
+    fault: fault.slice(0, 80),
+    priority,
+    status,
+    imei: r.deviceId.slice(0, 12),
+    modelCode: r.device.model,
+    severity,
+    assignedAt: r.createdAt,
+    dueAt: status === 'Completed' ? null : due.toISOString(),
+    faultDetail,
+    parts,
+    faultNotes: notes,
+    progress: REFURB_STATUS_PROGRESS[r.status] ?? 0,
+  }
+}
+
+export function ticketStatusToRefurbishment(status: TStatus): RefurbishmentStatus {
+  if (status === 'Completed') return 'READY'
+  if (status === 'In Progress') return 'REPAIRING'
+  if (status === 'Awaiting Parts') return 'REPAIRING'
+  return 'RECEIVED'
 }
 
 export function cloneTickets(): RepairTicket[] {

@@ -53,6 +53,10 @@
   .ov-donut-wrap { flex-direction: column; align-items: center; }
 }
 
+@media (max-width: 400px) {
+  .ov-kpi-grid { grid-template-columns: 1fr; }
+}
+
 /* ── Dark mode ────────────────────────────────────────────────────────── */
 [data-theme="dark"] .ov-kpi-card,
 [data-theme="dark"] .ov-chart-card { background: #1e293b; border-color: #334155; }

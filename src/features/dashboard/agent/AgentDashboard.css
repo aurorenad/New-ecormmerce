@@ -1014,8 +1014,14 @@
 }
 
 @media (max-width: 640px) {
-  .agent-dashboard { grid-template-columns: 1fr; }
-  .agent-sidebar { display: none; }
-  .agent-content { padding: 16px; }
   .agent-kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  .agent-profile-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .agent-profile-info-value { text-align: left; }
+  .agent-message { max-width: 92%; }
+  .agent-chat-header { flex-wrap: wrap; }
+  .agent-reply-footer { flex-direction: column; align-items: flex-start; }
 }

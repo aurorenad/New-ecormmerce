@@ -14,7 +14,9 @@ export default function FaultSection({ ticket, faultDraft, setFaultDraft, onSubm
   const [editingFault, setEditingFault] = useState(false)
   const [faultEditText, setFaultEditText] = useState(ticket.faultDetail)
   const [photos, setPhotos] = useState<(string | null)[]>([null, null])
-  const photoRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)]
+  const frontPhotoRef = useRef<HTMLInputElement>(null)
+  const rearPhotoRef = useRef<HTMLInputElement>(null)
+  const photoRefs = [frontPhotoRef, rearPhotoRef]
 
   const handlePhotoChange = (idx: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]

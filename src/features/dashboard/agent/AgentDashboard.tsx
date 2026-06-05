@@ -722,9 +722,9 @@ export default function AgentDashboard() {
       <aside className="agent-sidebar">
         <DashboardSidebarClose onClick={closeNav} />
         <button type="button" className="agent-brand" onClick={() => navigate('/')} style={{ background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left', padding: 0 }}>
-          <span className="agent-brand-mark">JS</span>
+          <span className="agent-brand-mark">VT</span>
           <div>
-            <strong className="agent-brand-name">Jaribu Support</strong>
+            <strong className="agent-brand-name">reviveTech Support</strong>
             <p className="agent-brand-sub">Agent Portal</p>
           </div>
         </button>

@@ -206,54 +206,62 @@ export default function FoReadyForPricingPage() {
   }
 
   return (
-    <div className="fo-pricing-page">
-      <div className="fo-pricing-toolbar">
-        <p className="fo-pricing-count">
-          {awaitingCount} awaiting pricing · {devices.length} total repaired device{devices.length === 1 ? '' : 's'}
-        </p>
-        <button type="button" className="btn-table" onClick={load}>Refresh</button>
-      </div>
-
-      {loadError && <p className="fo-pricing-error">{loadError}</p>}
-      {saveMsg && <p className="fo-pricing-success">{saveMsg}</p>}
+    <div className="fo-page-wrap fo-pricing-page">
+      {loadError && (
+        <p className="fo-pricing-alert fo-pricing-alert--error">{loadError}</p>
+      )}
+      {saveMsg && (
+        <p className="fo-pricing-alert fo-pricing-alert--success">{saveMsg}</p>
+      )}
 
       <div className="fo-pricing-kpis">
-        <div className="fo-sell-kpi">
-          <span className="fo-sell-kpi-label">Devices</span>
-          <strong>{totals.count}</strong>
+        <div className="fo-pricing-kpi">
+          <span className="fo-pricing-kpi-label">Devices</span>
+          <strong className="fo-pricing-kpi-value">{totals.count}</strong>
+          <span className="fo-pricing-kpi-hint">{awaitingCount} awaiting pricing</span>
         </div>
-        <div className="fo-sell-kpi">
-          <span className="fo-sell-kpi-label">Total bought from customers</span>
-          <strong>{fmtMoney(totals.bought)}</strong>
+        <div className="fo-pricing-kpi">
+          <span className="fo-pricing-kpi-label">Bought from customers</span>
+          <strong className="fo-pricing-kpi-value">{fmtMoney(totals.bought)}</strong>
+          <span className="fo-pricing-kpi-hint">Total acquisition cost</span>
         </div>
-        <div className="fo-sell-kpi">
-          <span className="fo-sell-kpi-label">Projected sales</span>
-          <strong>{fmtMoney(totals.projected)}</strong>
+        <div className="fo-pricing-kpi">
+          <span className="fo-pricing-kpi-label">Projected sales</span>
+          <strong className="fo-pricing-kpi-value">{fmtMoney(totals.projected)}</strong>
+          <span className="fo-pricing-kpi-hint">After promos &amp; discounts</span>
         </div>
-        <div className={`fo-sell-kpi ${totals.profit >= 0 ? 'fo-sell-kpi--ok' : 'fo-sell-kpi--bad'}`}>
-          <span className="fo-sell-kpi-label">Projected profit</span>
-          <strong>{fmtMoney(totals.profit)}</strong>
+        <div className={`fo-pricing-kpi fo-pricing-kpi--profit ${totals.profit >= 0 ? 'fo-pricing-kpi--profit-pos' : 'fo-pricing-kpi--profit-neg'}`}>
+          <span className="fo-pricing-kpi-label">Projected profit</span>
+          <strong className="fo-pricing-kpi-value">{fmtMoney(totals.profit)}</strong>
+          <span className="fo-pricing-kpi-hint">Sale price minus costs</span>
         </div>
       </div>
 
-      <div className="fo-filter-bar fo-sell-filters">
-            <div className="fo-search-box">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <circle cx="11" cy="11" r="7" />
-                <path d="M20 20l-3-3" />
-              </svg>
-              <input
-                type="search"
-                placeholder="Search device…"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
-          </div>
+      <div className="fo-filter-bar fo-pricing-toolbar">
+        <div className="fo-search-box fo-pricing-search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-3-3" />
+          </svg>
+          <input
+            type="search"
+            placeholder="Search device…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+        <span className="fo-pricing-toolbar-meta">
+          {devices.length} repaired device{devices.length === 1 ? '' : 's'}
+        </span>
+        <button type="button" className="fo-btn-export" onClick={load}>Refresh</button>
+      </div>
 
-          <div className="fo-card fo-pricing-table-wrap">
-            <div className="fo-table-scroll">
-              <table className="fo-table fo-pricing-table">
+      <div className="fo-panel-card fo-pricing-table-panel">
+        <div className="fo-panel-header-row">
+          <h3 className="fo-panel-title">Repaired devices</h3>
+        </div>
+        <div className="fo-table-scroll">
+          <table className="fo-table fo-pricing-table">
                 <thead>
                   <tr>
                     <th>Device</th>
@@ -390,9 +398,9 @@ export default function FoReadyForPricingPage() {
                     )
                   })}
                 </tbody>
-              </table>
-            </div>
-          </div>
+          </table>
+        </div>
+      </div>
 
       {selected && draft && selectedMetrics && (
             <div className="fo-pricing-detail">

@@ -12,7 +12,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const { isAuthenticated } = useAuth();
 
   const [cart, setCart] = useState<CartItem[]>(() => {
-    const savedCart = localStorage.getItem('jaribu_cart');
+    const savedCart = localStorage.getItem('revivetech_cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
 
@@ -21,7 +21,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      localStorage.setItem('jaribu_cart', JSON.stringify(cart));
+      localStorage.setItem('revivetech_cart', JSON.stringify(cart));
     }
   }, [cart, isAuthenticated]);
 
@@ -120,7 +120,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
     }
     setCart([]);
-    localStorage.removeItem('jaribu_cart');
+    localStorage.removeItem('revivetech_cart');
   };
 
   return (

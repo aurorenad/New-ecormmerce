@@ -17,7 +17,7 @@ export default function Navbar() {
           
       {/* Brand Logo */}
       <div className='text-2xl font-black tracking-tight text-gray-950 cursor-pointer hover:opacity-80 transition-opacity'>
-        Jaribu
+        reviveTech
       </div>
 
       {/* Modern Search Bar (Hidden on small mobile screens) */}
